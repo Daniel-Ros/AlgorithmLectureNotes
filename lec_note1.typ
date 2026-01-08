@@ -25,7 +25,7 @@
 )
 
 = Complexity
-Since the first 
+Since the first
 
 == Polynomial-time algorithms
 An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^c)$ where $n$ is the length of the input and $c$ is some (maybe huge) constant.
@@ -203,7 +203,7 @@ such assignment is called _satisfying assignment_.
   CNF-SAT := {$phi$: $phi$ is a satisfiable CNF formula}
 ]
 The follwoing theorem was proved by Cook and Levin:
-#theorem("Cook Levin")[
+#theorem("Cook-Levin")[
   CNF-SAT is npc.
 ]
 Fortunately for the students, the proof is beyond the scope of this course and will be omitted, although curious students can look at up in Computational Comlexity by Aroara and Barak
