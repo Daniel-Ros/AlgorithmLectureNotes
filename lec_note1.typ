@@ -25,6 +25,8 @@
 )
 
 = Complexity
+Since the first 
+
 == Polynomial-time algorithms
 An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^c)$ where $n$ is the length of the input and $c$ is some (maybe huge) constant.
 // For a problem $L$, we say the $L$ is polynomial if a polynimal algorthm exists for solving $L$.
@@ -33,7 +35,7 @@ An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^
   Common examples of polynomial-time algorithms include: DFS, BFS, Dijkstra's algorithm, 2-Coloring, and various sorting algorithms.
 ]
 
-Skipping some fundamental knowledge#footnote[For more information about this topic the reader is adviced to loop up Computational Comlexity by Aroara and Barak] we can now informally define:
+// Skipping some fundamental knowledge#footnote[For more information about this topic the reader is adviced to loop up Computational Comlexity by Aroara and Barak] we can now informally define:
 
 #definition[
   $cP :=$ The set of problems that have a polynomial algorithm.
@@ -106,15 +108,14 @@ The claim above demonstrates that decision and search problem are equivalent#foo
 
 == NP-completeness
 While the class $cP$ contains a large portion of the problems students have faced so far, as it turs out the majoriy of the problems are not easy at all.
-Lets suppose that we are criminals who are trying to crack some safe.
-You are trying every combination, but this takes a lot of time.
-After some time our friend tell us that he was able to find a quicker way, and points to a big and heavy drill.
-You tell him that after the first year of computer science there is no way for you to pick up that dril and continue to trying all the combinations.
-Now lets suppose that out friend tells us that he was able to find the password, how can you tell if he is telling the truth?
-The only way for us to know that is to try the password that he gives us, if it works the the safe is cracked
-But if it not can we even say that the safe has a possible way to open it?
-This demonstarins captures the essence of out next complexity class $cNP$, instead of trying to come out with an answer
-which can be quite hard, all we need to do is verify a given advice given to us as long as this advice is helpfull. Formally,
+Lets suppose that you are proffesional safe cracker who are in a competition with your friend who can hack a safe faster.
+The safe has state of the art defence mechanisims, making it very hard to crack, none of the known method works for you.
+You are trying entring every combination, but this takes a lot of time.
+After some time your friend tell you that he was able to find a the code! and gives you a the book "One Million Digits Of Pi", and says the the password is in there.
+You tell him that this does not count, as there is no way to know if he is right or not, just trying to read the book will take a lot of time.
+But if he gives you the password, you have a way to know if he won or not, just enter the password and see if the safe opens and if it does, then it means that your friend is won.
+But if it is not the right password, is there a way for you to know the real password? or even know that such password exists?
+This demonstarins captures the essence of out next complexity class $cNP$, the set of problems where a proposed solution can be verified quickly. Formally,
 #definition("NP class")[
   A language $L$ is said to be in $cNP$ if we have a polynomial-time algorithm $M$ such that
   $
