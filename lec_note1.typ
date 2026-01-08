@@ -24,9 +24,8 @@
   abstract: abstract,
 )
 
-
 = Complexity
-== Basic definitions
+== Polynomial-time algorithms
 An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^c)$ where $n$ is the length of the input and $c$ is some (maybe huge) constant.
 // For a problem $L$, we say the $L$ is polynomial if a polynimal algorthm exists for solving $L$.
 
@@ -40,13 +39,13 @@ Skipping some fundamental knowledge#footnote[For more information about this top
   $cP :=$ The set of problems that have a polynomial algorithm.
 ]
 
-#definition[
-  $cNP :=$ The set of problems that have a *non-deterministic* polynomial algorithm.
-]<np>
+// #definition[
+//   $cNP :=$ The set of problems that have a *non-deterministic* polynomial algorithm.
+// ]<np>
 
-#definition[
-  $cNPC := $ The set of problems that if we find a polynomial-time algorithm that solves them then $cP = cNP$.
-]<npc>
+// #definition[
+//   $cNPC := $ The set of problems that if we find a polynomial-time algorithm that solves them then $cP = cNP$.
+// ]<npc>
 
 == Self reduction
 There are two types of problems: _decision  problems_ and  _search problems_.
@@ -106,16 +105,28 @@ If the decision problem for $k$-clique can be solved in polynomial time, then th
 The claim above demonstrates that decision and search problem are equivalent#footnote[In our setting only], thus we can focus only on decision problems.
 
 == NP-completeness
-We know how to tell if a language is in $cP$, how can we know if a language is in $cNP$?
-We say that a language $L in cNP$ if there is a polynomial algorithm $M$,
-such that for every instance $x in L <=> exists y space  s.t |y| < p(|x|) "and" M(x,y) = 1$, where $p$ is some polynomial.
-The string $y$ is called a _witness_ and the algorithm is called a _verifying algorithm_, and the witness should play the role of the solution.
-If such a solution for the problem exists, our algorithm should verify it and accept it, otherwise, the algorithm should reject every option for a solution.
-// #todo[rewrite]
+While the class $cP$ contains a large portion of the problems students have faced so far, as it turs out the majoriy of the problems are not easy at all.
+Lets suppose that we are criminals who are trying to crack some safe.
+You are trying every combination, but this takes a lot of time.
+After some time our friend tell us that he was able to find a quicker way, and points to a big and heavy drill.
+You tell him that after the first year of computer science there is no way for you to pick up that dril and continue to trying all the combinations.
+Now lets suppose that out friend tells us that he was able to find the password, how can you tell if he is telling the truth?
+The only way for us to know that is to try the password that he gives us, if it works the the safe is cracked
+But if it not can we even say that the safe has a possible way to open it?
+This demonstarins captures the essence of out next complexity class $cNP$, instead of trying to come out with an answer
+which can be quite hard, all we need to do is verify a given advice given to us as long as this advice is helpfull. Formally,
+#definition("NP class")[
+  A language $L$ is said to be in $cNP$ if we have a polynomial-time algorithm $M$ such that
+  $
+    x in L <=> exists y space  s.t |y| < p(|x|) "and" M(x,y) = 1
+  $
+  where $p$ is some polynomial
+]
 #remark[
-  The witness $y$ is the non-deterministic choices that the algorithm can make.
+  In most literture $y$ is called a _witness_ and $V$ is called _veryfing algorithm_, where $y$ plays the role of the answer, and $M$ should just verify if the answer is correct.
 ]
 
+We are ready to meet out first $cNP$ language
 #claim[
   $k$-clique is in $cNP$
 ]
