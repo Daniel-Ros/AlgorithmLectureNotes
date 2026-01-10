@@ -1,5 +1,6 @@
 #import "theme.typ" : *
 #import "@preview/algorithmic:1.0.7"
+#import "@preview/larrow:1.0.0": *
 
 #import algorithmic: style-algorithm, algorithm-figure
 #show: style-algorithm
@@ -175,14 +176,12 @@ The translation between languages is called a _reduction_, formally
   - $x in L_1 <=> f(x) in L_2$
   - for every $x in {0,1}^*$, $f$ runs in $p(|x|)$ time.
 ]
-Now if we have a black box $A$ that solves $L_2$, and we are given an instance $x$ for which we need to decide whether $x in L_1$, all we have to do is run $A(f(x))$ and return the same,
+Now, if we have a black box $A$ that solves $L_2$, and we are given an instance $x$ for which we need to decide whether $x in L_1$, all we have to do is run $A(f(x))$ and return the same,
 that means that $L_2$ is at least as hard as $L_1$.
 
 #definition[
   A language $L subset.eq {0,1}^*$ is said to be NP-hard if  $L' reduction L$ for every $L' in cNP$
 ]
-
-We can now refine our definition for $cNPC$:
 #definition[
   A language $L subset.eq {0,1}^*$ is said to be NP-complete if $L in cNP$ and $L$ is NP-hard
 ]
@@ -191,9 +190,31 @@ and the first step in solving this is to find such a language.
 
 Let $x_1,...x_n$ be boolean variables ($x_i$ can be assigned either $0$ or $1$).
 A boolean formula $phi$ is said to be in conjunctive normal form(CNF) if it has the form
+
+#place(center,dx:-35pt)[
+  #set text(size:10pt)
+  Or between literals #arrow-label(<or_exp>,dx:-50pt,dy:-5pt)
+]
+
+#place(center,dx:80pt)[
+  #set text(size:10pt)
+  Literal #arrow-label(<literal_exp>,dx:-50pt,dy:-5pt)
+]
+\
+\
+
 $
-  phi = underbrace((x_1 or x_17 or overline(x_25) or x_80),"clause") overbrace(and, "and between clauses") underbrace(x_9,"also clause") and ...
+  phi = underbrace((x_1 or x_17 or #arrow-label(<or>,dx:-9pt,dy:10pt) overline(x_25) or x_80 #arrow-label(<literal>,dx:-9pt,dy:10pt) ),"clause") and #arrow-label(<and>,dx: -6pt) underbrace(x_9,"also clause") and ...
 $
+
+#place(center,dx:35pt)[
+  #set text(size:10pt)
+  And between clauses #arrow-label(<and_exp>,dx:-50pt,dy:10pt)
+]
+#label-arrow(<literal_exp>,<literal>)
+#label-arrow(<and_exp>,<and>)
+#label-arrow(<or_exp>,<or>)
+\
 The appearances of the variable $x_i$ are called _literals_. Each literal can be positive($x_i$) or negative($overline(x_i)$).
 A clause is a disjunction(OR) of literals, and the formula $phi$ is a conjunction(AND) of these clauses.
 An assignment to the variables of $phi$ evaluates to either `true` or `false`,
