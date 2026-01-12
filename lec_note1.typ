@@ -5,7 +5,7 @@
 #import algorithmic: style-algorithm, algorithm-figure
 #show: style-algorithm
 
-#let todo(body) = text(red)[*#body*]
+#let todo(body) = text(red)[TODO:*#body*]
 #let cP = $bold("P")$
 #let cNP = $bold("NP")$
 #let cNPC = $bold("NPC")$
@@ -71,10 +71,8 @@ The other way seems more complicated, but as it turns out for $cNPC$ languages i
 If the decision problem for $k$-clique can be solved in polynomial time, then there is a polynomial-time algorithm for SEARCH-$k$-CLIQUE.
 ]
 #proof()[
-  In order to prove the claim, we need to provide a polynomial time algorithm.
-  As we dont know any algorithm, we will use the fact that we have a polynomial algorithm for $k$-clique denoted by $A$.
-  #import "@preview/algorithmic:1.0.7"
-  #import algorithmic: style-algorithm, algorithm-figure
+  In order to prove the claim, we will use the assumption that there is a polynomial-time algorithm for $k$-clique and show a
+  polynomial time algorith for SEARCH-$k$-CLIQUE. We propuse the following algorithm:
   #show: style-algorithm
   #algorithm-figure(
     "",
@@ -101,9 +99,19 @@ If the decision problem for $k$-clique can be solved in polynomial time, then th
         },
       )
     }
-  )
-  The rest of the proof is left for the reader.
+  )<algo_k_clique>
+
+  If $G$ does not have a valid clique of size $k$, then @algo_k_clique will return `null` on line $3$ as required.
+  Otherwise, we know that there is a clique of size $k$ in $G$(maybe more then one),
+  so if any point by removing some vertex $v in V(G)$ we get that $A(G-v)==0$ we know that $v$ is essential to the clique and leave it in $V(G)$.
+  After going over all the vertices we are left only with the essential vertices, leaving us with a clique of size $k$.
+
+  Now, we need to show that the algorithm runs in polynimal time. As we assume that $A$ run in polynomial time,
+  there is some polynom $p$ such that the running time of $A(G)$ is bounded by $f(G)$.
+  The first check is done in $f(G)$ time, then the algorithm will go through all vertcies, remove them from the graph and call $A$ on the modified graph,
+  all of this will take $n dot f(G)$ time in the worst case making the runnig time of out algorith $O((n + 1)f(n))$ which is polynomial.
 ]
+
 
 The claim above demonstrates that decision and search problem are equivalent#footnote[In our setting only], thus we can focus only on decision problems.
 
@@ -164,6 +172,8 @@ To prove this, we must provide a polynomial-time verifier $M$ that takes a graph
 
 if $G in k$-clique, then there is a subset $V' subset.eq V(G)$ such that $G[V'] tilde.rev.equiv K_k$, and $M(G,V')=1$
 if $G in.not k$-clique, then no matter which subset $V' subset.eq V(G)$ we take, $G[V']$ will never be a clique, meaning there will be some edge missing, and $M(G,V')=0$
+
+#todo[time complexity]
 ]
 
 == Reductions
@@ -227,4 +237,75 @@ The follwoing theorem was proved by Cook and Levin:
 #theorem("Cook-Levin")[
   CNF-SAT is npc.
 ]
-Fortunately for the students, the proof is beyond the scope of this course and will be omitted, although curious students can look at up in Computational Comlexity by Aroara and Barak
+Fortunately for the students, the proof is beyond the scope of this course and will be omitted,
+although curious students can look at up in Computational Comlexity by Aroara and Barak.
+
+Following the discovery of the first $cNPC$ language, many other problems have been shown to be in $cNPC$ as well.
+The first in which we are interested is a variation of the classical CNF. For an integer $k in NN$, define
+$
+  k"-CNF-SAT" := {phi | phi "is a CNF formula in which each clause has exactly " k "literals"}.
+$
+#example[
+  $(x_1 or overline(x_1))  and (x_2 or x_3)$ is in 2-CNF-SAT,\
+  $(x_1 or x_4 or x_5)  and (x_1 or overline(x_2) or x_3)$ is in 3-CNF-SAT.
+]
+
+Despite their similar definitions, there is a fundamental gap between these two problems as can be seen in the following claim:
+#claim("proof is delegated to the practice session")[
+  2-CNF-SAT is in $cP$.
+]
+
+#claim[
+  3-CNF-SAT is in $cNPC$.
+]<3CNF_is_NPC>
+The proof that 3-CNF-SAT $ in  cNP$ is omitted and left for the reader.
+Next, we need to show that for every language $L in cNP, L reduction 3"-CNF-SAT"$, which can be quite hard for us to do.
+Instead we will use the fact that reductions are transitive:
+#lemma[
+  If $L_1 reduction L_2$ and $L_2 reduction L_3$, then $L_1 reduction L_3$.
+]
+By using this property, we can skip the long proof, and instead we show a reduction from a known $cNPC$ language.
+We are now ready to prove @3CNF_is_NPC:\
+#proof[
+  We will show that CNF-SAT $ reduction$ 3-CNF-SAT. In order to show this, we need to define a function $f$ such that:
+  1. *Running Time.*:$f$ runs in polynomial time.
+  2. *Correctness*: for every formula $phi$,  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$
+
+  We will define $f$ as follows:
+  For each clause $l_1 or l_2 ... or l_m$  of phi, we will replace it by a _gadget_ of clauses according to the following rules:
+  1. If $m=3$, then copy the clause as is.
+  2. If $m < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example the literal $l_1 or l_2$ will become $l_1 or l_1 or l_2$.
+  3. If $m > 3$ then create $m-3$ *new* variables named $y_1,...y_(m-3)$ and replace $l_1 or l_2 ... or l_m$ with the following:
+    $
+      (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(m-3)) or l_(m-1) or l_m).
+    $
+
+  It is easy to see that the first two steps take a constant amount of time, in the last condition the creation of $m-3$ takes $O(m)$ time per clause,
+  and we create $m-3$ new clauses, each of which takes constant time, put everything together the running time of step 3 is $O(m)$ making our entire algorithm polynomial.
+  Now, to prove the correctness we need to prove both directions:\
+
+  $=>$(Completeness): Assume that $f(phi) in "CNF-SAT"$, This implies there exists a satisfying assignment $a$ for $phi$,
+  We must show that there exists a satisfying assignment$a'$ for $f(phi)$.
+  For each variable that was in $phi$ we copy its value from $a$ to $a'$ unchanged, this ensures that all clauses with 3 or fewer literals to stay satisfied by $a'$.
+  Let $l_1 or l_2 ... or l_m$ be the literals of a clause of size at least 4, as the clause is satisfied under $a$, there is some $i in [m]$ such that $a(l_i) = 1$.
+  We extend a to the auxiliary variables $y_j$ as follows: for all $j < i-1$, set $y_j = 1$, otherwise set $y_j = 0$.
+  The clause containing $l_i$ is satisfied because of $l_i$, all the clauses before them are satisfied due to the positive literals of the new variables being 1.
+  All the clauses that appear after the clause containing $l_i$ are satisfied due to the negative literals of the new variables being 0, meaning $f(phi) in 3-$CNF-SAT.
+
+  $arrow.l.double$(Soundness): Assume that $f(phi) in 3"-CNF-SAT"$, This implies there exists a satisfying assignment $a'$ for $f(phi)$,
+  We must show that there exists a satisfying assignment$a$ for $phi$.
+  We argue the copying the assignment of the orginal variables form $a'$ to $a$  will produce a satisfying assignment for $phi$.
+  To see this, assume torward a contradiction that $a$ is not a satsfying assigment for $phi$,
+  that means that there is a clause $c = l_1 or l_2 or ... or l_m$ that is unsatisfied.
+  If $m <=3$ Since $f$ copies these clauses (or simply repeats literals), and a uses the same values as $a′$,
+  the corresponding clause in $f(phi$) would also be unsatisfied.
+  This contradicts our assumption that $a′$ is a satisfying assignment.
+  For the case $m > 3$. If $c$ is not satisfied, then all its literals must be false: $l_1 = l_2 = ... = l_m = 0$.
+  In order to satisfy the clause gadget we need to satisfy all of the clauses it contains.
+  In the first clause we have $l_1 = l_2 = 0$, which requires $y_1 = 1$ in oreder for the clause to be satisfied.
+  For the second clause we have $overline(y_1) = l_3 = 0$ which requires $y_2 = 1$.
+  Following this chain of logic, each $y_j$ is forced to be 1 to satisfy the $j$-th clause.
+  Finnaly, we reach the last clause: $overline(y_(m-3)) or l_(m-1) or l_m$. Here $overline(y_(m-3)) = l_(m-1) = l_m = 0$.
+  This last clause cannot be satisfied, which contradicts the assumption that $a′$ satisfies $f(phi)$.
+  Therefore, $a$ must be a satisfying assignment for $phi$, and thus $phi in $ CNF-SAT.
+]
