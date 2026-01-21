@@ -25,10 +25,7 @@
   abstract: abstract,
 )
 
-= Complexity
-Since the first
-
-== Polynomial-time algorithms
+= Polynomial-time algorithms
 An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^c)$ where $n$ is the length of the input and $c$ is some (maybe huge) constant.
 // For a problem $L$, we say the $L$ is polynomial if a polynimal algorthm exists for solving $L$.
 
@@ -50,7 +47,7 @@ An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^
 //   $cNPC := $ The set of problems that if we find a polynomial-time algorithm that solves them then $cP = cNP$.
 // ]<npc>
 
-== Self reduction
+= Self reduction
 There are two types of problems: _decision  problems_ and  _search problems_.
 Decision problems are those that require a 'yes' or 'no' answer, whereas search problems require finding an actual solution if one exists.
 For example, finding a path between two nodes the decision problem will be "*Is* there a path between node $A$ and node $B$?"
@@ -83,14 +80,14 @@ If the decision problem for $k$-clique can be solved in polynomial time, then th
         "self-reduction",
         ("G"),
         {
-          If($A(G) == 0$, { Return(`null`)})
+          If($A(G) = 0$, { Return(`null`)})
           LineBreak
           While(
             $v(G) > k$,
             {
               import algorithmic: *
               Line([pick $v in V(G)$])
-              If($A(G-v)==1$,{
+              If($A(G-v)=1$,{
                 Assign([$G$],[$G-v$])
               })
             },
@@ -103,19 +100,19 @@ If the decision problem for $k$-clique can be solved in polynomial time, then th
 
   If $G$ does not have a valid clique of size $k$, then @algo_k_clique will return `null` on line $3$ as required.
   Otherwise, we know that there is a clique of size $k$ in $G$(maybe more then one),
-  so if any point by removing some vertex $v in V(G)$ we get that $A(G-v)==0$ we know that $v$ is essential to the clique and leave it in $V(G)$.
+  so if any point by removing some vertex $v in V(G)$ we get that $A(G-v)=0$ we know that $v$ is essential to the clique and leave it in $V(G)$.
   After going over all the vertices we are left only with the essential vertices, leaving us with a clique of size $k$.
 
   Now, we need to show that the algorithm runs in polynimal time. As we assume that $A$ run in polynomial time,
   there is some polynom $p$ such that the running time of $A(G)$ is bounded by $f(G)$.
-  The first check is done in $f(G)$ time, then the algorithm will go through all vertcies, remove them from the graph and call $A$ on the modified graph,
+  The first check is done in $f(G)$ time, then the algorithm will go through all vertices, remove them from the graph and call $A$ on the modified graph,
   all of this will take $n dot f(G)$ time in the worst case making the runnig time of out algorith $O((n + 1)f(n))$ which is polynomial.
 ]
 
 
 The claim above demonstrates that decision and search problem are equivalent#footnote[In our setting only], thus we can focus only on decision problems.
 
-== NP-completeness
+= NP-completeness
 While the class $cP$ contains a large portion of the problems students have faced so far, as it turs out the majoriy of the problems are not easy at all.
 Lets suppose that you are proffesional safe cracker who are in a competition with your friend who can hack a safe faster.
 The safe has state of the art defence mechanisims, making it very hard to crack, none of the known method works for you.
@@ -176,7 +173,7 @@ if $G in.not k$-clique, then no matter which subset $V' subset.eq V(G)$ we take,
 #todo[time complexity]
 ]
 
-== Reductions
+= Reductions
 Suppose we have two languages $L_1, L_2 subset.eq {0,1}^*$, can we know which one of them is _harder_?
 The intuition is that if by solving $L_2$, we can solve $L_1$, then $L_2$ is harder.
 This is done by "translating" our problem from $L_1$ to $L_2$, solving our $L_2$ problem, and then answering accordingly.
@@ -272,13 +269,15 @@ We are now ready to prove @3CNF_is_NPC:\
   2. *Correctness*: for every formula $phi$,  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$
 
   We will define $f$ as follows:
-  For each clause $l_1 or l_2 ... or l_m$  of phi, we will replace it by a _gadget_ of clauses according to the following rules:
+  For each clause $l_1 or l_2 ... or l_m$  of $phi$, we will replace it by a _gadget_ of clauses according to the following rules:
+  #pad(x:10pt)[
   1. If $m=3$, then copy the clause as is.
   2. If $m < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example the literal $l_1 or l_2$ will become $l_1 or l_1 or l_2$.
   3. If $m > 3$ then create $m-3$ *new* variables named $y_1,...y_(m-3)$ and replace $l_1 or l_2 ... or l_m$ with the following:
     $
       (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(m-3)) or l_(m-1) or l_m).
     $
+  ]
 
   It is easy to see that the first two steps take a constant amount of time, in the last condition the creation of $m-3$ takes $O(m)$ time per clause,
   and we create $m-3$ new clauses, each of which takes constant time, put everything together the running time of step 3 is $O(m)$ making our entire algorithm polynomial.
@@ -308,4 +307,76 @@ We are now ready to prove @3CNF_is_NPC:\
   Finnaly, we reach the last clause: $overline(y_(m-3)) or l_(m-1) or l_m$. Here $overline(y_(m-3)) = l_(m-1) = l_m = 0$.
   This last clause cannot be satisfied, which contradicts the assumption that $a′$ satisfies $f(phi)$.
   Therefore, $a$ must be a satisfying assignment for $phi$, and thus $phi in $ CNF-SAT.
+]
+
+== Independent set
+For a graph $G$, let $alpha(G)$ denote its maximum independent set. Define:
+#definition[
+  $"IS" := {<G,k> : alpha (G) >= k}$.
+]
+#theorem[
+  IS is in $cNPC$.
+]
+
+#proof[
+  We show that $3$-CNF-SAT $reduction$ IS, proving that $"IS" in cNP$ is left as homework.
+  Here the reduction might seem a little confusing at first, we are translating a formula into a graph and a number.
+  Given a $3$-CNF formula $phi$, we construct a graph $G_phi$ as follows:
+ 1. *Triangles*: For each clause $l_1, l_2, l_3$ we create a triangle with 3 vertices named $v_l_1, v_l_2, v_l_3$.
+ 2. *Consistency Edges*: For any pair of complementary literals $x_j, overline(x_j)$ that are in different clauses, put an edge between the vertices that correspond to the literals.
+ We return the pair $<G_phi,m>$ where $m$ is the number of clauses.
+ While not intuitive at first, the number $m$ is chosen because an independent set can contain at most one vertex from each triangle.
+
+ This algorithm indeed runs in polynomial time, as looping through all the clauses is linear in the number of clauses, and the maximum number of edges one can add is $n^2$.
+ Now we need to prove
+ $
+   phi in 3"-CNF-SAT" <=> <G_phi,m> in "IS"
+ $
+
+ $=>$: Let $phi$ be satisfiable and let $a_phi$ be a satisfying assignment for $phi$.
+ As $a_phi$ satisfies $phi$, at least one literal of each clause is satisfied, pick any one such literal from each clause.
+ The set of vertices corresponding to the set of literals chosen is independent in $G_phi$ and has size of $m$.\
+ $arrow.l.double$: Suppose $G_phi$ has an independent set size $m$.
+ Define an assignment $a_phi$ for $phi$ by assigning values to the variables of $phi$ so that all the literals captured by the independent set are set to `true`,
+ all others can be set to arbitrary values in a consistent manner.
+ Because the graph is composed of triangles, each triangle can have only one vertex in the independent set, so each clause will have one variable satisfying the clause.
+ Moreover, because complementary literals are connected,
+ only the positive or negative literals of each variable can be in the independent set ensuring our assignment is consistent(there cannot be a variable assigned both `true` and `false`).
+]
+
+
+
+== Max-cut
+Given a graph $G$, a _cut_ is defined as the set of edges between $S subset.eq V(G)$ and $overline(S) = V(G) backslash S$. We denote the set of edges by $E_G (S,overline(S)) := {(u,v): (u,v) in E(G), u in S, v in overline(S)}$, and the number of edges by $e_G (S, overline(S)) := |E_G (S,overline(S))|$
+Denote by $sigma(G) := max_(S subset.eq V(G)) e_G (S, overline(S))$.
+#definition("MAX-CUT")[
+  MAX-CUT $:= {<G,k> : sigma(G) >= k}$
+]
+#theorem[
+  MAX-CUT$ in cNPC$
+]
+#proof()[
+  We again skip the proof that MAX-CUT$ in cNP$, and show that MAX-CUT $reduction 3"-COL"$.
+  Given a 3-CNF formula $phi$, define $G_phi$ as follows:
+  + For each variable $x_i$ of $phi$, add two new vertices $x_i, overline(x_i)$ and an edge between them. These are our _variable gadgets_.
+  + For each clause $l_1 or l_2 or l_3$, we create a triangle with vertices $l_1, l_2, l_3$; this is our _clause gadget_.
+  + For each literal vertex in a clause gadget, connect it to the complementary literal vertex in the variable gadget.
+  (This is the same as the NAE-$k$-CNF-SAT reduction to $3"-COL"$ but without the vertex $D$). We return the pair $<G_phi, n+5m>$.
+  We skip the proof that the algorithm runs in polynomial time. It remains to prove that
+  $
+    phi in "NAE-"k"-CNF-SAT" <=> <G_phi, n+5m> in "MAX-CUT"
+  $
+  $=>$: Given a satisfying NAE assignment $a_phi$ for $phi$, define $S subset.eq V(G_phi)$ to consist of all vertices whose label is a literal assigned `true` under $a_phi$.
+  As $a_phi$ is consistent, all variable gadgets must cross $(S,overline(S))$ adding $n$ edges to the cut.
+  As $a_phi$ is a valid NAE assignment, at least two edges cross $(S,overline(S))$ in every clause gadget, adding $2m$ edges to the cut.
+  Each edge between a variable and clause gadget has the form $(l,overline(l))$, which means it is also in the cut, adding $3m$ edges to the cut. Overall, we count at least $n+ 5m$ edges.
+
+  $arrow.l.double$:
+  Suppose that $<G_phi, n+5m> in "MAX-CUT"$. Let $(S,overline(S))$ be a cut of $G_phi$ such that $e_G_phi (S,overline(S)) = n + 5m$.
+  Define the assignment $a_phi$ for $phi$ in which all variable gadget literals found in $S$ are assigned `true` and all remaining are assigned `false`. This defines a consistent assignment.
+  It remains to prove that $a_phi$ is NAE-satisfying.
+  Every edge between a variable and clause gadget is also in the cut and has the form $(l,overline(l))$.
+  Because $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning each gadget has at least one vertex in $S$ and one in $overline(S)$.
+  Take a vertex $l$ in a clause gadget that is in $S$. Then the edge $(l,overline(l))$ implies that $overline(l) in overline(S)$, meaning the literal corresponding to $l$ is assigned `true`. In a similar manner, if
+  $l$ is in $overline(S)$ the then the edge  $(l,overline(l))$ means the $overline(l) in S$ implying that $l$ is assigned `false`.
 ]
