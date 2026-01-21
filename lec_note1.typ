@@ -344,7 +344,47 @@ For a graph $G$, let $alpha(G)$ denote its maximum independent set. Define:
  only the positive or negative literals of each variable can be in the independent set ensuring our assignment is consistent(there cannot be a variable assigned both `true` and `false`).
 ]
 
+== Graph coloring
+For a graph $G$ denote by $chi(G)$ the least $k in NN$ such that $G$ is k-colorable.
+#definition[
+  $k"-COL" := {G : chi(G) <= k}$
+]
+It is well known that $2$-COL$in cP$.
+#theorem[
+  $3"-COL" in cNPC$.
+]
+In order to prove the theorem, we intreduce a new $cNPC$ language.
+Let $phi$ be a formula, $phi$ is said to be _not all equal satisfiable_(NAE-SAT) if it has a satisfying assigmnet such that in each caluse it has at least one satisfied literal and at least one that is not satisfied.
+#definition([NAE-$k$-CNF-SAT])[
+  NAE-$k$-CNF-SAT$:= {phi: phi "is NAE-SAT, with exactly k literals in each clause" }.$
+]
+The proof that NAE-$k$-CNF-SAT is NP-Complete is left to the practice sessions. We are ready to start our proof.\
+#proof[
+  We skip again the proof that $3"-COL" in cNP$, which is left as homework, and show that $$k$"-NAE-SAT" reduction 3"-COL"$.
+  Given a 3-CNF formula $phi$, define $G_phi$ as follows:
+  + Start with a single vertex $D$. This is our _Don't care vertex_.
+  + For each variable $x_i$ of $phi$, add two new vertices $x_i, overline(x_i)$, add an edge between them, and connect both to $D$. This are our _variable gadgets_.
+  + For each clause $l_1 or l_2 or l_3$ we create a triangle with 3 vertices named $l_1, l_2, l_3$, this is our _clause gadget_.
+  + For each literal in the clause gadgets, connect it to the complementary variable from the variable gadget.
+We skip the proof that the algorithm runs in polynomial time. It remains to prove that
+$
+  phi in "NAE-"k"-CNF-SAT" <=> G_phi in  3"-COL"
+$
 
+
+$=>$: Given a satisfying NAE assignment $a_phi$ for $phi$, define the follwing 3-coloting of $G_phi$:
+- $D$ will be colored as #text(gray)[D]
+- For each variable $x_i$, if $x_i$ is assigned `true` under $a_phi$ color $x_i$ as #text(red)[T] and $overline(x_i)$ in #text(blue)[F], otherwise color $x_i$ as #text(blue)[F] and $overline(x_i)$ in #text(red)[T]
+- For each clause gadget, scan the corresponding clause $c$, color first literal that is assigned `true` with #text(red)[T], the first that assigned `false` with #text(blue)[F], and color the vertex that was left with #text(gray)[D].
+
+It is clear that edges inside vertex/clause gadgets have both ends in different colors, it remains to show that edges between vertex and clause gadgets has its ends colored in different colors.
+without loss of generality, let $x$ be a variable assigned `true` by $a_phi$. As $a_phi$ is proper, all of the vertices baring $overline(x)$ found in a clause gadgets are colored either #text(blue)[F] or #text(gray)[D], and the claim follows.
+
+$arrow.l.double$:
+Given a 3-coloring $psi$ of $G_phi$, we define a NAE-satisfying assignment for $phi$. As all of the variable gadgets form a triangles with a common vertex $D$, it leaves them with two colors to be chosen.
+Take the variable gadget for an arbitrary variable $x$ and set the color under $x$ to be `true` and the color under $overline(x)$ to be `false`. This defines a valid assignmet to the variables of $phi$.
+The assignment is NAE as each clause gadget has one variable colored `true` and one `false`.
+]
 
 == Max-cut
 Given a graph $G$, a _cut_ is defined as the set of edges between $S subset.eq V(G)$ and $overline(S) = V(G) backslash S$. We denote the set of edges by $E_G (S,overline(S)) := {(u,v): (u,v) in E(G), u in S, v in overline(S)}$, and the number of edges by $e_G (S, overline(S)) := |E_G (S,overline(S))|$
