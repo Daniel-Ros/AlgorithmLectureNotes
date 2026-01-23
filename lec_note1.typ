@@ -11,7 +11,8 @@
 #let cNP = $bold("NP")$
 #let cNPC = $bold("NPC")$
 #let reduction = $scripts(<=)_p$
-
+#let aT = text(fill: green, $T$)
+#let aF = text(fill: red, $F$)
 
 #let abstract = [
   These are lecture notes for the course Algorithms and Optimization at Ariel University
@@ -294,20 +295,21 @@ such assignment is called _satisfying assignment_.
   CNF-SAT := {$phi$: $phi$ is a satisfiable CNF formula}
 ]
 
-#example("1")[
-$phi_1 := (x_1 or x_2) and overline(x_1) and(overline(x_2) or x_1 or x_3)in #text([CNF-SAT])$.
+#example[
+1.
+  $phi := (x_1 or x_2) and overline(x_1) and(overline(x_2) or x_1 or x_3)in #text([CNF-SAT])$.
 $
-  phi(x_1 = F, x_2=T,x_3=T)=(F or T) and T and(F or F or T) = T
+  phi(x_1 = aF, x_2= aT,x_3= aT)=(aF or aT) and aT and(aF or aF or aT) = aT
 $
 
-$phi_2 := (x_1 or x_2) and overline(x_1) and(overline(x_2) or x_1 or x_3) and overline(x_3)  in.not #text([CNF-SAT])$,
-
- if $phi_2$ is satisfiable, then $x_1,x_3$ must have the value $F$.
- Then, we are left with
+2.
+  $phi := (x_1 or x_2) and overline(x_1) and(overline(x_2) or x_1 or x_3) and overline(x_3)  in.not #text([CNF-SAT])$, #linebreak()
+  if $phi_2$ is satisfiable, then $x_1,x_3$ must have the value $aF$.
+ So that
   $
-   phi_2(x_1 = F, x_3=F) = (F or x_2) and T and(overline(x_2) or F or F) and T 
+   phi_2(x_1 = aF, x_3= aF) = (aF or x_2) and aT and(overline(x_2) or aF or aF) and aT 
   $
- to satisfy the first clause of $phi_2$ we need to set $x_2=T$, but to satisfy the third clause we need to set $x_2=F$ which is impossible, hence $phi_2$ is unsatifiable.
+ to satisfy the first clause of $phi_2$, we would need $x_2=aT$, but to satisfy the third clause, we would need $x_2=aF$, which is impossible, since $x_2$ cannot have value $aT$ and $aF$ at the same time. Hence, $phi_2$ is unsatifiable.
 ]
 
 #pagebreak()
@@ -335,58 +337,231 @@ Despite their similar definitions, there is a fundamental gap between these two 
 #claim[
   3-CNF-SAT is in $cNPC$.
 ]<3CNF_is_NPC>
-The proof that 3-CNF-SAT $ in  cNP$ is omitted and left for the reader.
-Next, we need to show that for every language $L in cNP, L reduction 3"-CNF-SAT"$, which can be quite hard for us to do.
-Instead we will use the fact that reductions are transitive:
-#lemma[
-  If $L_1 reduction L_2$ and $L_2 reduction L_3$, then $L_1 reduction L_3$.
-]
-By using this property, we can skip the long proof, and instead we show a reduction from a known $cNPC$ language.
-We are now ready to prove @3CNF_is_NPC:\
-#proof[
-  We will show that CNF-SAT $ reduction$ 3-CNF-SAT. In order to show this, we need to define a function $f$ such that:
-  1. *Running Time.*:$f$ runs in polynomial time.
-  2. *Correctness*: for every formula $phi$,  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$
 
-  We will define $f$ as follows:
-  For each clause $l_1 or l_2 ... or l_m$  of $phi$, we will replace it by a _gadget_ of clauses according to the following rules:
+#proof([
+  Recall that if *3-CNF-SAT*$in cNP$. Then a verifier $M$ that verifies 3-CNF-SAT exists.
+  We provide one of many such verifier
+  #algorithm-figure(
+  [Verifying algorithm for $3$-CNF-SAT],
+  vstroke: .5pt + luma(200),
+  {
+    import algorithmic: *
+    Procedure(
+      [$M$],
+      ($phi$, $alpha$),
+      {
+        Comment[$alpha$ is the assigment i.e $alpha:{x_1,...,x_n} -> {aT,aF}$]
+        Comment[Check if the assignment complete, i.e. every variable has an assigment]
+        For($i in [n]$,{
+          If($alpha(x_i)$ + " = undefined")})
+        })
+
+        Comment[Check if any clause is unsatisfied]
+        For("clause " + $C in phi$,{
+          If($C(alpha) = aF$, { Return(`false`)})
+        })
+        Comment[All clases are satisfied, hence $phi(alpha)$ is also satisfied]
+        Return(`true`)
+      },
+    )
+], name: [*3-CNF-SAT$in cNP$*])
+
+Next, we need to show that 3-CNF-SAT is NP-Hard,
+that is for every language $L in cNP$ we need to show that $L reduction 3"-CNF-SAT"$. Fortunately for the reader since we already have CNF-SAT which is an NP-Hard language, we opt to use the following observation#footnote([Do not worry in the Comlexity course, you will show that SAT is NP-HARD and that indeed requires one to show that $forall L in cNP, L reduction "CNF-SAT"$.]):
+#observation[
+  If $L_1 reduction L_2$ and $L_2 reduction L_3$, then $L_1 reduction L_3$.
+]<obs:transitive>
+The above observation follows directly from the fact that if $f$ and $g$ are polynomials, then $f(g(x))$ is also a polynimal.
+
+*The following figure provides a proof by picture. A formal proof is left as an exercise to the reader.*
+#figure(
+  image("figures/L1i2.png", width: 90%, height: 16%),
+  caption: [
+    $f_1$ and $f_2$ are the reduction functions from $L_1 reduction L_2$
+    and $L_2 reduction L_3$ respectively.
+  ],
+)
+By using this property we can use the following claim
+#claim[
+  Let $L in$ NP-Hard, and let $L'$ be a language. If $L reduction L'$, then $L'$ is also NP-Hard.
+]
+
+We are now ready to prove @3CNF_is_NPC:\
+#proof(name: [*CNF-SAT $in$ NP-HARD*])[
+  Using #ref(<obs:transitive>) it is enough to show that a polynomial-time 
+  reduction CNF-SAT $ reduction$ 3-CNF-SAT exists.
+  
+   That is one need to show that a function $f$ exists such that:
+  1. *Running Time.*:$f$ runs in polynomial time.
+  2. *Correctness*:  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$ for all CNF formula $phi$.#footnote[ We can always assume valid input, in our case that means that $phi$ is in CNF form.]
+
+
+  Let $phi := C_1 and C_2 and ... and C_m$ where $C_1,...,C_m$ are the clauses of $phi$.
+  We first define a function $g$ that operates on a single clause of $phi$ at a time. 
+  Then, we define $f$ as follows.
+  $
+    f(phi) = and.big_(i=1)^{m} g(C_i)
+  $
+  Note that $f$ runs in polynomial-time and in CNF-form if $g$ runs in polynomial-time and $g(C)$ is in CNF-form. #text(size: 7pt, fill: red)[*($g$ may return a CNF formula i.e. $g(x_1 or x_2)$ may be $(x_1 or x_2) and x_3$.*]
+
+#pagebreak()
+  We will define $g$ as follows:
+  For each clause $C := l_1 or l_2 ... or l_k$  of $phi$, we will replace it by a _gadget_ of clauses according to the following rules:
   #pad(x:10pt)[
-  1. If $m=3$, then copy the clause as is.
-  2. If $m < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example the literal $l_1 or l_2$ will become $l_1 or l_1 or l_2$.
-  3. If $m > 3$ then create $m-3$ *new* variables named $y_1,...y_(m-3)$ and replace $l_1 or l_2 ... or l_m$ with the following:
+  1. If $k=3$, then return $C$ as it. i.e.
+  $
+    g(l_1 or l_2 or l_3) = l_1 or l_2 or l_3
+  $ 
+  2. If $k < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example#footnote[We allow the repetitions of literals] $
+  g(l_1 or l_2) = l_1 or l_2 or l_2.
+  $
+  3. If $k > 3$ then create $k-3$ *new* variables named $y_1,...,y_(k-3)$ and let #footnote[*For every clause of length > 3 we define $k-3$ new variables we do not reuse them!*]:
     $
-      (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(m-3)) or l_(m-1) or l_m).
+      g(l_1 or l_2or... l_k) = (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(k-3)) or l_(k-1) or l_k).
     $
   ]
+  #example[
+    1. $
+         phi &= (x_1 or x_2 or overline(x_4) or x_5) and 
+         x_1 and (x_7 or x_1 or x_2) and (x_3 or x_4)
+         (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7) \
+         f(phi) &= g(x_1 or x_2 or overline(x_4) or x_5) and 
+         g(x_1) and g(x_7 or x_1 or x_2) and  g(x_3 or x_4)\
+        & quad quad and g
+         (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7)
+         \
+         f(phi) &= (x_1 or x_2 or y_(1,1)) and (overline(y_(1,1)) or overline(x_4) or x_5)
+         and (x_1 or x_1 or x_1) and (x_7 or x_1 or x_2) and (x_3 or x_4 or x_4) \
+         &quad quad and 
+         (overline(x_3) or x_1 or y_(2,1)) and (overline(y_(2,1)) or overline(x_4) or y_(2,2)) and 
+         (overline(y_(2,2)) or x_5 or y_(2,3))
+         and (overline(y_(2,3)) or x_6 or x_7)  
+       $
+      
+  ]
+  By definition all tree cases return a CNF-form formula.
+  It is also easy to see that the first two cases take a constant amount of time. 
+  The third case requires as to create $k-3$ new variables and $k-2$ new clauses each of length 3, so that the third step takes $O(m)$ time.
+  
+  It remains to show the correctness of $f$, i.e.
+  $
+    phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"
+  $
 
-  It is easy to see that the first two steps take a constant amount of time, in the last condition the creation of $m-3$ takes $O(m)$ time per clause,
-  and we create $m-3$ new clauses, each of which takes constant time, put everything together the running time of step 3 is $O(m)$ making our entire algorithm polynomial.
-  Now, to prove the correctness we need to prove both directions:\
+  We assume that $phi$ is a CNF formula with variable $x_1,...,x_n$ and clauses $C_1,...,C_m$.
 
-  $=>$(Completeness): Assume that $f(phi) in "CNF-SAT"$, This implies there exists a satisfying assignment $a$ for $phi$,
-  We must show that there exists a satisfying assignment$a'$ for $f(phi)$.
-  For each variable that was in $phi$ we copy its value from $a$ to $a'$ unchanged, this ensures that all clauses with 3 or fewer literals to stay satisfied by $a'$.
-  Let $l_1 or l_2 ... or l_m$ be the literals of a clause of size at least 4, as the clause is satisfied under $a$, there is some $i in [m]$ such that $a(l_i) = 1$.
-  We extend a to the auxiliary variables $y_j$ as follows: for all $j < i-1$, set $y_j = 1$, otherwise set $y_j = 0$.
-  The clause containing $l_i$ is satisfied because of $l_i$, all the clauses before them are satisfied due to the positive literals of the new variables being 1.
-  All the clauses that appear after the clause containing $l_i$ are satisfied due to the negative literals of the new variables being 0, meaning $f(phi) in 3-$CNF-SAT.
+  $=>$(Completeness): Assume that $f(phi) in "CNF-SAT"$, This means there exists a satisfying assignment $alpha$ for $phi$,
+  that is $forall i in [m]: space C(alpha) = aT$.
+  Our goal is to show that a satisfying assigment $alpha'$ exists for $f(phi)$, we do this by showing that $forall i in [m]: space g(C)(alpha') = aT$.
+  First, we copy the assigment of the original variables in $phi$, that is,
+  $
+    forall i in[n]: quad alpha'(x_i)=alpha(x_i). 
+  $
+  Let $C$ be a clause of $phi$ that falls into Case $1$ or Case $2$.
+  By assumption $C(alpha)= aT$, moreover because $C equiv g(C)$, we have $g(C)(alpha) = aT$.
+  Finally, since $g(C)$ is defined on the original variable $x_1,...,x_n$ and $alpha' = alpha$ for those variables, we have $g(C)(alpha') = aT$.
+  
+  #pagebreak()
+  #example[ 
+  1.
+    $
+      C = x_1 or x_3& or overline(x_17); quad alpha(x_1)=aT, alpha(x_3)=aF
+    ,alpha(x_17) = aT \
+      &==> quad C(alpha)= aT or aF or aF
+      \
+      &==> g(C(alpha'))=aT or aF or aF quad quad quad quad quad quad space space space quad quad quad
+    $
 
-  $arrow.l.double$(Soundness): Assume that $f(phi) in 3"-CNF-SAT"$, This implies there exists a satisfying assignment $a'$ for $f(phi)$,
-  We must show that there exists a satisfying assignment$a$ for $phi$.
-  We argue the copying the assignment of the orginal variables form $a'$ to $a$  will produce a satisfying assignment for $phi$.
-  To see this, assume torward a contradiction that $a$ is not a satsfying assigment for $phi$,
-  that means that there is a clause $c = l_1 or l_2 or ... or l_m$ that is unsatisfied.
-  If $m <=3$ Since $f$ copies these clauses (or simply repeats literals), and a uses the same values as $a′$,
-  the corresponding clause in $f(phi$) would also be unsatisfied.
-  This contradicts our assumption that $a′$ is a satisfying assignment.
-  For the case $m > 3$. If $c$ is not satisfied, then all its literals must be false: $l_1 = l_2 = ... = l_m = 0$.
-  In order to satisfy the clause gadget we need to satisfy all of the clauses it contains.
-  In the first clause we have $l_1 = l_2 = 0$, which requires $y_1 = 1$ in oreder for the clause to be satisfied.
-  For the second clause we have $overline(y_1) = l_3 = 0$ which requires $y_2 = 1$.
-  Following this chain of logic, each $y_j$ is forced to be 1 to satisfy the $j$-th clause.
-  Finnaly, we reach the last clause: $overline(y_(m-3)) or l_(m-1) or l_m$. Here $overline(y_(m-3)) = l_(m-1) = l_m = 0$.
-  This last clause cannot be satisfied, which contradicts the assumption that $a′$ satisfies $f(phi)$.
-  Therefore, $a$ must be a satisfying assignment for $phi$, and thus $phi in $ CNF-SAT.
+  2.
+     $
+      C = x_1 or overline(x_17)&; quad alpha(x_1)=F, alpha(x_17) = aF \
+      &==> quad C(alpha)= aF or aT
+      \
+      &==> g(C)(alpha')= (x_1 or overline(x_17) or overline(x_17))(alpha') = aF or aT or aT
+    $
+
+  ]
+  It remains to show that we can extend $a'$ to a satisfying assigment for clauses $C$ that fall into Case 3.
+  Let $C= l_1 or l_2 or ... or l_k$ where $k>=4$ be such clause.
+  Then, by assumption
+  $
+    C(alpha) = (l_1 or l_2 or ... or l_k)(alpha) = aT
+  $
+  that is there exists some $i in[k]$ such that $ell_i = aT$.
+  
+  So that
+  $
+    g(C)(alpha') &= (l_1 or l_2 or y_1) 
+    and ...
+    and (overline(y_(i-2)) or l_i or y_(i-1))
+    and ...
+     and (overline(y_(k-3)) or l_(k-1) or l_k)(alpha')
+     \
+     &= (?_(space) or_(space) ?_(space) or y_1) and ...
+    and (overline(y_(i-2)) or aT or y_(i-1))
+    and ...
+     and (overline(y_(k-3)) or_(space) ? or_(space) ?).
+  $
+  Since for all $j in [k-3]$ the value of $alpha'(y_j)$ have not yet been set, we define them as follows:
+  $
+   alpha'(y_j) = cases(aT quad "if " j<=i-2",", aF quad "if " j > i-2".") 
+  $
+  Then,
+    $
+    g(C)(alpha') &= (l_1 or l_2 or y_1) 
+    and ...
+    and (overline(y_(i-2)) or l_i or y_(i-1))
+    and ...
+     and (overline(y_(k-3)) or l_(k-1) or l_k)(alpha')
+     \
+     &= (?_(space) or_(space) ?_(space) or aT) and ...
+    and (aF or aT or aT)
+    and ...
+     and (aT or_(space) ? or_(space) ?) = aT.
+  $
+  as required.
+  #text(fill: red, size: 8pt)[*(If $i in {1,2,k-1,k}$) the same analysis works except now all $y$'s get the value $aF$ or $aT$)*]
+
+  $arrow.l.double$(Soundness): Assume that $f(phi) in 3"-CNF-SAT"$, This implies there exists a satisfying assignment $alpha'$ for $f(phi)$,
+  We must show that there exists a satisfying assignment $alpha$ for $phi$.
+  We argue that copying the assignment of the orginal variables form $alpha'$ to $alpha$  will produce a satisfying assignment for $phi$.
+  To see this, assume torward a contradiction that $a$ is not a satsfying assigment for $phi$.
+  Then, there must exists a clause $C = l_1 or l_2 ... or l_k$
+  such that $C(alpha) = aF$.
+  If $k <= 3$, then since $g(C) equiv C$, it follows that $aT = g(C)(alpha') = C(alpha') = C(alpha) = aF$ which is a contradiction to the assumption that $alpha$ satisfies $f(phi)$.
+  Otherwise assume that $k >= 4$, by assumption
+  $
+    C(alpha) = l_1 or l_2 or ... or l_k = aF
+  $
+  meaning that for all $i in [k]$ we have $l_i = aF$.
+
+  On the otherhand, since $f(phi)(alpha')$ is satisfied we have
+  $
+    (l_1 or l_2 or y_1)(alpha') &= aT, \
+    (overline(y_(k-3)) or l_(k-1) or l_k)(alpha') &= aT \
+ (overline(y_(i-2)) or l_i or y_(i-1))(alpha') &= aT text("where") 3<=i<=k-3.
+  $
+
+ #pagebreak()
+  Since the first clause have the value $aT$ it follows that $y_1 =aT$
+  $
+  (l_1 or l_2 or y_1)(a')=(aF or aF or y_1) = aT ==> y_1=aT,
+  $ 
+  similarly for the second clause and so on we have
+  $
+    (overline(y_(1)) or l_3 or y_(2))(a') &= (aF or aF or y_2) = aT ==> y_2= aT \
+    (overline(y_(i-2)) or l_i or y_(i-1))(a')&= (aF or aF or y_(i-1)) = aT ==> y_(i-2)= aT
+  $
+  that is we conclude that to satisfy the first $k-3$ clauses we must set
+   $y_i = aT$ for all $i in [k-3]$. 
+  
+  On the otherhand 
+  $
+    (overline(y_(k-3)) or l_(k-1) or l_k)(a') = (aF or aF or aF) = aF
+    ==> f(phi)=aF.
+  $
+  which is a contradiction to the assumption that $a'$ satisfies $phi$.
+  #footnote[Note that our argument shows that for any assignment of $y_1,...,y_(k-3)$ the value of $g(C)(a') = aF.$]
 ]
 
 == Independent set
