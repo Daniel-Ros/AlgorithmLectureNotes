@@ -13,6 +13,7 @@
 #let reduction = $scripts(<=)_p$
 #let aT = text(fill: green, $T$)
 #let aF = text(fill: red, $F$)
+#let sred(c) = text(fill : red, size: 8pt, c)
 
 #let abstract = [
   These are lecture notes for the course Algorithms and Optimization at Ariel University
@@ -565,7 +566,7 @@ We are now ready to prove @3CNF_is_NPC:\
 ]
 
 == Independent set
-For a graph $G$, let $alpha(G)$ denote its maximum independent set. Define:
+For a graph $G$, let $alpha(G)$ denote the size of the maximum independent set in $G$. Define:
 #definition[
   $"IS" := {<G,k> : alpha (G) >= k}$.
 ]
@@ -574,29 +575,59 @@ For a graph $G$, let $alpha(G)$ denote its maximum independent set. Define:
 ]
 
 #proof[
-  We show that $3$-CNF-SAT $reduction$ IS, proving that $"IS" in cNP$ is left as homework.
+  We show that $3$-CNF-SAT $reduction$ IS, proving that $"IS" in cNP$ is left as homework.#footnote[The Verifying algorithm of IS is identical to Clique, but we check that the edges do not exist.]
   Here the reduction might seem a little confusing at first, we are translating a formula into a graph and a number.
   Given a $3$-CNF formula $phi$, we construct a graph $G_phi$ as follows:
  1. *Triangles*: For each clause $l_1, l_2, l_3$ we create a triangle with 3 vertices named $v_l_1, v_l_2, v_l_3$.
  2. *Consistency Edges*: For any pair of complementary literals $x_j, overline(x_j)$ that are in different clauses, put an edge between the vertices that correspond to the literals.
+ #figure(
+  image("figures/L1i3.png", width: 90%, height: 24%),
+  caption: [Here $f(phi)=<G_phi,m>$ where $G_phi$ is the graph above with 9 vertices and $m=3$ is the number of clauses in $phi$.]
+)
  We return the pair $<G_phi,m>$ where $m$ is the number of clauses.
  While not intuitive at first, the number $m$ is chosen because an independent set can contain at most one vertex from each triangle.
+#figure(
+  image("figures/L1i4.png", width: 90%, height: 24%),
+  caption: [Taking the vertices that corespond to a $aT$ literal in each triangle results in an independent set of size $m$.]
+)<3satgraph>
+
 
  This algorithm indeed runs in polynomial time, as looping through all the clauses is linear in the number of clauses, and the maximum number of edges one can add is $n^2$.
  Now we need to prove
  $
-   phi in 3"-CNF-SAT" <=> <G_phi,m> in "IS"
+   phi in 3"-CNF-SAT" <==> <G_phi,m> in "IS"
  $
 
- $=>$: Let $phi$ be satisfiable and let $a_phi$ be a satisfying assignment for $phi$.
- As $a_phi$ satisfies $phi$, at least one literal of each clause is satisfied, pick any one such literal from each clause.
+
+ $==>$: Let $phi$ be satisfiable and let $alpha_phi$ be a satisfying assignment for $phi$.
+ As $alpha_phi$ satisfies $phi$, at least one literal of each clause is satisfied, pick any one such literal from each clause.
  The set of vertices corresponding to the set of literals chosen is independent in $G_phi$ and has size of $m$.\
- $arrow.l.double$: Suppose $G_phi$ has an independent set size $m$.
- Define an assignment $a_phi$ for $phi$ by assigning values to the variables of $phi$ so that all the literals captured by the independent set are set to `true`,
- all others can be set to arbitrary values in a consistent manner.
- Because the graph is composed of triangles, each triangle can have only one vertex in the independent set, so each clause will have one variable satisfying the clause.
- Moreover, because complementary literals are connected,
- only the positive or negative literals of each variable can be in the independent set ensuring our assignment is consistent(there cannot be a variable assigned both `true` and `false`).
+ #v(-0.5em)
+ #text(fill: red, size: 12pt, [
+  #set align(center)
+  (See #ref(<3satgraph>) as an example.)])
+
+#v(.5em)
+#h(-10pt)
+ $<==$: Suppose $G_phi$ has an independent set of size $m$, and let $S$ be such an indeoendet set.
+ Let $l_1,...,l_m$ denote the vertices of $S$,
+ for each $i in m$ let $v(l_i) in {x_1, overline{x_1},..., x_n, overline(x_n)}$ be the variable corresponding to $l_i$.
+ Set $v(l_i)=aT$ for all $i in [m]$, Finally if $x_i in [n]$ did not recieve an assigment set $x_i = aT$.
+ #figure(
+  image("figures/L1i5.png", width: 90%, height: 23%),
+  caption: [Here the orange vertices yield an independent set of size 4, and we set the value of each vertex to be $aT$, which gives us a partial assigment that is already satisfying.]
+)
+It remains to show that this assigment is both *satisfying* and *consistent*.
+
+First, the assignemt is satisfing. Each vertex $l_i$ correspond to a single literal in a unique clause of $phi$.
+By construct $l_i = aT$, and therefore every clause contains at least one `true` literal and is satisfied.
+
+By *consistent* we mean that each variable $x_i in [n]$ recieved *exactly one assigment*.
+In principle, it could happen that there exist $l_i, l_j in S$ with $i != j$ such that $v(l_i) = overline(v(l_j))$ (assume w.l.o.g. that $v(l_i) = x_k$ and $v(l_j) = overline(x_k)$).
+In that case, the construction would force us to set both $x_k = aT$ and $overline(x_k) = aT ==> x_k = aF$ which is *inconsistent*.
+However, this situation cannot occur, if $v(l_i) = overline(v(l_j))$, then the vertices $l_i$ and $l_j$ are adjecent in $G_phi$, i.e. $(l_i, l_j) in E(G_phi)$.
+This contradicts the assumption that $S$ is an independent set.
+Therefore, each variable recieve a consistent assigment, and we conclude that $phi$ is satisfiable.
 ]
 
 == Graph coloring
@@ -627,13 +658,13 @@ $
 $
 
 
-$=>$: Given a satisfying NAE assignment $a_phi$ for $phi$, define the follwing 3-coloting of $G_phi$:
+$=>$: Given a satisfying NAE assignment $alpha_phi$ for $phi$, define the follwing 3-coloting of $G_phi$:
 - $D$ will be colored as #text(gray)[D]
-- For each variable $x_i$, if $x_i$ is assigned `true` under $a_phi$ color $x_i$ as #text(red)[T] and $overline(x_i)$ in #text(blue)[F], otherwise color $x_i$ as #text(blue)[F] and $overline(x_i)$ in #text(red)[T]
+- For each variable $x_i$, if $x_i$ is assigned `true` under $alpha_phi$ color $x_i$ as #text(red)[T] and $overline(x_i)$ in #text(blue)[F], otherwise color $x_i$ as #text(blue)[F] and $overline(x_i)$ in #text(red)[T]
 - For each clause gadget, scan the corresponding clause $c$, color first literal that is assigned `true` with #text(red)[T], the first that assigned `false` with #text(blue)[F], and color the vertex that was left with #text(gray)[D].
 
 It is clear that edges inside vertex/clause gadgets have both ends in different colors, it remains to show that edges between vertex and clause gadgets has its ends colored in different colors.
-without loss of generality, let $x$ be a variable assigned `true` by $a_phi$. As $a_phi$ is proper, all of the vertices baring $overline(x)$ found in a clause gadgets are colored either #text(blue)[F] or #text(gray)[D], and the claim follows.
+without loss of generality, let $x$ be a variable assigned `true` by $alpha_phi$. As $alpha_phi$ is proper, all of the vertices baring $overline(x)$ found in a clause gadgets are colored either #text(blue)[F] or #text(gray)[D], and the claim follows.
 
 $arrow.l.double$:
 Given a 3-coloring $psi$ of $G_phi$, we define a NAE-satisfying assignment for $phi$. As all of the variable gadgets form a triangles with a common vertex $D$, it leaves them with two colors to be chosen.
@@ -661,15 +692,15 @@ Denote by $sigma(G) := max_(S subset.eq V(G)) e_G (S, overline(S))$.
   $
     phi in "NAE-"k"-CNF-SAT" <=> <G_phi, n+5m> in "MAX-CUT"
   $
-  $=>$: Given a satisfying NAE assignment $a_phi$ for $phi$, define $S subset.eq V(G_phi)$ to consist of all vertices whose label is a literal assigned `true` under $a_phi$.
-  As $a_phi$ is consistent, all variable gadgets must cross $(S,overline(S))$ adding $n$ edges to the cut.
-  As $a_phi$ is a valid NAE assignment, at least two edges cross $(S,overline(S))$ in every clause gadget, adding $2m$ edges to the cut.
+  $=>$: Given a satisfying NAE assignment $alpha_phi$ for $phi$, define $S subset.eq V(G_phi)$ to consist of all vertices whose label is a literal assigned `true` under $alpha_phi$.
+  As $alpha_phi$ is consistent, all variable gadgets must cross $(S,overline(S))$ adding $n$ edges to the cut.
+  As $alpha_phi$ is a valid NAE assignment, at least two edges cross $(S,overline(S))$ in every clause gadget, adding $2m$ edges to the cut.
   Each edge between a variable and clause gadget has the form $(l,overline(l))$, which means it is also in the cut, adding $3m$ edges to the cut. Overall, we count at least $n+ 5m$ edges.
 
   $arrow.l.double$:
   Suppose that $<G_phi, n+5m> in "MAX-CUT"$. Let $(S,overline(S))$ be a cut of $G_phi$ such that $e_G_phi (S,overline(S)) = n + 5m$.
-  Define the assignment $a_phi$ for $phi$ in which all variable gadget literals found in $S$ are assigned `true` and all remaining are assigned `false`. This defines a consistent assignment.
-  It remains to prove that $a_phi$ is NAE-satisfying.
+  Define the assignment $alpha_phi$ for $phi$ in which all variable gadget literals found in $S$ are assigned `true` and all remaining are assigned `false`. This defines a consistent assignment.
+  It remains to prove that $alpha_phi$ is NAE-satisfying.
   Every edge between a variable and clause gadget is also in the cut and has the form $(l,overline(l))$.
   Because $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning each gadget has at least one vertex in $S$ and one in $overline(S)$.
   Take a vertex $l$ in a clause gadget that is in $S$. Then the edge $(l,overline(l))$ implies that $overline(l) in overline(S)$, meaning the literal corresponding to $l$ is assigned `true`. In a similar manner, if
