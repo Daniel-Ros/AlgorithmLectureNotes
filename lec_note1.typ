@@ -41,11 +41,8 @@ An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^
 #definition[
   $cP :=$ The set of problems that have a polynomial algorithm.
 ]
-
-#remark[
-Since this course focuses on computational complexity (e.g., NP-completeness), we ignore the exact running time of algorithms. Any polynomial-time algorithm is considered “efficient,” and we do not distinguish between different polynomial running times.
-]
-
+In this cource we focus on computational complexity, and ignore the exact running tume of the algorithms.
+Any polynomial-time algorithm is considered “efficient,” and we do not distinguish between different polynomial running times.
 // #definition[
 //   $cNP :=$ The set of problems that have a *non-deterministic* polynomial algorithm.
 // ]<np>
@@ -63,7 +60,7 @@ A non trivial problem is finding $k$-clique, given a graph $G$, the decision pro
 #question[
   Is there a clique of size $k$ in $G$?
 ]#label("q1")
-The _language_ $k-"clique" := {G | omega(G) >= k}$ is the set of all graphs that contain a clique of size at least $k$,
+By a _language_ we mean a set $L subset.eq {0,1}^*$. While we don't formally show this, anything can be encoded as a binary string, as such a language can be a set of anything we want. The language $k"-clique" := {G | omega(G) >= k}$ is the set of all graphs that contain a clique of size at least $k$,
 answering @q1 is the same as asking if some graph is in $k$-clique or not.
 The search problem denoted SEARCH-$k$-CLIQUE is given some graph $G$ find a copy of $K_k$ in $G$, if there is no such copy return `null`.
 
@@ -126,7 +123,7 @@ Suppose you are a professional safe-cracker competing with a friend who claims h
 
 After some time your friend says he has cracked the safe and hands you a book containing a million digits of π, claiming the correct code is somewhere inside. You argue this doesn’t count, just trying to read the book will take a lot of time. However, if he gives you the code directly, you can easily verify it by trying it once. If it opens the safe, he wins.
 
-But if the code is wrong, is there any way for you to find the correct one—or even know that one exists?
+But if the code is wrong, is there any way for you to find the correct one, or even know that one exists?
 This story captures the essence of out next complexity class $cNP$, the set of problems where a proposed solution can be verified quickly. Formally,
 #definition("NP class")[
   A language $L$ is said to be in $cNP$ if we have a polynomial-time algorithm $M$ such that
@@ -138,30 +135,26 @@ This story captures the essence of out next complexity class $cNP$, the set of p
 #remark[
   In most literture $y$ is called a _witness_ and $M$ is called _veryfing algorithm_, where $y$ plays the role of the answer, and $M$ should just verify if the answer is correct.
 ]
-#remark[
-  In our story, $y$ is the correct code for the safe, and $M$ is you—the
-  professional safe-cracker.
-  If a code exists, then given $y$ you can easily verify it by trying it
-  once and opening the safe.
-  If no such code exists, the safe cannot be opened—at least not in an
-  “easy” way.#footnote[For example, you could always try to destroy the safe.]
-]
+In our story, $M$ plays the role of the safe cracker, while $y$ is the safe's code.
+If a code exists, then given $y$ you can easily verify it by trying it once and opening the safe.
+If no such code exists, the safe cannot be opened, at least not in an “easy” way.
 
-#remark[
-  If a language/problem $L in cNP$, then given the verifier $M$ and a polynomial $p$, we can do the following: for any $x in L$, we can iterate over all possible $y in {0,1}^(p(|x|))$ (there are $2^(p(|x|))$ of them) and check if $M(x,y)=1$ for any $y$.
-]
-  This shows that every problem in cNP can be solved by an exponential-time algorithm.
-*What we are really interested in, however, is whether there exists a polynomial-time algorithm for these problems.*
+// #remark[
+//   If a language/problem $L in cNP$, then given the verifier $M$ and a polynomial $p$, we can do the following: for any $x in L$, we can iterate over all possible $y in {0,1}^(p(|x|))$ (there are $2^(p(|x|))$ of them) and check if $M(x,y)=1$ for any $y$.
+// ]
+//   This shows that every problem in $cNP$ can be solved by an exponential-time algorithm.
+// *What we are really interested in, however, is whether there exists a polynomial-time algorithm for these problems.*
 
-#pagebreak()
+// #pagebreak()
 
 We are ready to meet out first $cNP$ language
 #claim[
   $k$-clique is in $cNP$
 ]
 #proof[
-To prove this, we are reqiored to provide a polynomial-time verifier $M$ that takes as an input a graph $G$ and a witness $y$.
+To prove this, we are required to provide a polynomial-time verifier $M$ that takes as an input a graph $G$ and a witness $y$.
 Since the choice of $y$ is up to us, we let $y=Y$ encode a set of vertices in $G$, and $M$ verifies that $Y$ is a clique of size $k$ in $G$.
+#pagebreak()
 #algorithm-figure(
   [Verifying algorithm for $k$-clique],
   vstroke: .5pt + luma(200),
@@ -193,11 +186,11 @@ Since the choice of $y$ is up to us, we let $y=Y$ encode a set of vertices in $G
 if $G in k$-clique, then there is a subset $V' subset.eq V(G)$ such that $G[V'] tilde.rev.equiv K_k$, and $M(G,V')=1$
 if $G in.not k$-clique, then no matter which subset $V' subset.eq V(G)$ we take, $G[V']$ will never be a clique, meaning that $Y'$ either will have to many or too little vertices or have "fake" vertices or there will be some missing edges, so that $M(G,V')=0$
 
-The algorithm above clearly runs in $O(2k) + O(k^2)$ time which is bounded by $|V(G)|^2$ as $k <= n$, #footnote[If $k>n$ then obviously no clique of size $k$ exists.] which is polynomial.
+The algorithm above clearly runs in $O(2k) + O(k^2)$ time which is bounded by $|V(G)|^2$ as $k <= n$ (if $k>n$ then obviously no clique of size $k$ exists), which is polynomial.
 ]
 
 = Reductions
-Suppose we have two languages#footnote[A language $L subset.eq {0,1}^*$ can represent any problem we have seen so far. For example, a graph $G$ can be encoded as a binary string, and one can ask whether that string belongs to  $L$.]/problems $L_1, L_2$, can we know which one of them is _harder_?
+Suppose we have two languages/problems $L_1, L_2$, can we know which one of them is _harder_?
 The intuition is that if by solving $L_2$, we can solve $L_1$, then $L_2$ is harder.
 This is done by "translating" our problem from $L_1$ to $L_2$, solving our $L_2$ problem, and then answering accordingly.
 The translation between languages is called a _reduction_, formally
@@ -206,49 +199,42 @@ The translation between languages is called a _reduction_, formally
   - $x in L_1 <=> f(x) in L_2$
   - for every $x in {0,1}^*$, $f$ runs in $p(|x|)$ time.
 ]
-Assuming that $L_1 reduction L_2$ and the polynomial reduction $f$ as well as a black box $A$ that solves $L_2$. 
-We can create an algorithm $B$ that solves $L_2$ using only $f$ and $A$ in the following way.
+Assuming that $L_1 reduction L_2$ and given the polynomial reduction $f$ as well as a black box $A$ that solves $L_2$.
+We can create an algorithm $B$ that solves $L_2$ using only $f$ and $A$ in the following way:
 #figure(
   image("figures/L1i1.png", width: 80%, height: 12%),
 )
 Since the new algorithm only needs to call $f$, then pass $f(x)$ to $A$ and aswer similarly, we got an algorithm for $B$ with similar time complexity as $A$.
 Now if $A$ is polynomial, then $B$ is also polynimal.
-// #align(center)[
-//   B
-// ]
 
-// #place(center, dx: 0pt)[
-//   A
-
-#definition[
+#definition("NP-hard")[
   A language $L subset.eq {0,1}^*$ is said to be NP-hard if  $L' reduction L$ for every $L' in cNP$
 ]
-
+Intuitively, the following qustion arises:
 #question[
   Are there any languages that are NP-Hard?
 ]
 
-#example[
-  The language $
-    L^*={ (L',x') : x' in L' and L' in cNP}$ is NP-hard.
-]
-Without going into too many details, if we have a solver $M$ for $L^*$,
-then for any language $L'$ and input $x'$, we can decide whether $x' in L'$
-y simply quering $M(L',x')$.
-In other words, the reduction function $f$ from $L'$ to $L^*$ can be the identity: $f(x')=x'$.
+// #example[
+//   The language $
+//     L^*={ (L',x') : x' in L' and L' in cNP}$ is NP-hard.
+// ]
+// Without going into too many details, if we have a solver $M$ for $L^*$,
+// then for any language $L'$ and input $x'$, we can decide whether $x' in L'$
+// y simply quering $M(L',x')$.
+// In other words, the reduction function $f$ from $L'$ to $L^*$ can be the identity: $f(x')=x'$.
 
-In fact the language $L^* in cNP$, the verifier $M$ of $L^*$ asks for a witness $y=(M',x')$. where $M'$ is the verifier for $L'$ and $y'$ is the witness for $M'$ on input $x'$.
-Note that $M'$ is a fixed algorithm that works for all inputs $x in {0,1}^*$, so its description has constant size, i.e. $|M'|=O(1)$.
+// In fact the language $L^* in cNP$, the verifier $M$ of $L^*$ asks for a witness $y=(M',x')$. where $M'$ is the verifier for $L'$ and $y'$ is the witness for $M'$ on input $x'$.
+// Note that $M'$ is a fixed algorithm that works for all inputs $x in {0,1}^*$, so its description has constant size, i.e. $|M'|=O(1)$.
 
-#definition[
+#definition("NP-complete")[
   A language $L subset.eq {0,1}^*$ is said to be NP-complete if $L in cNP$ and $L$ is NP-hard
 ]
 One should be able to see now why having a polynomial algorithm for an $cNPC$ problem will result in $cP= cNP$,
 and the first step in solving this is to find such a language.
 
 #remark[
-  Whoever proves that $cP=cNPC$ or shows that $cP != cNPC$ will be awarded
-  1 million dollars.
+  Whoever proves that $cP=cNPC$ or shows that $cP != cNPC$ will be awarded 1 million dollars.
 ]
 
 Alas, the language $L^*$ is a bad candidate from an algorithmic point of view.
@@ -308,12 +294,11 @@ $
   if $phi_2$ is satisfiable, then $x_1,x_3$ must have the value $aF$.
  So that
   $
-   phi_2(x_1 = aF, x_3= aF) = (aF or x_2) and aT and(overline(x_2) or aF or aF) and aT 
+   phi_2(x_1 = aF, x_3= aF) = (aF or x_2) and aT and(overline(x_2) or aF or aF) and aT
   $
  to satisfy the first clause of $phi_2$, we would need $x_2=aT$, but to satisfy the third clause, we would need $x_2=aF$, which is impossible, since $x_2$ cannot have value $aT$ and $aF$ at the same time. Hence, $phi_2$ is unsatifiable.
 ]
 
-#pagebreak()
 #theorem("Cook-Levin")[
   CNF-SAT is npc.
 ]
@@ -331,17 +316,20 @@ $
 ]
 
 Despite their similar definitions, there is a fundamental gap between these two problems as can be seen in the following claim:
-#claim("proof is delegated to the practice session")[
+#theorem("proof is delegated to the practice session")[
   2-CNF-SAT is in $cP$.
 ]
 
-#claim[
+#theorem[
   3-CNF-SAT is in $cNPC$.
 ]<3CNF_is_NPC>
-
-#proof([
-  Recall that if *3-CNF-SAT*$in cNP$. Then a verifier $M$ that verifies 3-CNF-SAT exists.
-  We provide one of many such verifier
+We split the proof into two parts: @3sat_in_NP shows that 3-CNF-SAT$in cNP$, and @3sat_in_NPH will show that 3-CNF-SAT is NP-hard.
+#claim[
+  3-CNF-SAT$in cNP$
+]<3sat_in_NP>
+#proof[
+  Inorder to prove that *3-CNF-SAT*$in cNP$ we need to provide a verifier $M$ such that for some formula $phi$, and assigment $a$, $M$ checks whether $a$ satisfies $phi$.
+  We provide one of many such verifier:
   #algorithm-figure(
   [Verifying algorithm for $3$-CNF-SAT],
   vstroke: .5pt + luma(200),
@@ -365,13 +353,17 @@ Despite their similar definitions, there is a fundamental gap between these two 
         Return(`true`)
       },
     )
-], name: [*3-CNF-SAT$in cNP$*])
 
-Next, we need to show that 3-CNF-SAT is NP-Hard,
-that is for every language $L in cNP$ we need to show that $L reduction 3"-CNF-SAT"$. Fortunately for the reader since we already have CNF-SAT which is an NP-Hard language, we opt to use the following observation#footnote([Do not worry in the Comlexity course, you will show that SAT is NP-HARD and that indeed requires one to show that $forall L in cNP, L reduction "CNF-SAT"$.]):
+]
+
+Next, we need to show that for every language $L in cNP, L reduction 3"-CNF-SAT"$, which can be quite hard for us to do.
+
+Instead we will use the fact that reductions are transitive:
+
 #observation[
   If $L_1 reduction L_2$ and $L_2 reduction L_3$, then $L_1 reduction L_3$.
 ]<obs:transitive>
+By using this property, we can skip the long proof, and instead we show a reduction from a known $cNPC$ language.
 The above observation follows directly from the fact that if $f$ and $g$ are polynomials, then $f(g(x))$ is also a polynimal.
 
 *The following figure provides a proof by picture. A formal proof is left as an exercise to the reader.*
@@ -385,65 +377,65 @@ The above observation follows directly from the fact that if $f$ and $g$ are pol
 By using this property we can use the following claim
 #claim[
   Let $L in$ NP-Hard, and let $L'$ be a language. If $L reduction L'$, then $L'$ is also NP-Hard.
-]
+]<NP_hard_reduction>
 
-We are now ready to prove @3CNF_is_NPC:\
-#proof(name: [*CNF-SAT $in$ NP-HARD*])[
-  Using #ref(<obs:transitive>) it is enough to show that a polynomial-time 
-  reduction CNF-SAT $ reduction$ 3-CNF-SAT exists.
-  
-   That is one need to show that a function $f$ exists such that:
+Returning to our proof:
+#claim[
+  3-CNF-SAT is NP-hard
+]<3sat_in_NPH>
+#proof[
+  Using #ref(<NP_hard_reduction>) it is enough to show CNF-SAT $ reduction$ 3-CNF-SAT.
+  In order to show this, we need to define a function $f$ such that:
   1. *Running Time.*:$f$ runs in polynomial time.
-  2. *Correctness*:  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$ for all CNF formula $phi$.#footnote[ We can always assume valid input, in our case that means that $phi$ is in CNF form.]
-
+  2. *Correctness*:  $phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"$ for all CNF formula $phi$.#footnote[ We can always assume valid input, in our case that means that $phi$ is in CNF form, but we cannot assume that it is satisfiable.]
 
   Let $phi := C_1 and C_2 and ... and C_m$ where $C_1,...,C_m$ are the clauses of $phi$.
-  We first define a function $g$ that operates on a single clause of $phi$ at a time. 
+  We first define a function $g$ that operates on a single clause of $phi$ at a time.
   Then, we define $f$ as follows.
   $
     f(phi) = and.big_(i=1)^{m} g(C_i)
   $
-  Note that $f$ runs in polynomial-time and in CNF-form if $g$ runs in polynomial-time and $g(C)$ is in CNF-form. #text(size: 7pt, fill: red)[*($g$ may return a CNF formula i.e. $g(x_1 or x_2)$ may be $(x_1 or x_2) and x_3$.*]
-
-#pagebreak()
+  // Note that $f$ runs in polynomial-time and in CNF-form if $g$ runs in polynomial-time and $g(C)$ is in CNF-form.
   We will define $g$ as follows:
-  For each clause $C := l_1 or l_2 ... or l_k$  of $phi$, we will replace it by a _gadget_ of clauses according to the following rules:
+  for each clause $C := l_1 or l_2 ... or l_k$  of $phi$, we will replace it by a _gadget_ of clauses according to the following rules:
   #pad(x:10pt)[
   1. If $k=3$, then return $C$ as it. i.e.
   $
     g(l_1 or l_2 or l_3) = l_1 or l_2 or l_3
-  $ 
-  2. If $k < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example#footnote[We allow the repetitions of literals] $
+  $
+  2. If $k < 3$, then repeat one of the literals until the clause has exactly $3$ literals. For example
+  $
   g(l_1 or l_2) = l_1 or l_2 or l_2.
   $
-  3. If $k > 3$ then create $k-3$ *new* variables named $y_1,...,y_(k-3)$ and let #footnote[*For every clause of length > 3 we define $k-3$ new variables we do not reuse them!*]:
+  3. If $k > 3$ then create $k-3$ *new* variables named $y_1,...,y_(k-3)$ and let:
     $
       g(l_1 or l_2or... l_k) = (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(k-3)) or l_(k-1) or l_k).
     $
   ]
-  #example[
-    1. $
-         phi &= (x_1 or x_2 or overline(x_4) or x_5) and 
-         x_1 and (x_7 or x_1 or x_2) and (x_3 or x_4)
-         (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7) \
-         f(phi) &= g(x_1 or x_2 or overline(x_4) or x_5) and 
-         g(x_1) and g(x_7 or x_1 or x_2) and  g(x_3 or x_4)\
-        & quad quad and g
-         (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7)
-         \
-         f(phi) &= (x_1 or x_2 or y_(1,1)) and (overline(y_(1,1)) or overline(x_4) or x_5)
-         and (x_1 or x_1 or x_1) and (x_7 or x_1 or x_2) and (x_3 or x_4 or x_4) \
-         &quad quad and 
-         (overline(x_3) or x_1 or y_(2,1)) and (overline(y_(2,1)) or overline(x_4) or y_(2,2)) and 
-         (overline(y_(2,2)) or x_5 or y_(2,3))
-         and (overline(y_(2,3)) or x_6 or x_7)  
-       $
-      
-  ]
-  By definition all tree cases return a CNF-form formula.
-  It is also easy to see that the first two cases take a constant amount of time. 
-  The third case requires as to create $k-3$ new variables and $k-2$ new clauses each of length 3, so that the third step takes $O(m)$ time.
-  
+  // #example[
+  //   1. $
+  //        phi &= (x_1 or x_2 or overline(x_4) or x_5) and
+  //        x_1 and (x_7 or x_1 or x_2) and (x_3 or x_4)
+  //        (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7) \
+  //        f(phi) &= g(x_1 or x_2 or overline(x_4) or x_5) and
+  //        g(x_1) and g(x_7 or x_1 or x_2) and  g(x_3 or x_4)\
+  //       & quad quad and g
+  //        (overline(x_3) or x_1 or overline(x_4) or x_5 or x_6 or x_7)
+  //        \
+  //        f(phi) &= (x_1 or x_2 or y_(1,1)) and (overline(y_(1,1)) or overline(x_4) or x_5)
+  //        and (x_1 or x_1 or x_1) and (x_7 or x_1 or x_2) and (x_3 or x_4 or x_4) \
+  //        &quad quad and
+  //        (overline(x_3) or x_1 or y_(2,1)) and (overline(y_(2,1)) or overline(x_4) or y_(2,2)) and
+  //        (overline(y_(2,2)) or x_5 or y_(2,3))
+  //        and (overline(y_(2,3)) or x_6 or x_7)
+  //      $
+  // ]
+  By definition all cases return a valid CNF-form formula.
+  It is also easy to see that the first two cases take a constant amount of time.
+  The third case requires as to create $k-3$ new variables and $k-2$ new clauses each of length 3, so that the third step takes $O(n)$ time.
+  As $f$ is $g$ running $m$ times, the running time of $f$ is still polynimal.
+
+
   It remains to show the correctness of $f$, i.e.
   $
     phi in "CNF-SAT" <=> f(phi) in  3-"CNF-SAT"
@@ -451,118 +443,113 @@ We are now ready to prove @3CNF_is_NPC:\
 
   We assume that $phi$ is a CNF formula with variable $x_1,...,x_n$ and clauses $C_1,...,C_m$.
 
-  $=>$(Completeness): Assume that $f(phi) in "CNF-SAT"$, This means there exists a satisfying assignment $alpha$ for $phi$,
-  that is $forall i in [m]: space C(alpha) = aT$.
-  Our goal is to show that a satisfying assigment $alpha'$ exists for $f(phi)$, we do this by showing that $forall i in [m]: space g(C)(alpha') = aT$.
-  First, we copy the assigment of the original variables in $phi$, that is,
+  $=>$(Completeness): Assume that $phi in "CNF-SAT"$, This means there exists a satisfying assignment $alpha$ for $phi$.
+  Our goal is to show that a satisfying assigment $alpha'$ exists for $f(phi)$, we prove this by constructing $a'$.
+  In order to satisfy any clause $C$ that falls into cases 1 or 2, it is enough to copy the original assigmnet, that is,
   $
-    forall i in[n]: quad alpha'(x_i)=alpha(x_i). 
+    forall i in[n]: quad alpha'(x_i)=alpha(x_i).
   $
   Let $C$ be a clause of $phi$ that falls into Case $1$ or Case $2$.
-  By assumption $C(alpha)= aT$, moreover because $C equiv g(C)$, we have $g(C)(alpha) = aT$.
-  Finally, since $g(C)$ is defined on the original variable $x_1,...,x_n$ and $alpha' = alpha$ for those variables, we have $g(C)(alpha') = aT$.
-  
-  #pagebreak()
-  #example[ 
+  By assumption $C[alpha]= aT$, moreover because $C equiv g(C)$, we have $g(C)[alpha] = aT$.
+#example[
   1.
     $
-      C = x_1 or x_3& or overline(x_17); quad alpha(x_1)=aT, alpha(x_3)=aF
+      C &= x_1 or x_3 or overline(x_17); quad alpha(x_1)=aT, alpha(x_3)=aF
     ,alpha(x_17) = aT \
-      &==> quad C(alpha)= aT or aF or aF
+      & quad ==> C[alpha]= aT or aF or aF
       \
-      &==> g(C(alpha'))=aT or aF or aF quad quad quad quad quad quad space space space quad quad quad
+      & quad ==> g(C)[alpha']=aT or aF or aF
     $
 
   2.
      $
-      C = x_1 or overline(x_17)&; quad alpha(x_1)=F, alpha(x_17) = aF \
-      &==> quad C(alpha)= aF or aT
+      C &= x_1 or overline(x_17); quad alpha(x_1)=F, alpha(x_17) = aF \
+      & quad ==>  C(alpha)= aF or aT
       \
-      &==> g(C)(alpha')= (x_1 or overline(x_17) or overline(x_17))(alpha') = aF or aT or aT
+      & quad ==> g(C)(alpha')= (x_1 or overline(x_17) or overline(x_17))(alpha') = aF or aT or aT
     $
 
   ]
   It remains to show that we can extend $a'$ to a satisfying assigment for clauses $C$ that fall into Case 3.
   Let $C= l_1 or l_2 or ... or l_k$ where $k>=4$ be such clause.
-  Then, by assumption
-  $
-    C(alpha) = (l_1 or l_2 or ... or l_k)(alpha) = aT
-  $
-  that is there exists some $i in[k]$ such that $ell_i = aT$.
-  
-  So that
-  $
-    g(C)(alpha') &= (l_1 or l_2 or y_1) 
-    and ...
-    and (overline(y_(i-2)) or l_i or y_(i-1))
-    and ...
-     and (overline(y_(k-3)) or l_(k-1) or l_k)(alpha')
-     \
-     &= (?_(space) or_(space) ?_(space) or y_1) and ...
-    and (overline(y_(i-2)) or aT or y_(i-1))
-    and ...
-     and (overline(y_(k-3)) or_(space) ? or_(space) ?).
-  $
+  Then, by assumption$ C[alpha] = aT$, that is there exists some $i in[k]$ such that $ell_i = aT$.
+  // So that
+  // $
+  //   g(C)[alpha'] &= (l_1 or l_2 or y_1)
+  //   and ...
+  //   and (overline(y_(i-2)) or l_i or y_(i-1))
+  //   and ...
+  //    and (overline(y_(k-3)) or l_(k-1) or l_k)(alpha')
+  //    \
+  //    &= (?_(space) or_(space) ?_(space) or y_1) and ...
+  //   and (overline(y_(i-2)) or aT or y_(i-1))
+  //   and ...
+  //    and (overline(y_(k-3)) or_(space) ? or_(space) ?).
+  // $
   Since for all $j in [k-3]$ the value of $alpha'(y_j)$ have not yet been set, we define them as follows:
   $
-   alpha'(y_j) = cases(aT quad "if " j<=i-2",", aF quad "if " j > i-2".") 
+   alpha'(y_j) = cases(aT quad "if " j<=i-2",", aF quad "if " j > i-2".")
   $
   Then,
     $
-    g(C)(alpha') &= (l_1 or l_2 or y_1) 
+    g(C)[alpha'] = (l_1 or l_2 or y_1)
     and ...
-    and (overline(y_(i-2)) or l_i or y_(i-1))
+    and (overline(y_(i-2)) or &l_i or y_(i-1))
     and ...
-     and (overline(y_(k-3)) or l_(k-1) or l_k)(alpha')
+     and (overline(y_(k-3)) or l_(k-1) or l_k)[alpha']
      \
-     &= (?_(space) or_(space) ?_(space) or aT) and ...
-    and (aF or aT or aT)
+     = (?_(space) or_(space) ?_(space) or aT) and ...
+    and (aF or &aT or aT)
     and ...
      and (aT or_(space) ? or_(space) ?) = aT.
   $
   as required.
-  #text(fill: red, size: 8pt)[*(If $i in {1,2,k-1,k}$) the same analysis works except now all $y$'s get the value $aF$ or $aT$)*]
-
+  \
   $arrow.l.double$(Soundness): Assume that $f(phi) in 3"-CNF-SAT"$, This implies there exists a satisfying assignment $alpha'$ for $f(phi)$,
   We must show that there exists a satisfying assignment $alpha$ for $phi$.
   We argue that copying the assignment of the orginal variables form $alpha'$ to $alpha$  will produce a satisfying assignment for $phi$.
   To see this, assume torward a contradiction that $a$ is not a satsfying assigment for $phi$.
   Then, there must exists a clause $C = l_1 or l_2 ... or l_k$
-  such that $C(alpha) = aF$.
-  If $k <= 3$, then since $g(C) equiv C$, it follows that $aT = g(C)(alpha') = C(alpha') = C(alpha) = aF$ which is a contradiction to the assumption that $alpha$ satisfies $f(phi)$.
+  such that $C[alpha] = aF$.
+  If $k <= 3$, then since $g(C) equiv C$, it follows that $aT = g(C)[alpha'] = C[alpha'] = C[alpha] = aF$ which is a contradiction to the assumption that $alpha$ satisfies $f(phi)$.
   Otherwise assume that $k >= 4$, by assumption
   $
-    C(alpha) = l_1 or l_2 or ... or l_k = aF
+    C[alpha] = l_1 or l_2 or ... or l_k = aF
   $
   meaning that for all $i in [k]$ we have $l_i = aF$.
-
-  On the otherhand, since $f(phi)(alpha')$ is satisfied we have
+  On the otherhand, since $f(phi)[alpha']$ is satisfied the gadget clause
   $
-    (l_1 or l_2 or y_1)(alpha') &= aT, \
-    (overline(y_(k-3)) or l_(k-1) or l_k)(alpha') &= aT \
- (overline(y_(i-2)) or l_i or y_(i-1))(alpha') &= aT text("where") 3<=i<=k-3.
-  $
-
- #pagebreak()
-  Since the first clause have the value $aT$ it follows that $y_1 =aT$
-  $
-  (l_1 or l_2 or y_1)(a')=(aF or aF or y_1) = aT ==> y_1=aT,
-  $ 
-  similarly for the second clause and so on we have
-  $
-    (overline(y_(1)) or l_3 or y_(2))(a') &= (aF or aF or y_2) = aT ==> y_2= aT \
-    (overline(y_(i-2)) or l_i or y_(i-1))(a')&= (aF or aF or y_(i-1)) = aT ==> y_(i-2)= aT
-  $
-  that is we conclude that to satisfy the first $k-3$ clauses we must set
-   $y_i = aT$ for all $i in [k-3]$. 
-  
-  On the otherhand 
-  $
-    (overline(y_(k-3)) or l_(k-1) or l_k)(a') = (aF or aF or aF) = aF
-    ==> f(phi)=aF.
-  $
+    g(C) = (l_1 or l_2 or y_1) and (overline(y_1) or l_3 or y_2) and  (overline(y_2) or l_4 or y_3) and ... and (overline(y_(k-3)) or l_(k-1) or l_k)
+  $ is also satisfied, and such every clause should be $aT$. In order for the first clause to be $aT$, $y_1 = aT$ must hold.
+  In order to satisfy the next clause $y_2 = aT$ must hold, following this argument one can see that $y_i = aT$ must hold for all $i in [k-3]$.
+  Looking at the last clause, $ell_(k-1) = ell_k = aF$ by assumption, and $overline(y_(k-3)) = aF$ in order for any other clause to be satisfied,
   which is a contradiction to the assumption that $a'$ satisfies $phi$.
   #footnote[Note that our argument shows that for any assignment of $y_1,...,y_(k-3)$ the value of $g(C)(a') = aF.$]
+
+ //  $
+ //    (l_1 or l_2 or y_1)(alpha') =
+ //    (overline(y_(k-3)) or l_(k-1) or l_k)(alpha') =
+ // (overline(y_(i-2)) or l_i or y_(i-1))(alpha') = aT,
+ //  $
+ // where $3<=i<=k-3$.
+ // Since the first clause have the value $aT$ it follows that $y_1 =aT$
+ //  $
+ //  (l_1 or l_2 or y_1)(a')=(aF or aF or y_1) = aT ==> y_1=aT,
+ //  $
+ //  similarly for the second clause and so on we have
+ //  $
+ //    (overline(y_(1)) or l_3 or y_(2))(a') &= (aF or aF or y_2) = aT ==> y_2= aT \
+ //    (overline(y_(i-2)) or l_i or y_(i-1))(a')&= (aF or aF or y_(i-1)) = aT ==> y_(i-2)= aT
+ //  $
+ //  that is we conclude that to satisfy the first $k-3$ clauses we must set
+ //   $y_i = aT$ for all $i in [k-3]$.
+
+ //  On the otherhand
+ //  $
+ //    (overline(y_(k-3)) or l_(k-1) or l_k)(a') = (aF or aF or aF) = aF
+ //    ==> f(phi)=aF.
+ //  $
+
 ]
 
 == Independent set
