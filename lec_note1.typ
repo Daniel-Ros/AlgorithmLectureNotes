@@ -41,7 +41,7 @@ An algorithm is called _polynomial-time_ if its running time is bounded by $O(n^
 #definition[
   $cP :=$ The set of problems that have a polynomial algorithm.
 ]
-In this cource we focus on computational complexity, and ignore the exact running tume of the algorithms.
+In this cource we focus on computational complexity, and ignore the exact running time of the algorithms.
 Any polynomial-time algorithm is considered “efficient,” and we do not distinguish between different polynomial running times.
 // #definition[
 //   $cNP :=$ The set of problems that have a *non-deterministic* polynomial algorithm.
@@ -54,20 +54,23 @@ Any polynomial-time algorithm is considered “efficient,” and we do not disti
 = Self reduction
 There are two types of problems: _decision  problems_ and  _search problems_.
 Decision problems are those that require a 'yes' or 'no' answer, whereas search problems require finding an actual solution if one exists.
-For example, finding a path between two nodes the decision problem will be "*Is* there a path between node $A$ and node $B$?"
+For example, if the problem is finding a path between two given nodes $A$ and $B$. The decision problem will be "*Is* there a path between node $A$ and node $B$?"
 and the search problem will be "*What* is the path between node $A$ and $B$?" both of these can be solved by the same algorithm.
-A non trivial problem is finding $k$-clique, given a graph $G$, the decision problem is:
+A non trivial #footnote[None trivial in the sense that a greedy algorithm going over all vertices of size $k$ results in algorithm with running time $theta(n^k)$. Since, $k=sqrt(n)$ is possible in that case we have running time of $theta(n^(sqrt(n)))$ which is exponential and not polinomial.] problem is finding $k$-clique, given a graph $G$, the decision problem is:
 #question[
-  Is there a clique of size $k$ in $G$?
+  K-CLIQUE: Is there a clique of size $k$ in $G$?
 ]#label("q1")
-By a _language_ we mean a set $L subset.eq {0,1}^*$. While we don't formally show this, anything can be encoded as a binary string, as such a language can be a set of anything we want. The language $k"-clique" := {G | omega(G) >= k}$ is the set of all graphs that contain a clique of size at least $k$,
-answering @q1 is the same as asking if some graph is in $k$-clique or not.
-The search problem denoted SEARCH-$k$-CLIQUE is given some graph $G$ find a copy of $K_k$ in $G$, if there is no such copy return `null`.
+
+#question[
+  SEARCH-k-CLQIUE: What is the clique of size $k$ in $G$?
+]#label("q1")
+// By a _language_ we mean a set $L subset.eq {0,1}^*$. While we don't formally show this, anything can be encoded as a binary string, as such a language can be a set of anything we want. The language $k"-clique" := {G | omega(G) >= k}$ is the set of all graphs that contain a clique of size at least $k$,
+// answering @q1 is the same as asking if some graph is in $k$-clique or not.
+// The search problem denoted SEARCH-$k$-CLIQUE is given some graph $G$ find a copy of $K_k$ in $G$, if there is no such copy return `null`.
 
 One might ask whether the problems are equivalent, by that we mean given a way to solve one, can we solve the other?
-By the nature of the problems if we have a way to find the solutions, it is easy to answer whether there is a solution.
-The other way seems more complicated, but as it turns out for $cNPC$ languages it is possible. #footnote([It is possible with an extra polynomial cost, which we consider to be negligable in this course.])
-
+By the nature of search problems if we have a way to find the solution, it is easy to answer whether there is a solution.
+The other way seems more complicated, but as it turns out the difference between both problems is polynomial.
 #claim[
 If the decision problem for $k$-clique can be solved in polynomial time, then there is a polynomial-time algorithm for SEARCH-$k$-CLIQUE.
 ]
@@ -116,17 +119,27 @@ If the decision problem for $k$-clique can be solved in polynomial time, then th
 
 The claim above demonstrates that decision and search problem are equivalent#footnote[In polynomial time, which is what we mean by equivelent.], thus we can focus only on decision problems.
 
+#pagebreak()
 = NP-completeness
-While the class $cP$ contains a large portion of the problems students have faced so far, as it turs out the majoriy of the problems are not easy at all.
+While the class $cP$ contains a large portion of the problems students have faced so far, as it turns out the majoriy of the problems are not easy at all.
 
-Suppose you are a professional safe-cracker competing with a friend who claims he can open a safe faster than you. The safe is highly secure, and no known method works, so you resort to trying all combinations, which takes a long time.
+The story blelow captures the essence of out next complexity class $cNP$, the set of problems where a proposed solution can be verified quickly:
 
-After some time your friend says he has cracked the safe and hands you a book containing a million digits of π, claiming the correct code is somewhere inside. You argue this doesn’t count, just trying to read the book will take a lot of time. However, if he gives you the code directly, you can easily verify it by trying it once. If it opens the safe, he wins.
+Suppose you find an old antique safe and want to see what is inside.
+Breaking it open would probably damage whatever it contains, so the only option is to enter the correct code.
+But how do you know that such a code even exists? Perhaps the safe is broken, and no code will ever open it. On the other hand, if the safe is functioning as intended, then there must be some combination that unlocks it.
 
-But if the code is wrong, is there any way for you to find the correct one, or even know that one exists?
-This story captures the essence of out next complexity class $cNP$, the set of problems where a proposed solution can be verified quickly. Formally,
+If someone were to hand you the correct code, you could easily check it—just type it in and see whether the safe opens. In that case, the code serves as a witness that the safe can indeed be opened.
+But if no such code exists, then there is no witness at all, and the safe is simply uncrackable.
+
+// Suppose you are a professional safe-cracker competing with a friend who claims he can open a safe faster than you. The safe is highly secure, and no known method works, so you resort to trying all combinations, which takes a long time.
+
+// After some time your friend says he has cracked the safe and hands you a book containing a million digits of π, claiming the correct code is somewhere inside. You argue this doesn’t count, just trying to read the book will take a lot of time. However, if he gives you the code directly, you can easily verify it by trying it once. If it opens the safe, he wins.
+
+// But if the code is wrong, is there any way for you to find the correct one, or even know that one exists?
 #definition("NP class")[
-  A language $L$ is said to be in $cNP$ if we have a polynomial-time algorithm $M$ such that
+  A language#footnote[Language is a set of words where words can be anything graphs, bolean assignments algorithms etc...
+  In some courses language is defined as a subset of ${0,1}^*$ i.e. the set of all binary strings of any length, this definition is identical, as anything can be encoded into a binary string.] $L$ is said to be in $cNP$ if we have a polynomial-time algorithm $M$ such that
   $
     x in L <=> exists y space  s.t |y| < p(|x|) "and" M(x,y) = 1
   $
@@ -135,9 +148,7 @@ This story captures the essence of out next complexity class $cNP$, the set of p
 #remark[
   In most literture $y$ is called a _witness_ and $M$ is called _veryfing algorithm_, where $y$ plays the role of the answer, and $M$ should just verify if the answer is correct.
 ]
-In our story, $M$ plays the role of the safe cracker, while $y$ is the safe's code.
-If a code exists, then given $y$ you can easily verify it by trying it once and opening the safe.
-If no such code exists, the safe cannot be opened, at least not in an “easy” way.
+In our story, $y$ is the secret safe code, and you play the roll of $M$ verifying that $y$ is indeed the correct code.
 
 // #remark[
 //   If a language/problem $L in cNP$, then given the verifier $M$ and a polynomial $p$, we can do the following: for any $x in L$, we can iterate over all possible $y in {0,1}^(p(|x|))$ (there are $2^(p(|x|))$ of them) and check if $M(x,y)=1$ for any $y$.
@@ -149,7 +160,7 @@ If no such code exists, the safe cannot be opened, at least not in an “easy”
 
 We are ready to meet out first $cNP$ language
 #claim[
-  $k$-clique is in $cNP$
+  $k$-CLIQUE is in $cNP$
 ]
 #proof[
 To prove this, we are required to provide a polynomial-time verifier $M$ that takes as an input a graph $G$ and a witness $y$.
@@ -164,15 +175,15 @@ Since the choice of $y$ is up to us, we let $y=Y$ encode a set of vertices in $G
       [$M$],
       ("G","Y"),
       {
-        Comment[Check if the size of the group is large enough]
+        Comment[Check if the set of the correct size]
         If($|Y| !=k $, { Return(`false`)})
         LineBreak
-        Comment[Check all the vertices are real]
+        Comment[Check that all the vertices are real]
         For($v in Y$,{
           If($v in.not V(G) $, { Return(`false`)})
         })
         LineBreak
-        Comment[Check all the edges exist]
+        Comment[Check that all the edges exist]
         For($v,u in Y$,{
           If($(v,u) in.not E(G) $, { Return(`false`)})
         })
@@ -184,15 +195,15 @@ Since the choice of $y$ is up to us, we let $y=Y$ encode a set of vertices in $G
 )
 
 if $G in k$-clique, then there is a subset $V' subset.eq V(G)$ such that $G[V'] tilde.rev.equiv K_k$, and $M(G,V')=1$
-if $G in.not k$-clique, then no matter which subset $V' subset.eq V(G)$ we take, $G[V']$ will never be a clique, meaning that $Y'$ either will have to many or too little vertices or have "fake" vertices or there will be some missing edges, so that $M(G,V')=0$
+if $G in.not k$-clique, then no matter which subset $V' subset.eq V(G)$ we take, $G[V']$ will never be a clique in $G$. That is $Y'$ either will have too many\little vertices, have "fake" vertices or there will be some missing edges, so that $M(G,V')=0$.
 
-The algorithm above clearly runs in $O(2k) + O(k^2)$ time which is bounded by $|V(G)|^2$ as $k <= n$ (if $k>n$ then obviously no clique of size $k$ exists), which is polynomial.
+The algorithm above clearly runs in $O(2k) + O(k^2)$ time which is bounded by $|V(G)|^2$ as $k <= n$, #footnote[If $k>n$ then obviously no clique of size $k$ exists.] which is polynomial.
 ]
 
 = Reductions
 Suppose we have two languages/problems $L_1, L_2$, can we know which one of them is _harder_?
-The intuition is that if by solving $L_2$, we can solve $L_1$, then $L_2$ is harder.
-This is done by "translating" our problem from $L_1$ to $L_2$, solving our $L_2$ problem, and then answering accordingly.
+The intuition is that if $L_2$ harder than $L_1$ we would be able to solve $L_2$ using $L_1$.
+This is done by "translating" our problem from $L_1$ to $L_2$, solving the translated $L_1$ problem, and then answering accordingly.
 The translation between languages is called a _reduction_, formally
 #definition("polynomial time reduction")[
   Given two languages $L_1, L_2 in cNP$, we write $L_1 reduction L_2$ if there exists a function $f:{0,1}^* -> {0,1}^*$ and a polynomial $p: NN -> NN $, such that:
@@ -215,17 +226,20 @@ Intuitively, the following qustion arises:
   Are there any languages that are NP-Hard?
 ]
 
-// #example[
-//   The language $
-//     L^*={ (L',x') : x' in L' and L' in cNP}$ is NP-hard.
-// ]
-// Without going into too many details, if we have a solver $M$ for $L^*$,
-// then for any language $L'$ and input $x'$, we can decide whether $x' in L'$
-// y simply quering $M(L',x')$.
-// In other words, the reduction function $f$ from $L'$ to $L^*$ can be the identity: $f(x')=x'$.
 
-// In fact the language $L^* in cNP$, the verifier $M$ of $L^*$ asks for a witness $y=(M',x')$. where $M'$ is the verifier for $L'$ and $y'$ is the witness for $M'$ on input $x'$.
-// Note that $M'$ is a fixed algorithm that works for all inputs $x in {0,1}^*$, so its description has constant size, i.e. $|M'|=O(1)$.
+#example[
+  The language 
+  $
+    L^*={ (M',x, 1^c) : M'(x')=1 &and M'(x') #text([computes in $O(2^(|x|^c))$ time])}
+    $ is NP-hard.
+]
+Without going into too many details.
+Fix $L in cNP$, by definition there exists a verifier $M$ for $L$
+with running time $|x|^c$ for any $x$.
+Fix $x$ and define $f(x) = (M',x)$, where $M'$ iterates over all binary stings $y$ of length at most $|x|^c$ and checks whether $M(x,y)=1$ for each one of them, if $M(x,y)=1$ for any $y$, then $M$ returns '1', otherwise $M$ returns '0'.
+
+Clearly the language $L^*$ cannot be computed in polynomial time, and cannot be varified in polynomial time either, that is $L^* in.not cNP$, so its not really intresting for our setting.
+This leads us to the following definition.
 
 #definition("NP-complete")[
   A language $L subset.eq {0,1}^*$ is said to be NP-complete if $L in cNP$ and $L$ is NP-hard
@@ -234,15 +248,11 @@ One should be able to see now why having a polynomial algorithm for an $cNPC$ pr
 and the first step in solving this is to find such a language.
 
 #remark[
-  Whoever proves that $cP=cNPC$ or shows that $cP != cNPC$ will be awarded 1 million dollars.
+  The problem of is $cP = cNPC$ or $cP != cNPC$ remains an open question to this day. Whoever proves either one will be awarded 1 million dollars.
 ]
 
-Alas, the language $L^*$ is a bad candidate from an algorithmic point of view.
-Any polynomial-time algorithm for $L^*$ would, in effect, have to "know" the polynomial-time algorithm for any $L in cNPC$.
-So to know if $L^*$ is polynomial you first need to know if $cP=cNP$ which defeats the purpose.
-
 #question[
-  Is there a usefull language $L in cNPC$?
+  Is there any language $L in cNPC$?
 ]
 
 Let $x_1,...x_n$ be boolean variables ($x_i$ can be assigned either $0$ or $1$).
@@ -445,12 +455,14 @@ Returning to our proof:
 
   $=>$(Completeness): Assume that $phi in "CNF-SAT"$, This means there exists a satisfying assignment $alpha$ for $phi$.
   Our goal is to show that a satisfying assigment $alpha'$ exists for $f(phi)$, we prove this by constructing $a'$.
-  In order to satisfy any clause $C$ that falls into cases 1 or 2, it is enough to copy the original assigmnet, that is,
+  Our assignment will copy the original assignment for the original variable of $phi$ that is
   $
     forall i in[n]: quad alpha'(x_i)=alpha(x_i).
   $
-  Let $C$ be a clause of $phi$ that falls into Case $1$ or Case $2$.
-  By assumption $C[alpha]= aT$, moreover because $C equiv g(C)$, we have $g(C)[alpha] = aT$.
+  The *new variables* we of $f(phi)$ will be dealt later. 
+
+  Fix a clause $C in phi$ we show that $g(C)$ can be satisfied as well.
+ If $C$ we have $|C| <= 3$, then we are done as $C equiv g(C)$, and by assumption $C[alpha] = aT$ so that we have $g(C)[alpha'] = aT$.
 #example[
   1.
     $
@@ -470,9 +482,8 @@ Returning to our proof:
     $
 
   ]
-  It remains to show that we can extend $a'$ to a satisfying assigment for clauses $C$ that fall into Case 3.
-  Let $C= l_1 or l_2 or ... or l_k$ where $k>=4$ be such clause.
-  Then, by assumption$ C[alpha] = aT$, that is there exists some $i in[k]$ such that $ell_i = aT$.
+  Otherwise let $C= l_1 or l_2 or ... or l_k$ where $k>=4$ be such clause.
+  Then, by assumption $ C[alpha] = aT$, so that there exists some $i in[k]$ such that $ell_i = aT$.
   // So that
   // $
   //   g(C)[alpha'] &= (l_1 or l_2 or y_1)
