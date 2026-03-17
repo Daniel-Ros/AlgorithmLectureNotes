@@ -238,7 +238,7 @@ Fix $L in cNP$, by definition there exists a verifier $M$ for $L$
 with running time $|x|^c$ for any $x$.
 Fix $x$ and define $f(x) = (M',x)$, where $M'$ iterates over all binary stings $y$ of length at most $|x|^c$ and checks whether $M(x,y)=1$ for each one of them, if $M(x,y)=1$ for any $y$, then $M$ returns '1', otherwise $M$ returns '0'.
 
-Clearly the language $L^*$ cannot be computed in polynomial time, and cannot be varified in polynomial time either, that is $L^* in.not cNP$, so its not really intresting for our setting.
+Clearly the language $L^*$ cannot be computed in polynomial time, and cannot be verified in polynomial time either, that is $L^* in.not cNP$, so its not really intresting for our setting.
 This leads us to the following definition.
 
 #definition("NP-complete")[
