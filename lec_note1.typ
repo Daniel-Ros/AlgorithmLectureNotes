@@ -215,7 +215,7 @@ We can create an algorithm $B$ that solves $L_2$ using only $f$ and $A$ in the f
 #figure(
   image("figures/L1i1.png", width: 80%, height: 12%),
 )
-Since the new algorithm only needs to call $f$, then pass $f(x)$ to $A$ and aswer similarly, we got an algorithm for $B$ with similar time complexity as $A$.
+Since the new algorithm only needs to call $f$, then pass $f(x)$ to $A$ and answer similarly, we got an algorithm for $B$ with similar time complexity as $A$.
 Now if $A$ is polynomial, then $B$ is also polynimal.
 
 #definition("NP-hard")[
@@ -228,7 +228,7 @@ Intuitively, the following qustion arises:
 
 
 #example[
-  The language 
+  The language
   $
     L^*={ (M',x, 1^c) : M'(x')=1 &and M'(x') #text([computes in $O(2^(|x|^c))$ time])}
     $ is NP-hard.
@@ -459,7 +459,7 @@ Returning to our proof:
   $
     forall i in[n]: quad alpha'(x_i)=alpha(x_i).
   $
-  The *new variables* we of $f(phi)$ will be dealt later. 
+  The *new variables* we of $f(phi)$ will be dealt later.
 
   Fix a clause $C in phi$ we show that $g(C)$ can be satisfied as well.
  If $C$ we have $|C| <= 3$, then we are done as $C equiv g(C)$, and by assumption $C[alpha] = aT$ so that we have $g(C)[alpha'] = aT$.
