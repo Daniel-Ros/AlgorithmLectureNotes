@@ -6,6 +6,7 @@
 #import "@preview/theorion:0.4.1": *
 #import "@preview/algorithmic:1.0.7"
 #import "@preview/larrow:1.0.0": *
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
 #import cosmos.clouds: *
 
@@ -90,7 +91,19 @@ set page(
   },
 )
 show emph: it => text(fill: rgb("#3461f6"), it)
+
 body
+}
+
+#let bent-edge(from, to, mid: 40%, ..args) = {
+  let midpoint = (from, mid, to)
+  let vertices = (
+    from,
+    (from, "|-", midpoint),
+    (midpoint, "-|", to),
+    to,
+  )
+  edge(..vertices, "-|>", ..args)
 }
 
 ////// ENVIROMENTS
@@ -99,7 +112,13 @@ body
   "definition",
   theorion-i18n-map.at("problem"),
   counter: theorem-counter,
-  render: render-fn.with(fill: rgb("#e4c8a2")),
+  render: (..args) => {
+    set text(fill: rgb("#681811")) 
+    show strong: it => [#text(weight: "bold", fill: rgb("#c00d28"))[#it.body]]
+    show emph: it => [#text(weight: "bold", style: "italic", fill: rgb("#c00d28"))[#it.body]]
+
+    render-fn(fill: rgb("#e4c8a2"), ..args)
+  }
 )
 
 #let (definition-counter, definition-box, definition, show-definition) = make-frame(
@@ -108,3 +127,45 @@ body
   counter: theorem-counter,
   render: render-fn.with(fill: rgb("#bfdce2")),
 )
+
+#let (definition-counter, definition-box, goal, show-definition) = make-frame(
+  "definition",
+  "Goal",
+  counter: none,
+  render: (..args) => {
+    set text(fill: rgb("#231f1f")) 
+    show strong: it => [#text(weight: "bold", fill: rgb("#12148d"))[#it.body]]
+    render-fn(fill: rgb("#dcf6e6"), ..args)
+  }
+)
+
+#let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
+  "theorem",
+  theorion-i18n-map.at("theorem"),
+  inherited-levels: 2,
+  render: (..args) => {
+    set text(fill: rgb("#ffffff")) 
+    show strong: it => [#text(weight: "bold", fill: rgb("#e6dbdb"))[#it.body]]
+    render-fn(fill: rgb("#073749"), ..args)
+  }
+)
+
+// #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
+//   "theorem",
+//   theorion-i18n-map.at("theorem"),
+//   inherited-levels: 2,
+// render: (prefix: none, title: "", full-title: "", body) => {
+//     render-fn(
+//       fill: rgb("#d1f4f6"),
+//       prefix: prefix,
+//       full-title: [#text(fill: rgb("#a28276"), weight: "bold")[#full-title]],
+//       title: title,
+//       // Apply the show rule ONLY to the body content here:
+//       [
+//         #show strong: it => [#text(weight: "bold", fill: red)[#it.body]]
+//         #body
+//       ]
+//     )
+//   }
+// )
+
