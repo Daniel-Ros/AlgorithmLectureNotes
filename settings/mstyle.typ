@@ -89,8 +89,10 @@ set page(
       
     )
   },
+  margin: (bottom: 0cm),
 )
 show emph: it => text(fill: rgb("#3461f6"), it)
+
 
 body
 }
@@ -150,6 +152,15 @@ body
   }
 )
 
+#let proof(
+  title: [#text(fill: blue.darken(50%), weight: "bold")[Proof]],
+  qed: auto,
+  body,
+) = context if get-result(here()) == "noanswer" { none } else {
+  let qed-symbol = if qed == auto { get-qed-symbol(here()) } else { qed }
+  [#emph(theorion-i18n(title)).#sym.space#body#box(width: 0em)#h(1fr)#sym.wj#sym.space.nobreak$#qed-symbol$]
+}
+
 // #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
 //   "theorem",
 //   theorion-i18n-map.at("theorem"),
@@ -169,3 +180,9 @@ body
 //   }
 // )
 
+#let bt(color, body) = {
+  text(fill: color, weight: "bold")[#body] 
+}
+
+#let cup = math.union
+#let cap = math.inter

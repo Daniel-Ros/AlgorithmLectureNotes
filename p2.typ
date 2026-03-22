@@ -60,6 +60,7 @@
 #let cP = $bold("P")$
 #let cNP = $bold("NP")$
 #let cNPC = $bold("NPC")$
+#let cNPH = $bold("NPH")$
 #let reduction = $scripts(<=)_p$
 #let aT = text(fill: green, $T$)
 #let aF = text(fill: red, $F$)
@@ -192,6 +193,9 @@ For a graph $G$, two edges $e_1, e_2 subset.eq E(G)$ are called _indepedent_ if 
 ])
 ]
 #pagebreak()
+#[
+  #set align(horizon)
+  #v(-80pt)
 - For a graph $G$, let $alpha(G)$ denote the size of the maximum independent set in $G$.
 #definition[
   $"IS" := {<G,k> : alpha (G) >= k}$.
@@ -199,18 +203,34 @@ For a graph $G$, two edges $e_1, e_2 subset.eq E(G)$ are called _indepedent_ if 
 #theorem[
   IS is in $cNPC$.
 ]
+]
 
 == Independent set
+#[
+  #set align()
+#place(
+      top + left, 
+      dx: 17cm, 
+      dy: 0cm, 
+      block(width: 40%)[
+      #set text(size: 0.8em)
+   #claim[
+    Let $L in cNPH$, and let $L'$ be a language. If $L reduction L'$, then $L'$ is also $cNPH$.
+  ]<NP_hard_reduction>
+      ]
+    )
+
 - The proof that IS is in $cNP$ is left as homework.
-- In order to show that IS hard we need to show that
+- In order to show that IS is hard it is enough to show that
 $
   L reduction "IS"
 $
-for some $cNP$ hard languge.
+for some lanaguege $L$ where $L in cNPH$.
 - Here, we show that
 $
 3"-CNF-SAT" reduction "IS"
 $
+]
 
 == $3"-CNF-SAT" reduction "IS"$
 - Given a  $3$-CNF formula $phi$, construct a graph $G_phi$ as follows:
@@ -288,7 +308,11 @@ $<==$:
 - The asssignment is satisfying:
   - every triangle has one vertex in $S$ $=>$ every clause has one positive literal
 - The assignment is _consistent_:
-  - if some variable $v(l_i) = v(overline(v_i)) =>$ both end of $(l_i,overline(l_i))$ are in $S$.
+  - if for some variable $x_i = overline(x_i)$ then \
+   #h(50pt) $
+   exists j,k in[m]$ s.t. $v(l_j) = x_i$ and $v(l_k) = overline(x_i) => l_j l_k in E(G_phi) => S
+   $ is not independent.
+  
 
 = Graph coloring
 == Graph coloring
