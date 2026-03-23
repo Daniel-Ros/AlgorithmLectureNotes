@@ -163,36 +163,36 @@
 
 = Independent set
 == Independent set
-#set align(horizon)
-For a graph $G$, two edges $e_1, e_2 subset.eq E(G)$ are called _indepedent_ if there is no common vertex between them.
-#align(center)[
+// #set align(horizon)
+// For a graph $G$, two edges $e_1, e_2 subset.eq E(G)$ are called _indepedent_ if there is no common vertex between them.
+// #align(center)[
 
-#columns(2, [
-#cetz.canvas({
-  import cetz.draw: *
+// #columns(2, [
+// #cetz.canvas({
+//   import cetz.draw: *
 
-  circle((0,5), radius:5pt,fill:black, name:"p2")
-  circle((0,0), radius:5pt,fill:black, name:"p1")
-  line("p1","p2")
-  circle((1,5), radius:5pt,fill:black, name:"p3")
-  circle((1,0), radius:5pt,fill:black, name:"p4")
-  line("p3","p4")
-  content((0.5,-1), [indepedent], anchor: "north")
-})
-#colbreak()
-#cetz.canvas({
-  import cetz.draw: *
-  circle((0.5,5), radius:5pt,fill:black, name:"p1")
-  circle((0,0), radius:5pt,fill:black, name:"p2")
-  circle((1,0), radius:5pt,fill:black, name:"p3")
-  line("p1","p2")
-  line("p1","p3")
-  content((0.5,-1), [not indepedent], anchor: "north")
-  // content(("p1","south"), [independant],anchor: "north")
-})
-])
-]
-#pagebreak()
+//   circle((0,5), radius:5pt,fill:black, name:"p2")
+//   circle((0,0), radius:5pt,fill:black, name:"p1")
+//   line("p1","p2")
+//   circle((1,5), radius:5pt,fill:black, name:"p3")
+//   circle((1,0), radius:5pt,fill:black, name:"p4")
+//   line("p3","p4")
+//   content((0.5,-1), [indepedent], anchor: "north")
+// })
+// #colbreak()
+// #cetz.canvas({
+//   import cetz.draw: *
+//   circle((0.5,5), radius:5pt,fill:black, name:"p1")
+//   circle((0,0), radius:5pt,fill:black, name:"p2")
+//   circle((1,0), radius:5pt,fill:black, name:"p3")
+//   line("p1","p2")
+//   line("p1","p3")
+//   content((0.5,-1), [not indepedent], anchor: "north")
+//   // content(("p1","south"), [independant],anchor: "north")
+// })
+// ])
+// ]
+// #pagebreak()
 #[
   #set align(horizon)
   #v(-80pt)
@@ -409,20 +409,20 @@ It is well known that $2$-COL$in cP$.
 #pause
 - We are going to show
 $
-"NAE-"k"-CNF-SAT" reduction 3"-COL".
+"NAE-"3"-CNF-SAT" reduction 3"-COL".
 $
 #v(-20pt)
 #remark[
   #v(-10pt)
   In the t.a session you will prove that
   $
-    #text[3-CNF-SAT] reduction "NAE-"k"-CNF-SAT"
+    #text[3-CNF-SAT] reduction "NAE-"3"-CNF-SAT"
   $
   #v(-10pt)
   concluding the proof.
 ]
 
-== $"NAE-"k"-CNF-SAT" reduction 3"-COL"$
+== $"NAE-"3"-CNF-SAT" reduction 3"-COL"$
 - Given a 3-CNF formula $phi$, define $G_phi$ as follows:
 #pause
   + Start with a single vertex $D$. This is our _Don't care vertex_.
@@ -475,10 +475,10 @@ $
 
 - The algorithm runs in poly time(why?)
 
-== $"NAE-"k"-CNF-SAT" reduction 3"-COL"$
+== $"NAE-"3"-CNF-SAT" reduction 3"-COL"$
 - We need to show that
 $
-  phi in "NAE-"k"-CNF-SAT" <=> G_phi in  3"-COL"
+  phi in "NAE-"3"-CNF-SAT" <=> G_phi in  3"-COL"
 $
 
 $=>$:
@@ -490,10 +490,10 @@ $=>$:
 - Each edge inside vertex/clause gadgets have both ends in different colors.
 - W.L.O.G, let $x$ be a variable assigned `true` by $a_phi$, as $a_phi$ is proper, all vertcies $overline(x)$ are #text(red)[F] or #text(blue)[D]. So all edges between clause/vertex gadgets have both ends in different colors.
 
-== $"NAE-"k"-CNF-SAT" reduction 3"-COL"$
+== $"NAE-"3"-CNF-SAT" reduction 3"-COL"$
 - We need to show that
 $
-  phi in "NAE-"k"-CNF-SAT" <=> G_phi in  3"-COL"
+  phi in "NAE-"3"-CNF-SAT" <=> G_phi in  3"-COL"
 $
 
 $arrow.l.double$:
@@ -621,7 +621,7 @@ $
 == Max-cut
 - We need to show that
 $
-  phi in "NAE-"k"-CNF-SAT" <=> G_phi in  "MAX-CUT"
+  phi in "NAE-"3"-CNF-SAT" <=> G_phi in  "MAX-CUT"
 $
 $=>$:
 - Given a satisfying NAE assignment $alpha_phi$ for $phi$, define $S subset.eq V(G_phi)$ to consist of all vertices whose label is a literal assigned `true` under $alpha_phi$.
@@ -633,7 +633,7 @@ $=>$:
 == Max-cut
 - We need to show that
 $
-  phi in "NAE-"k"-CNF-SAT" <=> G_phi in  "MAX-CUT"
+  phi in "NAE-"3"-CNF-SAT" <=> G_phi in  "MAX-CUT"
 $
 #v(-20pt)
 $arrow.l.double$:
