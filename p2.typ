@@ -411,13 +411,23 @@ It is well known that $2$-COL$in cP$.
 $
 "NAE-"k"-CNF-SAT" reduction 3"-COL".
 $
+#v(-20pt)
+#remark[
+  #v(-10pt)
+  In the t.a session you will prove that
+  $
+    #text[3-CNF-SAT] reduction "NAE-"k"-CNF-SAT"
+  $
+  #v(-10pt)
+  concluding the proof.
+]
 
 == $"NAE-"k"-CNF-SAT" reduction 3"-COL"$
 - Given a 3-CNF formula $phi$, define $G_phi$ as follows:
 #pause
   + Start with a single vertex $D$. This is our _Don't care vertex_.
 #pause
-  + For each variable $x_i$ of $phi$, add two new vertices $x_i, overline(x_i)$, add an edge between them, and connect both to $D$. This are our _variable gadgets_.
+  + For each variable $x_i$ of $phi$, add two "original" new vertices $x_i, overline(x_i)$, add an edge between them, and connect both to $D$. This are our _variable gadgets_.
 #pause
   + For each clause $l_1 or l_2 or l_3$ we create a triangle with 3 vertices named $l_1, l_2, l_3$, this is our _clause gadget_.
 #pause
@@ -473,12 +483,12 @@ $
 
 $=>$:
 - Given a satisfying NAE assignment $alpha_phi$ for $phi$, define the follwing 3-coloting of $G_phi$:
- - $D$ will be colored as #text(gray)[D]
- - For each variable $x_i$, if $x_i$ is assigned `true` under $alpha_phi$ color $x_i$ as #text(red)[T] and $overline(x_i)$ in #text(blue)[F], otherwise color $x_i$ as #text(blue)[F] and $overline(x_i)$ in #text(red)[T]
- - For each clause gadget, scan the corresponding clause $c$, color first literal that is assigned `true` with #text(red)[T], the first that assigned `false` with #text(blue)[F], and color the vertex that was left with #text(gray)[D].
+ - $D$ will be colored as #text(blue)[D]
+ - For each "original" variable $x_i$, if $x_i$ is assigned `true` under $alpha_phi$ color $x_i$ as #text(green)[T] and $overline(x_i)$ in #text(red)[F], otherwise color $x_i$ as #text(red)[F] and $overline(x_i)$ in #text(green)[T]
+ - For each clause gadget, scan the corresponding clause $c$, color first literal that is assigned `true` with #text(green)[T], the first that assigned `false` with #text(red)[F], and color the vertex that was left with #text(blue)[D].
 
-- each edge inside vertex/clause gadgets have both ends in different colors
-- W.L.O.G, let $x$ be a variable assigned `true` by $a_phi$, as $a_phi$ is proper, all vertcies $overline(x)$ are #text(gray)[D] or  #text(blue)[F]. So all edges between clause/vertex gadgets have both ends in different colors.
+- Each edge inside vertex/clause gadgets have both ends in different colors.
+- W.L.O.G, let $x$ be a variable assigned `true` by $a_phi$, as $a_phi$ is proper, all vertcies $overline(x)$ are #text(red)[F] or #text(blue)[D]. So all edges between clause/vertex gadgets have both ends in different colors.
 
 == $"NAE-"k"-CNF-SAT" reduction 3"-COL"$
 - We need to show that
@@ -488,8 +498,8 @@ $
 
 $arrow.l.double$:
 - Given a 3-coloring $psi$ of $G_phi$, we define a NAE-satisfying assignment for $phi$.
-- As all of the variable gadgets form a triangles with a common vertex $D$, it leaves them with two colors to be chosen.
-- Take the variable gadget for an arbitrary variable $x$ and set the color under $x$ to be `true` and the color under $overline(x)$ to be `false`. This defines a valid assignmet to the variables of $phi$.
+- As all of the variable gadgets form a triangles with a common vertex $D$, it leaves them with two colors to be chosen W.L.O.G, those colors are #text(green)[T] and #text(red)[F].
+- Assigned $x_i$ as `true` if $x_i$ is colored as #text(green)[T] in its _variable gadget_ otherwise assign $x_i$ as `false`. This defines a valid assignmet to the variables of $phi$.
 - The assignment is NAE as each clause gadget has one variable colored `true` and one `false`.
 
 
@@ -527,7 +537,7 @@ Denote by $sigma(G) := max_(S subset.eq V(G)) e_G (S, overline(S))$.
 == Max-cut
 - We are going to show
 $
-"NAE-"k"-CNF-SAT" reduction "MAX-CUT".
+"NAE-"3"-CNF-SAT" reduction "MAX-CUT".
 $
 - Given a 3-CNF formula $phi$, define $G_phi$ as follows:
 #pause
@@ -536,8 +546,6 @@ $
 + For each clause $l_1 or l_2 or l_3$, we create a triangle with vertices $l_1, l_2, l_3$; this is our _clause gadget_.
 #pause
 + For each literal vertex in a clause gadget, connect it to the complementary literal vertex in the variable gadget.
-#pause
-- We return the pair $<G_phi, n+5m>$.
 #pause
 #align(center)[
   #cetz-canvas({
@@ -568,8 +576,47 @@ $
     content((rel:(0.5,0),to:"v_3_3"),[$x_4$])
   })
 ]
+ - The algorithm runs in poly time(why?)
+ - $f(phi)$ needs to return both the graph $G_phi$ and a number $k$ what should $k$ be?
+== Max-cut
+#align(center)[
+  #cetz-canvas({
+    import cetz.draw: *;
+    for i in range(4) {
+      let x = -6 + 4*i
+      circle((x - 1,-1),radius:2pt,fill: black,name:"l_" + str(i))
+      circle((x + 1,-1),radius:2pt,fill: black,name:"nl_" + str(i))
+      line("l_"+ str(i), "nl_" + str(i))
+    }
 
-- The algorithm runs in poly time(why?)
+    for i in range(4) {
+      let x = -6 + 4*i
+      circle((x - 1,-3),radius:2pt,fill: black,name:"v_1_" + str(i))
+      circle((x + 1,-3),radius:2pt,fill: black,name:"v_2_" + str(i))
+      circle((x,-2),radius:2pt,fill: black,name:"v_3_" + str(i))
+      line("v_1_"+ str(i), "v_2_" + str(i))
+      line("v_3_"+ str(i), "v_2_" + str(i))
+      line("v_1_"+ str(i), "v_3_" + str(i))
+    }
+
+    line("l_1", "v_1_2",stroke: ( dash: "dashed"))
+    content((rel:(-0.4,0),to:"l_1"),[$x_2$])
+    content((rel:(0,-0.5),to:"v_1_2"),[$overline(x_2)$])
+
+    line("nl_3", "v_3_3",stroke: ( dash: "dashed"))
+    content((rel:(0.4,0),to:"nl_3"),[$overline(x_4)$])
+    content((rel:(0.5,0),to:"v_3_3"),[$x_4$])
+  })
+]
+- What is $sigma(phi)$ in the graph above?
+- Intuition: 
+  - For each variable clause we might take 1 vertex, thus covering edges of  the time $(x_i, overline(x_i))$ thus covering exactly $n$ edges.
+  - For each triangle clause we might also take $1$ or $2$ vertices covering exactly $2$ of the edges of each triangle thus covering $2m$ edges.
+  - We are left with edges in between the _gadget variables_ and _gadget clauses_, how many edges of this type we have?
+    - Each literal $l$ connect exactly to one variable $v(overline(l))$, so that there are $3m$ edges in between.
+  
+  So that it follows that if $sigma(G_phi) <= n+5m$.
+  - We return $<G_phi, n+5m>$ and hope for the best.
 
 == Max-cut
 - We need to show that
@@ -588,11 +635,14 @@ $=>$:
 $
   phi in "NAE-"k"-CNF-SAT" <=> G_phi in  "MAX-CUT"
 $
+#v(-20pt)
 $arrow.l.double$:
 - Suppose that $<G_phi, n+5m> in "MAX-CUT"$. Let $(S,overline(S))$ be a cut of $G_phi$ such that $e_G_phi (S,overline(S)) = n + 5m$.
 - Define the assignment $alpha_phi$ for $phi$ in which all variable gadget literals found in $S$ are assigned `true` and all remaining are assigned `false`. This defines a consistent assignment.
 - It remains to prove that $alpha_phi$ is NAE-satisfying.
-  -  Every edge between a variable and clause gadget is also in the cut and has the form $(l,overline(l))$.
-  - Because $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning each gadget has at least one vertex in $S$ and one in $overline(S)$.
-  - Take a vertex $l$ in a clause gadget that is in $S$. Then the edge $(l,overline(l))$ implies that $overline(l) in overline(S)$, meaning the literal corresponding to $l$ is assigned `true`. In a similar manner, if
-  - $l$ is in $overline(S)$ the then the edge  $(l,overline(l))$ means the $overline(l) in S$ implying that $l$ is assigned `false`.
+  - Fix a clause of $phi$, and look at the corresponding gadget clause.
+    - Since $e_G_phi (S,overline(S)) = n + 5m$, every edge between this  clause gadget and the variable gadgets is also in the cut and of the form $(l,overline(l))$.
+    - Take a vertex $l$ in that clause gadget that is also in $S$. Then the edge $(l,overline(l))$ implies that $overline(l) in overline(S)$, meaning the literal corresponding to $l$ is assigned `true`. In a similar manner, if $l$ is in $overline(S)$ the then the edge  $(l,overline(l))$ means the $overline(l) in S$ implying that $l$ is assigned `false`.
+    - On the otherhand since $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning that this clause gadget has at least one vertex in $S$ and one in $overline(S)$. 
+
+  

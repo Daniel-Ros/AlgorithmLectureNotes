@@ -134,10 +134,17 @@ body
   "definition",
   "Goal",
   counter: none,
-  render: (..args) => {
-    set text(fill: rgb("#231f1f")) 
-    show strong: it => [#text(weight: "bold", fill: rgb("#12148d"))[#it.body]]
-    render-fn(fill: rgb("#dcf6e6"), ..args)
+  render: (prefix: none, title: "", full-title: "", body) => {
+    render-fn(
+      fill: rgb("#e2f6d1"),
+      prefix: prefix,
+      full-title: [#text(fill: rgb("#d2722d"), weight: "bold")[Goal #title:]],
+      title: title,
+      // Apply the show rule ONLY to the body content here:
+      [
+        #body
+      ]
+    )
   }
 )
 
