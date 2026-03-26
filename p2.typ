@@ -163,36 +163,35 @@
 
 = Independent set
 == Independent set
-// #set align(horizon)
-// For a graph $G$, two edges $e_1, e_2 subset.eq E(G)$ are called _indepedent_ if there is no common vertex between them.
-// #align(center)[
+#set align(horizon)
+For a graph $G$, vertecies $v_1, v_2, v_3 ...  subset.eq V(G)$ are called _indepedent_ if there is no edges between them.
+#align(center)[
 
-// #columns(2, [
-// #cetz.canvas({
-//   import cetz.draw: *
+#columns(2, [
+#cetz.canvas({
+  import cetz.draw: *
 
-//   circle((0,5), radius:5pt,fill:black, name:"p2")
-//   circle((0,0), radius:5pt,fill:black, name:"p1")
-//   line("p1","p2")
-//   circle((1,5), radius:5pt,fill:black, name:"p3")
-//   circle((1,0), radius:5pt,fill:black, name:"p4")
-//   line("p3","p4")
-//   content((0.5,-1), [indepedent], anchor: "north")
-// })
-// #colbreak()
-// #cetz.canvas({
-//   import cetz.draw: *
-//   circle((0.5,5), radius:5pt,fill:black, name:"p1")
-//   circle((0,0), radius:5pt,fill:black, name:"p2")
-//   circle((1,0), radius:5pt,fill:black, name:"p3")
-//   line("p1","p2")
-//   line("p1","p3")
-//   content((0.5,-1), [not indepedent], anchor: "north")
-//   // content(("p1","south"), [independant],anchor: "north")
-// })
-// ])
-// ]
-// #pagebreak()
+  circle((0.5,5), radius:5pt,fill:black, name:"p2")
+  // line("p1","p2"
+  circle((0,0), radius:5pt,fill:black, name:"p3")
+  circle((1,0), radius:5pt,fill:black, name:"p4")
+  // line("p3","p4")
+  content((0.5,-1), [indepedent], anchor: "north")
+})
+#colbreak()
+#cetz.canvas({
+  import cetz.draw: *
+  circle((0.5,5), radius:5pt,fill:black, name:"p1")
+  circle((0,0), radius:5pt,fill:black, name:"p2")
+  circle((1,0), radius:5pt,fill:black, name:"p3")
+  line("p1","p2")
+  line("p1","p3")
+  content((0.5,-1), [not indepedent], anchor: "north")
+  // content(("p1","south"), [independant],anchor: "north")
+})
+])
+]
+#pagebreak()
 #[
   #set align(horizon)
   #v(-80pt)
@@ -209,9 +208,9 @@
 #[
   #set align()
 #place(
-      top + left, 
-      dx: 17cm, 
-      dy: 0cm, 
+      top + left,
+      dx: 17cm,
+      dy: 0cm,
       block(width: 40%)[
       #set text(size: 0.8em)
    #claim[
@@ -312,7 +311,7 @@ $<==$:
    #h(50pt) $
    exists j,k in[m]$ s.t. $v(l_j) = x_i$ and $v(l_k) = overline(x_i) => l_j l_k in E(G_phi) => S
    $ is not independent.
-  
+
 
 = Graph coloring
 == Graph coloring
@@ -609,12 +608,12 @@ $
   })
 ]
 - What is $sigma(phi)$ in the graph above?
-- Intuition: 
+- Intuition:
   - For each variable clause we might take 1 vertex, thus covering edges of  the time $(x_i, overline(x_i))$ thus covering exactly $n$ edges.
   - For each triangle clause we might also take $1$ or $2$ vertices covering exactly $2$ of the edges of each triangle thus covering $2m$ edges.
   - We are left with edges in between the _gadget variables_ and _gadget clauses_, how many edges of this type we have?
     - Each literal $l$ connect exactly to one variable $v(overline(l))$, so that there are $3m$ edges in between.
-  
+
   So that it follows that if $sigma(G_phi) <= n+5m$.
   - We return $<G_phi, n+5m>$ and hope for the best.
 
@@ -643,6 +642,4 @@ $arrow.l.double$:
   - Fix a clause of $phi$, and look at the corresponding gadget clause.
     - Since $e_G_phi (S,overline(S)) = n + 5m$, every edge between this  clause gadget and the variable gadgets is also in the cut and of the form $(l,overline(l))$.
     - Take a vertex $l$ in that clause gadget that is also in $S$. Then the edge $(l,overline(l))$ implies that $overline(l) in overline(S)$, meaning the literal corresponding to $l$ is assigned `true`. In a similar manner, if $l$ is in $overline(S)$ the then the edge  $(l,overline(l))$ means the $overline(l) in S$ implying that $l$ is assigned `false`.
-    - On the otherhand since $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning that this clause gadget has at least one vertex in $S$ and one in $overline(S)$. 
-
-  
+    - On the otherhand since $e_G_phi (S,overline(S)) = n + 5m$, each clause gadget has 2 edges crossing $(S,overline(S))$, meaning that this clause gadget has at least one vertex in $S$ and one in $overline(S)$.
