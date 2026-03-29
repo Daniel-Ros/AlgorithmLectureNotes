@@ -175,12 +175,40 @@ In general we know that $tau(G) > nu(G)$ can happen!
 
 == Konig, Hall & Frobinius
 #[
-#set align(horizon)
+// #set align(horizon)
 
 #theorem(title: "König")[$tau(G) = nu(G)$, whenever $G$ is bipartite.]
 
-#figure(image("figures/L2i8.png", width: 50%))
+// #figure(image("figures/L2i8.png", width: 40%))
+// ]
+
+  #place(
+    top + left, 
+    dx: 17cm, 
+    dy: 5cm, 
+    figure(image("figures/L2i8.png", width: 38%))
+  )
+
+  #place(
+    top + left, 
+    dx: 0cm, 
+    dy: 3cm, 
+    
+    block(width: 60%)[
+      #definition[
+        $nu(G) :=$ the number of edges in a maximum matching of $G$.
+      ]
+      #remark[
+        If G has perfect matching then $nu(G) = n\/2$ and $n$ is even.
+      ]
+            #definition[
+        $tau(G) :=$ the number of vertices in a minimum vertex cover of $G$.
+      ]
+
+    ]
+  )
 ]
+
 
 
 #pagebreak()
@@ -381,7 +409,7 @@ $
   #block(inset: (left: 10pt, top: -5pt))[
     Let $G:= (A union.dot B, E)$ be bipartite, it remains to prove that $tau(G) <= nu(G)$
     \
-    #h(100pt) *i.e. it remians to show that $G$ has a matching of size $>= tau(G)$.*
+    #h(20pt) *i.e. it remians that $exists$matching$in G$ of size as big as the minimum vertex cover of $G$.*
     #v(-10pt)
     Let $C subset.eq V(G)$ be #bt(red.darken(10%))[min-vc] of $G$ and define
     #v(-5pt)
@@ -453,11 +481,14 @@ $
     #block(width: 45%)[
     #goal(title: "2")[ By hall theorem, it remains to show
       $
-      forall S subset.eq  (C cap A), |N_H (S)| >= |S|, \
-      forall S subset.eq  (C cap B), |N_H (S)| >= |S|.
+      forall S subset.eq  (C cap A), |N_H (S)| >= |S|.
       $
      ]
     ]
+    #block(width: 48%)[
+      *By contradiction:* $exists S subset.eq (C cap A)$ s.t. $|N_H (S)| < |S|$. \
+      #claim[For any $v in (A \\ C)$ and $u in (B \\ C)$ in holds that $u v in.not E(G)$.]
+    ] 
     #place(
       top + left, 
       dx: 13cm, 
@@ -474,6 +505,110 @@ $
       ]
     )
 
-    sdas
+      #place(
+      top + left, 
+      dx: 13.8cm, 
+      dy: 3.5cm, 
+      figure(image("figures/L2i10.png", width: 46%))
+    )
+    #v(-12pt)
+    *If such an edge exists then $C$ doesn't cover it.*
+
+    Set $C^* := (C \\ S) cup (N_H (S))$ 
+    \ $=>$ $C^*$ is a vertex cover of $G$ and $|C^*| > |C| = tau(G).$
+    
+    *Why?* Fix edge $u v in E(G)$ where $v in A$ and $u in B$. \
+    If $v in.not S$, then $u v$ covered by $C^*$ by definition of $C^*$ \ and $C$. If $v in S$, then
+    either $u in (B cup C)$ or $u in N_G (S)$. \ Either way $v in C^*$, so that $C^*$ is vertex cover.
   ]
 ]
+
+== Hall $<==$ König
+          #theorem(title: "Hall")[Let $G:=(A union.dot B, E)$ be a bipartite graph.
+      Then,
+      $
+        A arrow.r.turn B #h(20pt) arrow.r.l.long.double #h(20pt)
+        |N_G (S)| >= |S|, forall S subset.eq A.
+      $
+      ]
+
+      $==>$ Assume toward contradiction that $exists S subset.eq A$ s.t. $|S| > |N_G (S)|$. \
+      Then, it follows that in any matching of $G$ at least $1$ vertex of $S$ doesn't get matched into $B$. \
+      This contradicts the fact that a matching $A arrow.r.turn B$ exists.
+
+      #pause
+      *We may now assume that $G$ is a graph satisfying the Hall condition, here we will use König*.
+
+      #place(
+        top + left, 
+        dx: 60%, 
+        dy: 60%, 
+        block(width: 44%)[
+          #theorem(title: "König")[$tau(G) = nu(G)$, whenever $G$ is bipartite.]
+        ]
+      )
+
+      #block(width: 50%)[
+      #goal[
+        Show that $tau(G) >= |A|$.
+      ]
+      ]
+      #v(-10pt)
+      $=>$ Then, we have that 
+      $
+      #text[size of maximum matching] = underbrace(nu(G) = tau(G), #text[by König]) >= |A|.
+      $
+
+    
+== Hall $<==$ König
+#block(width: 48%, inset: (left: -0.5cm))[
+  #goal[
+    Show that $tau(G) >= |A|$.
+  ]
+]
+
+#place(
+  top + left, 
+  dx: 50%, 
+  dy: 0%, 
+  block(width: 48%)[
+      #set text(size: 0.8em)
+      #assumption[
+        - $G:=(A union.dot B, E)$ a bipartite graph,
+        - $forall S subset.eq A: |N_G (S)| >= |S|$.
+      ]
+  ]
+)
+#set math.equation(numbering: "(1)")
+#place(
+top + left, 
+dx: 13.8cm, 
+dy: 3.5cm, 
+figure(image("figures/L2i10.png", width: 46%))
+)
+#v(-10pt)
+#block(width: 48%)[
+#proof[
+  Let $C$ be a minimum vertex cover in $G$.
+  Note that
+  $
+  tau(G) = |C| &= |A cap C| + |B cap C|
+  $ <eq:1>
+  Note, that $N_G (A \\ C) subset.eq B cap C$. \
+  #[
+    #set text(size: 0.8em)
+  *Otherwise an edge $u v$ not covered by $C$ exists.*
+  ]
+  By assumption we have $|N_G (A \\ C)| >= |A \\ C|$.
+  We then have
+  $
+    |B cap C| >= |N_G (A \\ C)| >= |A \\ C| 
+  $ <eq:2>
+  Combining @eq:1 and @eq:2 
+  #math.equation(block: true, numbering: none)[
+    $ tau(G) >=|A cap C| + |A \\ C| = |A| $
+  ] <hidden-label>
+  #v(-20pt)
+]
+]
+

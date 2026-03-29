@@ -7,7 +7,7 @@
 #import "@preview/algorithmic:1.0.7"
 #import "@preview/larrow:1.0.0": *
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
-
+#import "@preview/equate:0.2.1": *
 #import cosmos.clouds: *
 
 #let conf(body) = {
@@ -148,6 +148,25 @@ body
   }
 )
 
+#let (definition-counter, definition-box, claim, show-definition) = make-frame(
+  "definition",
+  "Goal",
+  counter: none,
+  render: (prefix: none, title: "", full-title: "", body) => {
+    render-fn(
+      fill: rgb("#280d79"),
+      prefix: prefix,
+      full-title: [#text(fill: rgb("#edb8b8"), weight: "bold")[Claim #title:]],
+      title: title,
+      // Apply the show rule ONLY to the body content here:
+      [
+        #set text(fill: rgb("#feffff"))
+        #body
+      ]
+    )
+  }
+)
+
 #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
   "theorem",
   theorion-i18n-map.at("theorem"),
@@ -156,6 +175,25 @@ body
     set text(fill: rgb("#ffffff")) 
     show strong: it => [#text(weight: "bold", fill: rgb("#e6dbdb"))[#it.body]]
     render-fn(fill: rgb("#073749"), ..args)
+  }
+)
+
+#let (definition-counter, definition-box, assumption, show-definition) = make-frame(
+  "definition",
+  "Goal",
+  counter: none,
+  render: (prefix: none, title: "", full-title: "", body) => {
+    render-fn(
+      fill: rgb("#fdd1d1"),
+      prefix: prefix,
+      full-title: [#text(fill: rgb("#6068fb"), weight: "bold")[Assumption #title:]],
+      title: title,
+      // Apply the show rule ONLY to the body content here:
+      [
+        #set text(fill: rgb("#2844b5"))
+        #body
+      ]
+    )
   }
 )
 
