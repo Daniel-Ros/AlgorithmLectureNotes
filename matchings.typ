@@ -561,6 +561,7 @@ $
 
     
 == Hall $<==$ König
+#[
 #block(width: 48%, inset: (left: -0.5cm))[
   #goal[
     Show that $tau(G) >= |A|$.
@@ -611,4 +612,271 @@ figure(image("figures/L2i10.png", width: 46%))
   #v(-20pt)
 ]
 ]
+]
 
+= Berge's Theorem
+== M-Augmenting paths
+#[
+#set math.equation(numbering: "(1)")
+#v(20pt)
+// #set align(horizon)
+$G$-graph, $M$-matching. \
+A path $P:= x_1 x_2 ... x_ell$ is called $M$-alternating if:
+$
+x_1 x_2 in M => x_2x_3 in.not M => x_3x_4 in M => ...
+$<eq:3>
+or
+$
+x_1 x_2 in.not M => x_2x_3 in M => x_3x_4 in.not M => ...
+$<eq:4>
+// If an alternating path is maximal of @eq:4[Type]. Then, $P$ is called an M-Augmenting path.
+]
+
+#place(
+top + left, 
+dx: 3cm, 
+dy: 7.5cm, 
+figure(image("figures/L2i11.png", width: 36%))
+)
+
+#place(
+top + left, 
+dx: 14.8cm, 
+dy: 8cm, 
+figure(image("figures/L2i12.png", width: 25%))
+)
+
+#place(
+  top + left, 
+dx: 17.2cm, 
+dy: 8cm,
+  block(fill: white, width: 100pt, height: 30pt)
+)
+
+#place(
+  top + left, 
+dx: 6cm, 
+dy: 7.2cm, 
+  block(fill: white, width: 100pt, height: 30pt)
+)
+
+== M-Augmenting paths
+#definition[
+  $G$-graph, $M$-matching. \ An $M$-Alternating path $P:= x_1 ... x_ell$ is called $M$-Augmenting if $x_1 in.not V(M)$ and $x_ell in.not V(M)$. 
+]
+#remark[
+  Trivially, if an $M$-Augmenting path exists, then $|M|<nu(G)$. \
+  Is the opposite true?
+]
+
+#place(
+top + left, 
+dx: 0cm, 
+dy: 7.111cm, 
+figure(image("figures/L2i13.png", width: 100%))
+)
+// #claim[
+//   Let $M$ be a matching of $G$, and let $P:= x_1 x_2 ... x_ell$ be an M-augmenting path. \
+//   Then, $M^* := M - #text[odd edges] + #text[even edges]$ is a matching of $G.$
+// ]
+// #remark[
+//   Trivially, $|M^*| = |M|+1$.
+// ]
+
+== Berge's Theorem
+#[
+  #set align(horizon)
+#theorem(title: "Berge's")[
+  $G$-graph, $M$-matching 
+  $
+    M #text[max matching] <==> M #text[has no $M$-Augmenting paths]. 
+  $
+]
+
+For convinence we will prove the negation
+  $
+    M #text[is not max] <==> M #text[has an $M$-Augmenting paths]. 
+  $
+We already proved $<==$ it remains to prove $==>$. \
+]
+
+== Berge's Theorem
+#[
+  #v(20pt)
+  Given two matching $N$ and $M$ in $G$?
+  What does $N triangle M$ looks like?
+  $
+  N triangle M := (N \\ M) cup (M \\ C).
+  $
+  $=>$ $N triangle M$ is a graph where every vertex degree is $<= 2$ \
+  $=>$ Every path or cycle of $N triangle M$ must be alternating  \
+    #h(20pt) #[ --
+      #set text(size: 0.8em)
+      *otherwise we will see path $u v w$ with $u v in M$ and $v w in M$ implying that $M$ is not a matching. (or N)*]\
+  $=>$ Connected components of $N triangle M$ consist of _single edges, alternating paths and even cycles_.
+  #place(
+    top + left, 
+    dx: 4cm, 
+    dy: 7.111cm, 
+    figure(image("figures/L2i14.png", width: 65%))
+    )
+]
+
+== Berge's Theorem
+#[
+  #goal[
+    $M #text[is not max] ==> M #text[has an $M$-Augmenting paths]$
+  ]
+  #proof()[
+    Let $N$ be a max matching in $G$.
+    - At the connected components of $N triangle M$.
+      - every connected component is either _single edge_, _alternating path_ or _even cycle_.
+    - Since $|N| > |M|$ there must exists a connected component $C$ of $N triangle M$ with more edges \ 
+      $N$ than edges of $M$.
+      - $C$ must be either a single edge of $N$ or an $M$-Augmenting path. #[
+        #set text(size: 0.8em, weight: "light", fill: red.darken(50%))
+        (Single edge is also $M$-Augmenting)]
+  ]
+
+    #place(
+    top + left, 
+    dx: 8cm, 
+    dy: 9cm, 
+    figure(image("figures/L2i15.png", width: 35%))
+    )
+]
+
+= The Hungarian Method
+== The Hungarian Method
+#v(10pt)
+Using the Berge's Theorem the Hungarian \
+method for finding a max matching is \
+the following algo:
+
+#[
+#show: style-algorithm
+#algorithm-figure(
+  "",
+  vstroke: .5pt + luma(200),
+  {
+    import algorithmic: *
+    Procedure(
+      "max_matching",
+      ("G"),
+      {
+        Assign([Set $M$], [$emptyset$])
+        LineBreak
+
+        While(
+          [there _is an_ has an $M$-augmenting path in $G$],
+          {
+            Line([Let $P$ be an $M$-augmenting path in $G$])
+            Line([Augment $M$ along $P$])
+          },
+        )
+        LineBreak
+        Return([$M$])
+      },
+    )
+  }
+)
+]
+#place(
+    top + left, 
+    dx: 12cm, 
+    dy: 0cm, 
+    block(width: 60%)[
+    #theorem(title: "Berge's")[
+      $G$-graph, $M$-matching 
+      $
+        M #text[max matching] <==> M #text[has no $M$-Augmenting paths]. 
+      $
+      ]
+    ]
+    )
+#v(-10pt)
+#pause
+#place(
+  top + left, 
+  dx: 18cm, 
+  dy: 4.5cm, 
+  block(width: 30%)[
+  #set align(center)
+  #problem[
+    $G$-graph, $M$-matching. \ Determine whether an \ $M$-augmenting path in $G$ exists, if it does then find it.
+  ]
+  ]
+)
+
+== Not so easy
+#[
+  #set align(center)
+  #set text(size: 1.2em)
+  #v(40pt)
+  *In general graphs, finding an $M$-augmenting path might be chalenging.*
+]
+
+    #place(
+    top + left, 
+    dx: 0cm, 
+    dy: 2.5cm, 
+    figure(image("figures/L2i16.png", width: 100%))
+    )
+
+  #place(
+    top + center, 
+    dx: 0cm, 
+    dy: 12cm, 
+    [
+      #set align(center)
+      *Odd cycles makes finding paths dificult.* \
+      _Bipartite graphs have no odd cycles, is it easier there?_
+    ]
+  )
+
+== The Hungarian Algorithm
+#block(width: 50%)[
+  #v(70pt)
+Given $G:=(A cup.dot B, E)$ and $M subset.eq E(G)$ define
+- $A_M := A \\ V(M)$ unmached vertices in $A$.
+- $B_M := A \\ V(M)$ unmached vertices in $B$.
+*Our goal:* Find an $M$-augmenting path from $A_M$ to $B_M$. *How?*
+]
+
+    #place(
+    top + left, 
+    dx: 13cm, 
+    dy: 1cm, 
+    figure(image("figures/L2i17.png", width: 55%))
+    )
+
+#pause
+Construct directed graph set: \ 
+- #text(fill: green)[matching edges $M$] directed from $B$ to $A$.
+- Everything else from $A$ to $B$.
+
+  #place(
+  top + left, 
+  dx: 14.7cm, 
+  dy: -8.2cm, 
+  figure(image("figures/L2i18.png", width: 140%))
+  )
+
+#pause
+Run any path algorithm from $A_M$ to $B_M$,
+any \ such path is an $M$-Augmenting path.
+
+    #place(
+    top + left, 
+    dx: 13cm, 
+    dy: 1cm, 
+    figure(image("figures/L2i19.png", width: 57%))
+    )
+  
+  #pause
+  #place(
+    top + left, 
+    dx: 13cm, 
+    dy: 1cm, 
+    figure(image("figures/L2i20.png", width: 57%))
+    )
