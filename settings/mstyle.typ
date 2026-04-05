@@ -6,95 +6,93 @@
 #import "@preview/theorion:0.4.1": *
 #import "@preview/algorithmic:1.0.7"
 #import "@preview/larrow:1.0.0": *
-#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 #import "@preview/equate:0.2.1": *
 #import cosmos.clouds: *
 
-#let conf(body) = {
-let (claim-counter, claim-box, claim, show-claim) = make-frame(
-  "claim",
-  "Claim", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
-  counter: theorem-counter, // inherit the old counter, `none` by default
-  inherited-levels: 1, // useful when you need a new counter
-  inherited-from: heading, // heading or just another counter
-  render: render-fn.with(fill: navy.lighten(80%)),
-)
-show: show-claim
+#let conf(body, handout: bool) = {
+  let (claim-counter, claim-box, claim, show-claim) = make-frame(
+    "claim",
+    "Claim", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
+    counter: theorem-counter, // inherit the old counter, `none` by default
+    inherited-levels: 1, // useful when you need a new counter
+    inherited-from: heading, // heading or just another counter
+    render: render-fn.with(fill: navy.lighten(80%)),
+  )
+  show: show-claim
 
 
-let (question-counter, question-box, question, show-question) = make-frame(
-  "question",
-  "Question", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
-  counter: theorem-counter, // inherit the old counter, `none` by default
-  inherited-levels: 2, // useful when you need a new counter
-  inherited-from: heading, // heading or just another counter
-  render: render-fn.with(fill: green.lighten(90%)),
-)
-show: show-question
+  let (question-counter, question-box, question, show-question) = make-frame(
+    "question",
+    "Question", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
+    counter: theorem-counter, // inherit the old counter, `none` by default
+    inherited-levels: 2, // useful when you need a new counter
+    inherited-from: heading, // heading or just another counter
+    render: render-fn.with(fill: green.lighten(90%)),
+  )
+  show: show-question
 
-show: show-theorion
-
-
-import algorithmic: algorithm-figure, style-algorithm
-show: style-algorithm
+  show: show-theorion
 
 
-show: university-theme.with(
-  aspect-ratio: "16-9",
-  // align: horizon,
-  // config-common(handout: true),
-  config-common(frozen-counters: (theorem-counter,)), // freeze theorem counter for animation
-  config-page(margin: (top: 1.6cm, bottom: 2cm, x: 1.5cm)),
-  config-info(
-    title: [Algorithms 2],
-    subtitle: [Complexity],
-    author: [Daniel Rosenberg & Michael Trushkin],
-    // date: datetime.today(),
-    institution: [Ariel University],
-    // logo: emoji.school,
-  ),
-)
-
-set heading(numbering: numbly("{1}.", default: "1.1"))
-show heading.where(level: 2): set text(fill: white.darken(5%))
-
-set text(
-  size: 18pt,
-)
-
-set page(
-  // header: [
-  //   // #text(size: 20pt, fill: white)[
-  //   // Michael Trushkin
-  //   // ]
-
-  // ],
-  background: {
-    place(
-      top,
-      rect(
-        fill: rgb("#073749"),
-        width: 100%,
-        height: 7%, // 1/5th of the page
-      ),
-      
-    )
-    place(
-      top,
-      rect(
-        fill: rgb("#113f55"),
-        width: 100%,
-        height: 6.5%, // 1/5th of the page
-      ),
-      
-    )
-  },
-  margin: (bottom: 0cm),
-)
-show emph: it => text(fill: rgb("#3461f6"), it)
+  import algorithmic: algorithm-figure, style-algorithm
+  show: style-algorithm
 
 
-body
+  show: university-theme.with(
+    aspect-ratio: "16-9",
+    // align: horizon,
+    config-common(handout: handout),
+    config-common(frozen-counters: (theorem-counter,)), // freeze theorem counter for animation
+    config-page(margin: (top: 1.6cm, bottom: 2cm, x: 1.5cm)),
+    config-info(
+      title: [Algorithms 2],
+      subtitle: [Complexity],
+      author: [Daniel Rosenberg & Michael Trushkin],
+      // date: datetime.today(),
+      institution: [Ariel University],
+      // logo: emoji.school,
+    ),
+  )
+
+  set heading(numbering: numbly("{1}.", default: "1.1"))
+  show heading.where(level: 2): set text(fill: white.darken(5%))
+
+  set text(
+    size: 18pt,
+  )
+
+  set page(
+    // header: [
+    //   // #text(size: 20pt, fill: white)[
+    //   // Michael Trushkin
+    //   // ]
+
+    // ],
+    background: {
+      place(
+        top,
+        rect(
+          fill: rgb("#073749"),
+          width: 100%,
+          height: 7%, // 1/5th of the page
+        ),
+      )
+      place(
+        top,
+        rect(
+          fill: rgb("#113f55"),
+          width: 100%,
+          height: 6.5%, // 1/5th of the page
+        ),
+      )
+    },
+    margin: (bottom: 0cm),
+  )
+  show emph: it => text(fill: rgb("#3461f6"), it)
+
+
+  body
 }
 
 #let bent-edge(from, to, mid: 40%, ..args) = {
@@ -115,12 +113,12 @@ body
   theorion-i18n-map.at("problem"),
   counter: theorem-counter,
   render: (..args) => {
-    set text(fill: rgb("#681811")) 
+    set text(fill: rgb("#681811"))
     show strong: it => [#text(weight: "bold", fill: rgb("#c00d28"))[#it.body]]
     show emph: it => [#text(weight: "bold", style: "italic", fill: rgb("#c00d28"))[#it.body]]
 
     render-fn(fill: rgb("#e4c8a2"), ..args)
-  }
+  },
 )
 
 #let (definition-counter, definition-box, definition, show-definition) = make-frame(
@@ -143,9 +141,9 @@ body
       // Apply the show rule ONLY to the body content here:
       [
         #body
-      ]
+      ],
     )
-  }
+  },
 )
 
 #let (definition-counter, definition-box, claim, show-definition) = make-frame(
@@ -162,9 +160,9 @@ body
       [
         #set text(fill: rgb("#feffff"))
         #body
-      ]
+      ],
     )
-  }
+  },
 )
 
 #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
@@ -172,10 +170,10 @@ body
   theorion-i18n-map.at("theorem"),
   inherited-levels: 2,
   render: (..args) => {
-    set text(fill: rgb("#ffffff")) 
+    set text(fill: rgb("#ffffff"))
     show strong: it => [#text(weight: "bold", fill: rgb("#e6dbdb"))[#it.body]]
     render-fn(fill: rgb("#073749"), ..args)
-  }
+  },
 )
 
 #let (definition-counter, definition-box, assumption, show-definition) = make-frame(
@@ -192,9 +190,9 @@ body
       [
         #set text(fill: rgb("#2844b5"))
         #body
-      ]
+      ],
     )
-  }
+  },
 )
 
 #let proof(
@@ -226,8 +224,11 @@ body
 // )
 
 #let bt(color, body) = {
-  text(fill: color, weight: "bold")[#body] 
+  text(fill: color, weight: "bold")[#body]
 }
 
 #let cup = math.union
 #let cap = math.inter
+
+
+#let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
