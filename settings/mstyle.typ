@@ -10,7 +10,7 @@
 #import "@preview/equate:0.2.1": *
 #import cosmos.clouds: *
 
-#let conf(body, handout: bool) = {
+#let conf(body, handout: bool, subtitle: str) = {
   let (claim-counter, claim-box, claim, show-claim) = make-frame(
     "claim",
     "Claim", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
@@ -47,7 +47,7 @@
     config-page(margin: (top: 1.6cm, bottom: 2cm, x: 1.5cm)),
     config-info(
       title: [Algorithms 2],
-      subtitle: [Complexity],
+      subtitle: [subtitle],
       author: [Daniel Rosenberg & Michael Trushkin],
       // date: datetime.today(),
       institution: [Ariel University],

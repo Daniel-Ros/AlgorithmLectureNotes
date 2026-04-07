@@ -4,7 +4,7 @@
 
 
 
-#show: conf.with(handout: true)
+#show: conf.with(handout: true, subtitle: [Matching in graphs])
 
 #title-slide()
 
