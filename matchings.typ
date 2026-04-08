@@ -831,7 +831,7 @@ $
       - $underbracket(N_G (A \\ C) subset.eq B cap C, #[
         #set text(size: 0.7em)
         #h(20pt)
-        *Otherwise $exists u v$ edge not covered by $C$*
+        *Otherwise $exists u v in E(G)$ not covered by $C$*
       ]). ==> |B cap C| >=  |N_G (A \\ C)|.$ 
 
       - Fix $S = (A \\ C) underbracket(==>,"By assumption")$ $|N_G (A \\ C)| >= |A \\ C|$.
