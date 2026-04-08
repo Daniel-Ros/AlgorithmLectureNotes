@@ -128,23 +128,7 @@
   render: render-fn.with(fill: rgb("#bfdce2")),
 )
 
-#let (definition-counter, definition-box, goal, show-definition) = make-frame(
-  "definition",
-  "Goal",
-  counter: none,
-  render: (prefix: none, title: "", full-title: "", body) => {
-    render-fn(
-      fill: rgb("#e2f6d1"),
-      prefix: prefix,
-      full-title: [#text(fill: rgb("#d2722d"), weight: "bold")[Goal #title:]],
-      title: title,
-      // Apply the show rule ONLY to the body content here:
-      [
-        #body
-      ],
-    )
-  },
-)
+
 
 #let (definition-counter, definition-box, claim, show-definition) = make-frame(
   "definition",

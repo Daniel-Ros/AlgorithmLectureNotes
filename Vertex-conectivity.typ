@@ -310,7 +310,13 @@ $
 $
 
 == Edge contractions
-#todo[This slide]
+- Consider the edge $e = x y$
+- To constract $e$:
+  - remove $e$
+  - merge $x$ and $y$ into one vertex $v_(x y)$
+  - connect $v_(x y)$ to $N_G (x) cap N_G (y)$, remove any dupplicant edges that may arise
+\
+- Denote by $G slash e$ the graph resualting from contracting $e$
 
 == Menger's theorem
 #theorem(title: [Menger's theorem])[
