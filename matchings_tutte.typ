@@ -129,14 +129,17 @@
   top + left,
   dx: 1cm,
   dy: 3.5cm,
-  cetz-canvas({
+cetz-canvas({
     import cetz.draw: *
 
     for i in range(0, 6) {
       circle((calc.cos(i) * 3, calc.sin(i) * 3), fill: black, radius: 3pt, name: "l" + str(i))
-      circle((calc.cos(i + 0.44) * 1.5, calc.sin(i + 0.44) * 1.5), fill: red, radius: 3pt, name: "r" + str(i))
       circle((calc.cos(i) * 0.8, calc.sin(i) * 0.8), fill: black, radius: 3pt, name: "o" + str(i))
     }
+    for i in range(0, 3) {
+      circle((calc.cos(i * 2) * 2.2, calc.sin(i * 2) * 2.2), fill: red, radius: 3pt, name: "r" + str(i))
+    }
+
     circle((3, 1.5), fill: black, radius: 3pt, name: "t0")
     circle((2.5, 2.2), fill: black, radius: 3pt, name: "t1")
 
@@ -144,16 +147,21 @@
     line("t0", "t1", stroke: black + 2pt)
     line("r0", "t1", stroke: red + 2pt)
     for i in range(0, 6) {
-      for j in range(-1, 1) {
-        let t = calc.rem(calc.rem(i + j, 6) + 6, 6)
+      for j in range(-1, 0) {
+        let t = calc.rem(calc.rem(i * 2 + j, 3) + 3, 3)
         line("l" + str(i), "r" + str(t), stroke: red + 2pt)
-        line("o" + str(i), "r" + str(t), stroke: red.darken(10%) + 2pt)
+        line("o" + str(i), "r" + str(t), stroke: red.darken(30%) + 2pt)
       }
+      // line("r" + str(i), "o2", stroke: red + 2pt)
+      // line("r" + str(i), "r" + str(calc.rem(i + 1, 3)), stroke: red + 2pt)
+      line("l" + str(i), "l" + str(calc.rem(i + 1, 6)), stroke: black + 2pt)
+      line("l" + str(i), "l" + str(calc.rem(i + 1, 6)), stroke: black + 2pt)
+    }
+
+    for i in range(0, 3) {
       line("r" + str(i), "o1", stroke: red + 2pt)
       line("r" + str(i), "o2", stroke: red + 2pt)
-      line("r" + str(i), "r" + str(calc.rem(i + 1, 6)), stroke: red + 2pt)
-      line("l" + str(i), "l" + str(calc.rem(i + 1, 6)), stroke: black + 2pt)
-      line("l" + str(i), "l" + str(calc.rem(i + 1, 6)), stroke: black + 2pt)
+      line("r" + str(i), "r" + str(calc.rem(i + 1, 3)), stroke: red + 2pt)
     }
     // line("l" + str(1), "r" + str(7), stroke: black + 2pt)
     // line("l" + str(1), "r" + str(i + j), stroke: black + 2pt)
