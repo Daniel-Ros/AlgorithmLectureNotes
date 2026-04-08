@@ -233,7 +233,7 @@ In general we know that $tau(G) > nu(G)$ can happen!
 == Konig, Hall & Frobinius
 #[
   // #set align(horizon)
-
+  #v(70pt)
   #theorem(title: "König")[$tau(G) = nu(G)$, whenever $G$ is bipartite.]
 
   // #figure(image("figures/L2i8.png", width: 40%))
@@ -252,15 +252,11 @@ In general we know that $tau(G) > nu(G)$ can happen!
     dy: 3cm,
 
     block(width: 60%)[
-      #definition[
-        $nu(G) :=$ the number of edges in a maximum matching of $G$.
-      ]
-      #remark[
-        If G has perfect matching then $nu(G) = n\/2$ and $n$ is even.
-      ]
-      #definition[
-        $tau(G) :=$ the number of vertices in a minimum vertex cover of $G$.
-      ]
+      #v(100pt)
+      #set text(size: 0.9em)
+        - $nu(G) :=$ the number of edges in a maximum matching of $G$.
+        #v(-5pt)
+        - $tau(G) :=$ the number of vertices in a minimum vertex cover of $G$.
 
     ],
   )
@@ -439,14 +435,16 @@ We need to prove:
 
 #[
   Frobenius Theorem $arrow.long.r.double$ Konig's Theorem: \
-  #h(100pt) Since $nu(G) >= tau(G)$ is known in general, it remains to show $nu(G) <= tau(G)$. \ #h(100pt)
-  if $G$ has a perfect matching $M$, then an arbitrary vertex per edge
-  of $M$ is sufficient. \ #h(100pt)
-  What if $G$ has no _perfect matching_? *the rest is left for the reader as exercise*
+  #h(100pt) Since $tau(G) >= nu(G)$ is known in general, it remains to show $tau(G) <= nu(G)$. \ #h(100pt)
+  if $G$ has a perfect matching $M$ so that $nu(G)=n/2$ and $|A|=n/2$. We may take $A$ as 
+  \ #h(100pt) a vertex cover of $G$
+  and we are done.\ #h(100pt)  #[#set text(size: 0.85em, fill: red.darken(20%), weight: "bold")
+  Or in general we can pick 1 vertex per edges of $M$ in a smart way.] \ #h(100pt) 
+  What if $G$ has no _perfect matching_? 
 
+  *hint*: The idea is to "remove" unmached vertices untill  we are left with a subgraph having a perfect matching. Then, think what can be done about the removed vertices.
 
-  *hint*: The idea is to "remove" unmached vertices untill  we are left with a subgraph having perfect matching. Then, think what can be done about the removed vertices.
-
+  *the rest is left for the reader as an exercise*
 ]
 
 == Hall $==>$ König.
@@ -462,6 +460,7 @@ We need to prove:
       #theorem(title: "König")[$tau(G) = nu(G)$, whenever $G$ is bipartite.]
     ],
     [
+      #v(5pt)
       #theorem(title: "Hall")[Let $G:=(A union.dot B, E)$ be a bipartite graph.
         Then,
         $
@@ -475,7 +474,7 @@ We need to prove:
 #[
   // #v(-30pt)
   #set text(size: 0.9em)
-  #block(inset: (left: 10pt, top: -5pt))[
+  #block(inset: (left: 10pt, top: -10pt))[
     - Let $G:= (A union.dot B, E)$ be bipartite, it remains to prove that $tau(G) <= nu(G)$
     - *We seek to prove that $G$ has a matching of size at least the minimum VC of $G$*
     - Let $C subset.eq V(G)$ be #bt(red.darken(10%))[min-vc] of $G$ and define
@@ -486,7 +485,7 @@ We need to prove:
         [
           $
             #text(fill: green)[$H & := G(C inter A, B \\ C)$] \
-            #text(fill: navy)[$H' & := G(C inter B, A \\ C)$]
+            #text(fill: blue)[$H' & := G(C inter B, A \\ C)$]
           $
           #place(
             top + left,
@@ -520,17 +519,30 @@ We need to prove:
 
               for i in range(1, 4) {
                 line("l" + str(i), "r" + str(i + 3), stroke: green + 2pt)
-                line("r" + str(i), "l" + str(i + 3), stroke: navy + 2pt)
+                line("r" + str(i), "l" + str(i + 3), stroke: blue + 2pt)
 
                 if (i < 3) {
                   line("l" + str(i + 1), "r" + str(i + 3), stroke: green + 2pt)
-                  line("r" + str(i + 1), "l" + str(i + 3), stroke: navy + 2pt)
+                  line("r" + str(i + 1), "l" + str(i + 3), stroke: blue + 2pt)
                 }
               }
 
               (pause,)
               line("l6", "r6", stroke: 2pt + red, name: "nonedge")
-              content((name: "nonedge"), [This cannot be!], anchor: "north")
+              content((name: "nonedge"), [
+                #set align(center)
+                #set text(size: 0.8em)
+                #v(3pt)
+                This cannot be! \ 
+                *If such an edges exists then \ $C$ doesnt cover it.*
+                ], anchor: "north")
+
+              (pause,)
+              line("l1", "r1", stroke: 2pt + black, name: "nonedge2")
+              content((name: "nonedge2"), [#set align(center)
+              #set text(size: 0.8em)
+              #v(3pt)
+              Dont care about \ those!], anchor: "north")
             }),
           )
 
@@ -581,51 +593,51 @@ We need to prove:
 
 
 
-  #pagebreak()
-  #claim[For any $v in (A \\ C)$ and $u in (B \\ C)$ in holds that $u v in.not E(G)$.]
-  #align(center)[
-    #cetz-canvas({
-      import cetz.draw: *
+  // #pagebreak()
+  // #claim[For any $v in (A \\ C)$ and $u in (B \\ C)$ in holds that $u v in.not E(G)$.]
+  // #align(center)[
+  //   #cetz-canvas({
+  //     import cetz.draw: *
 
-      for i in range(1, 7) {
-        circle((0, -i * 1.5), fill: black, radius: 2pt, name: "l" + str(i))
-        circle((5, -i * 1.5), fill: black, radius: 2pt, name: "r" + str(i))
-      }
+  //     for i in range(1, 7) {
+  //       circle((0, -i * 1.5), fill: black, radius: 2pt, name: "l" + str(i))
+  //       circle((5, -i * 1.5), fill: black, radius: 2pt, name: "r" + str(i))
+  //     }
 
-      rect-around("l1", "l6", padding: (0.4, 0.4, 0.4, 2), radius: 0.2)
-      rect-around("r1", "r6", padding: (0.4, 2, 0.4, 0.3), radius: 0.2)
+  //     rect-around("l1", "l6", padding: (0.4, 0.4, 0.4, 2), radius: 0.2)
+  //     rect-around("r1", "r6", padding: (0.4, 2, 0.4, 0.3), radius: 0.2)
 
-      rect-around("l1", "l3", padding: (0.2, 0.2, 0.2, 1.8), radius: 0.1, fill: orange.lighten(70%))
-      content((rel: (-1, 0), "to": "l2"), [$A cap C$])
-      rect-around("l4", "l6", padding: (0.2, 0.2, 0.2, 1.8), radius: 0.1, fill: purple.lighten(70%))
-      content((rel: (-1, 0), "to": "l5"), [$A \\ C$])
+  //     rect-around("l1", "l3", padding: (0.2, 0.2, 0.2, 1.8), radius: 0.1, fill: orange.lighten(70%))
+  //     content((rel: (-1, 0), "to": "l2"), [$A cap C$])
+  //     rect-around("l4", "l6", padding: (0.2, 0.2, 0.2, 1.8), radius: 0.1, fill: purple.lighten(70%))
+  //     content((rel: (-1, 0), "to": "l5"), [$A \\ C$])
 
-      rect-around("r1", "r3", padding: (0.2, 1.8, 0.2, 0.2), radius: 0.1, fill: orange.lighten(70%))
-      content((rel: (1, 0), "to": "r2"), [$B cap C$])
-      rect-around("r4", "r6", padding: (0.2, 1.8, 0.2, 0.2), radius: 0.1, fill: purple.lighten(70%))
-      content((rel: (1, 0), "to": "r5"), [$B \\ C$])
+  //     rect-around("r1", "r3", padding: (0.2, 1.8, 0.2, 0.2), radius: 0.1, fill: orange.lighten(70%))
+  //     content((rel: (1, 0), "to": "r2"), [$B cap C$])
+  //     rect-around("r4", "r6", padding: (0.2, 1.8, 0.2, 0.2), radius: 0.1, fill: purple.lighten(70%))
+  //     content((rel: (1, 0), "to": "r5"), [$B \\ C$])
 
-      for i in range(1, 7) {
-        circle((0, -i * 1.5), fill: black, radius: 2pt, name: "l" + str(i))
-        circle((5, -i * 1.5), fill: black, radius: 2pt, name: "r" + str(i))
-      }
+  //     for i in range(1, 7) {
+  //       circle((0, -i * 1.5), fill: black, radius: 2pt, name: "l" + str(i))
+  //       circle((5, -i * 1.5), fill: black, radius: 2pt, name: "r" + str(i))
+  //     }
 
-      for i in range(1, 4) {
-        line("l" + str(i), "r" + str(i + 3), stroke: green + 2pt)
-        line("r" + str(i), "l" + str(i + 3), stroke: navy + 2pt)
-        line("r" + str(i), "l" + str(i), stroke: orange + 2pt)
+  //     for i in range(1, 4) {
+  //       line("l" + str(i), "r" + str(i + 3), stroke: green + 2pt)
+  //       line("r" + str(i), "l" + str(i + 3), stroke: navy + 2pt)
+  //       line("r" + str(i), "l" + str(i), stroke: orange + 2pt)
 
-        if (i < 3) {
-          line("l" + str(i + 1), "r" + str(i + 3), stroke: green + 2pt)
-          line("r" + str(i + 1), "l" + str(i + 3), stroke: navy + 2pt)
-        }
-      }
+  //       if (i < 3) {
+  //         line("l" + str(i + 1), "r" + str(i + 3), stroke: green + 2pt)
+  //         line("r" + str(i + 1), "l" + str(i + 3), stroke: navy + 2pt)
+  //       }
+  //     }
 
-      line("l6", "r6", stroke: 2pt + red, name: "nonedge")
-      content((name: "nonedge"), [This cannot be!], anchor: "north")
-    })
-  ]
-  - If such an edge exsists, then $C$ is not VC
+  //     line("l6", "r6", stroke: 2pt + red, name: "nonedge")
+  //     content((name: "nonedge"), [This cannot be!], anchor: "north")
+  //   })
+  // ]
+  // - If such an edge exsists, then $C$ is not VC
   #pagebreak()
 
   #v(10pt)
@@ -685,15 +697,16 @@ We need to prove:
     }),
   )
 
-  *By contradiction:* $exists S subset.eq (C cap A)$ s.t. $|N_H (S)| < |S|$. \
+  *Assume by contradiction:* $exists S subset.eq (C cap A)$ s.t. $|N_H (S)| < |S|$. \
 
   - Set $C^* := (C \\ S) cup (N_H (S))$
   - $C^*$ is a vertex cover of $G$
-  - $|C^*| > |C| = tau(G).$
+  - $|C^*| < |C| = tau(G).$
+  - Contradict the minimality of $tau(G)$.
 
-  *Why?* Fix edge $u v in E(G)$ where $v in A$ and $u in B$. \
-  If $v in.not S$, then $u v$ covered by $C^*$ by definition of $C^*$ \ and $C$. If $v in S$, then
-  either $u in (B cup C)$ or $u in N_G (S)$. \ Either way $v in C^*$, so that $C^*$ is vertex cover.
+  // *Why?* Fix edge $u v in E(G)$ where $v in A$ and $u in B$. \
+  // If $v in.not S$, then $u v$ covered by $C^*$ by definition of $C^*$ \ and $C$. If $v in S$, then
+  // either $u in (B cup C)$ or $u in N_G (S)$. \ Either way $v in C^*$, so that $C^*$ is vertex cover.
 ]
 
 
@@ -711,19 +724,28 @@ Assume toward contradiction that $exists S subset.eq A$ s.t. $|S| > |N_G (S)|$. 
 Then, it follows that in any matching of $G$ at least $1$ vertex of $S$ doesn't get matched into $B$. \
 This contradicts the fact that a matching $A arrow.r.turn B$ exists.
 
-#pause
-*We may now assume that $G$ is a graph satisfying the Hall condition, here we will use König*.
+
+== Hall $<==$ König
+#theorem(title: "Hall")[Let $G:=(A union.dot B, E)$ be a bipartite graph.
+  Then,
+  $
+    A arrow.r.turn B #h(20pt) arrow.r.l.long.double #h(20pt)
+    |N_G (S)| >= |S|, forall S subset.eq A.
+  $
+]
+*We may now assume that $G$ is a graph satisfying the Hall condition, and that $tau(G)= nu(G)$.*
 
 #place(
   top + left,
-  dx: 60%,
-  dy: 60%,
-  block(width: 44%)[
+  dx: 0%,
+  dy: 37%,
+  block(width: 100%)[
     #theorem(title: "König")[$tau(G) = nu(G)$, whenever $G$ is bipartite.]
   ],
 )
 
 #block(width: 50%)[
+  #v(50pt)
   #goal[
     Show that $tau(G) >= |A|$.
   ]
@@ -799,21 +821,22 @@ $
     }),
   )
   #v(-10pt)
-  #block(width: 48%)[
+  #block(width: 62%)[
     #proof[
       Let $C$ be a minimum vertex cover in $G$.
-      Note that
-      $
-        tau(G) = |C| & = |A cap C| + |B cap C|
-      $ <eq:1>
-      Note, that $N_G (A \\ C) subset.eq B cap C$. \
-      #[
-        #set text(size: 0.8em)
-        *Otherwise an edge $u v$ not covered by $C$ exists.*
-      ]
 
-      By assumption we have $|N_G (A \\ C)| >= |A \\ C|$.
-      We then have
+      $
+         tau(G) = |C| & = |A cap C| + |B cap C|
+      $ <eq:1>
+      - $underbracket(N_G (A \\ C) subset.eq B cap C, #[
+        #set text(size: 0.7em)
+        #h(20pt)
+        *Otherwise $exists u v$ edge not covered by $C$*
+      ]). ==> |B cap C| >=  |N_G (A \\ C)|.$ 
+
+      - Fix $S = (A \\ C) underbracket(==>,"By assumption")$ $|N_G (A \\ C)| >= |A \\ C|$.
+      #v(5pt)
+      $==>$ #v(-35pt)
       $
         |B cap C| >= |N_G (A \\ C)| >= |A \\ C|
       $ <eq:2>

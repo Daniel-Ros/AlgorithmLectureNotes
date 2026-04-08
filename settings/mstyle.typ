@@ -121,6 +121,33 @@
   },
 )
 
+#let (definition-counter, definition-box, question, show-definition) = make-frame(
+  "question",
+  "Question",
+  counter: theorem-counter,
+  render: (..args) => {
+    set text(fill: rgb("#0c020d"))
+    show strong: it => [#text(weight: "bold", fill: rgb("#c00d28"))[#it.body]]
+    show emph: it => [#text(weight: "bold", style: "italic", fill: rgb("#c00d28"))[#it.body]]
+
+    render-fn(fill: rgb("#e7dac9"), ..args)
+  },
+)
+
+
+#let (definition-counter, definition-box, observation, show-definition) = make-frame(
+  "question",
+  "Observation",
+  counter: theorem-counter,
+  render: (..args) => {
+    set text(fill: rgb("#0c020d"))
+    show strong: it => [#text(weight: "bold", fill: rgb("#0d187f"))[#it.body]]
+    show emph: it => [#text(weight: "bold", style: "italic", fill: rgb("#060102"))[#it.body]]
+
+    render-fn(fill: rgb("#bfbebe"), ..args)
+  },
+)
+
 #let (definition-counter, definition-box, definition, show-definition) = make-frame(
   "definition",
   theorion-i18n-map.at("definition"),
