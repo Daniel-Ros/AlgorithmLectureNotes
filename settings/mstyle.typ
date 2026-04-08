@@ -47,7 +47,7 @@
     config-page(margin: (top: 1.6cm, bottom: 2cm, x: 1.5cm)),
     config-info(
       title: [Algorithms 2],
-      subtitle: [subtitle],
+      subtitle: [#subtitle],
       author: [Daniel Rosenberg & Michael Trushkin],
       // date: datetime.today(),
       institution: [Ariel University],
@@ -214,6 +214,24 @@
   let qed-symbol = if qed == auto { get-qed-symbol(here()) } else { qed }
   [#emph(theorion-i18n(title)).#sym.space#body#box(width: 0em)#h(1fr)#sym.wj#sym.space.nobreak$#qed-symbol$]
 }
+
+#let (definition-counter, definition-box, goal, show-definition) = make-frame(
+  "definition",
+  "Goal",
+  counter: none,
+  render: (prefix: none, title: "", full-title: "", body) => {
+    render-fn(
+      fill: rgb("#e2f6d1"),
+      prefix: prefix,
+      full-title: [#text(fill: rgb("#d2722d"), weight: "bold")[Goal #title:]],
+      title: title,
+      // Apply the show rule ONLY to the body content here:
+      [
+        #body
+      ],
+    )
+  },
+)
 
 // #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
 //   "theorem",
