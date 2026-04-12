@@ -9,7 +9,7 @@
 #title-slide()
 
 = Connectivity
-== Blocks of graphs
+== Graph disconnectors
 #definition[
   - For a graph $G$, write
   $
@@ -141,7 +141,196 @@
     e in E(G) "is a brige" <=> e "does not lie on a cycle of " G
   $
 ]
+
+= Whitney's Theorem
+== Whitney's Theorem
+#theorem(title: "Whitney's Theorem")[
+  - $G$ - a connected graph with $v(G) >= 3$
+  $
+    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+  $
+]
+#pause
+
+*_proof $arrow.double.l$._*\
+- Assume $G$ has a cut vertex, denoted by $v$.
+- $v$ seperates the graph into 2 components $C_1,C_2$.
+- Take $w in C_1, u in C_2$ both should hold true
+1. A cycle $C := w x_1 ... x_ell u w$ exists in $G$.
+2. If we remove $v$ then $u$ and $v$ are disconencted.
+*contridition:* If $v in C$ then removing $v$ or any vertex in $C$ wont seperate $w$ from $u$, and if $v in.not C$ then the path $w x_1 ... x_ell u$ still exists.
+
+#place(
+  top + left,
+  dx: 18cm,
+  dy: 5cm,
+  figure(
+    image("figures/L3I1.png", width: 35%),
+  ),
+)
+
+#place(
+  top + left,
+  dx: 15cm,
+  dy: 7.5cm,
+  align(center)[
+    #cetz.canvas({
+      import cetz.draw: *
+
+      circle((0, 0), name: "C1", fill: gray.lighten(50%))
+      circle((2, 0), name: "C2", fill: gray.lighten(50%))
+
+      // cetz.decorations.wave(line("C1.center", "C2.center", name: "E"), segments: 2, amplitude: 0.1)
+
+      circle((1, 0), name: "C1", radius: 2pt, fill: red, stroke: red)
+      // circle("C1", radius: 2pt, fill: red, stroke: red)
+      // circle("C2", radius: 2pt, fill: red, stroke: red)
+    })
+  ],
+)
+
+
+
+
 #pagebreak()
+#theorem(title: "Whitney's Theorem")[
+  - $G$ - a connected graph with $v(G) >= 3$
+  $
+    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+  $
+]
+$=>$
+- Suppose $G$ has no cut-vxs.
+- We prove by induction on
+$
+  delta_G(u,v) := "length of the shortest path u" ~> "v in "G
+$
+- Basis:
+  - Let $u,v in V(G)$ have $delta_G (u,v) = 1$
+  - If $u v in E(G)$ is a brigde, the $u,v$ are cut-vxs. *contridiction*.
+  - From the observation $u v$ lies on a cycle.
+  #place(dx: 21em, dy: -0.5em)[
+    #set text(size: 15pt)
+    #block(width: 80%)[
+      #observation(title: "H.W.")[
+        $
+          e in E(G) "is a brige" <=> e "does not lie on a cycle of " G
+        $
+      ]]
+  ]
+#pagebreak()
+#theorem(title: "Whitney's Theorem")[
+  - $G$ - a connected graph with $v(G) >= 3$
+  $
+    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+  $
+]
+- Suppose $G$ has no cut-vxs.
+- Suppose that the claim hold true for all
+  $"pairs of verecies " u,v "such that " delta_G(u,v) < k$
+- Consider a pair $u,v in V(G)$ satisfying $delta_G (u,v) = k$
+- Let $P$ be the shortest path $u ~> v$, and let $v'$ denote the vertex before $v$ on $P$.
+- As $delta_G (u, v') = k -1$, there is a cycle  $C$ containting $u, v'$
+#v(-16pt)
+#align(center)[
+  #diagram(
+    node((0, 0), [$u$], name: <u>),
+    node((1, 0), name: <v1>),
+    node((2, 0), name: <v2>),
+    node((3, 0), name: <v3>),
+    node((4, 0), name: <v4>),
+    node((5, 0), [$v'$], name: <vv>),
+    node((6, 0), [$v$], name: <v>),
+
+    edge(<u>, <vv>, "~>"),
+    edge(<vv>, <v>, "->"),
+
+    edge(<u>, <v2>, "->", bend: 40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+    edge(<v2>, <v4>, "->", bend: -40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+    edge(<v4>, <vv>, "->", bend: 40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+    edge(<vv>, <v3>, "->", bend: 40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+    edge(<v3>, <v1>, "->", bend: -40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+    edge(<v1>, <u>, "->", bend: 40deg, stroke: (
+      paint: red.darken(10%), // The color
+      thickness: 1.8pt, // The width
+      dash: "dashed", // The pattern
+    )),
+
+    node($P$, enclose: (<u>, <v>, (0, -0.5)), stroke: teal, fill: teal.lighten(90%)),
+  )
+]
+- If $v in V(C)$ we are done
+#pagebreak()
+#theorem(title: "Whitney's Theorem")[
+  - $G$ - a connected graph with $v(G) >= 3$
+  $
+    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+  $
+
+
+]
+- Otherwise, we can divide $C$ into 2 arcs
+#block(width: 70%)[
+  #align(center)[
+    $u ~> v' quad v` ~> u$\
+    #diagram(
+      node((0, 0), [$u$], name: <u>),
+      node((1, 0), name: <v1>),
+      node((2, 0), name: <v2>),
+      node((3, 0), name: <v3>),
+      node((4, 0), name: <v4>),
+      node((5, 0), [$v'$], name: <vv>),
+      node((6, 0), [$v$], name: <v>),
+
+      // edge(<u>, <vv>, "~>"),
+      edge(<vv>, <v>, "->"),
+
+      edge(<u>, <v2>, "-", bend: 40deg, stroke: red + 2pt),
+      edge(<v2>, <v4>, "-", bend: -40deg, stroke: red + 2pt),
+      edge(<v4>, <vv>, "-", bend: 40deg, stroke: red + 2pt),
+      edge(<vv>, <v3>, "-", bend: 40deg, stroke: blue + 2pt),
+      edge(<v3>, <v1>, "-", bend: -40deg, stroke: blue + 2pt),
+      edge(<v1>, <u>, "-", bend: 40deg, stroke: blue + 2pt),
+
+      // node($P$, enclose: (<u>, <v>, (0, -0.7)), stroke: teal, fill: teal.lighten(90%)),
+    )
+  ]]
+- As $G$ has no cut-vxs, $G-v'$ is still connected,
+- There is a path from $v$ to a vertex $x$ that lies on one of the arcs)
+- W.L.O.G, let $x in u ~> v'$ *take the shortest path from $v$ to any of the arcs!*.
+- Then the cycle $u ~> x ~> v -> v' ~> u$ is a cycle, and contains both $u$ and $v$.
+
+#place(
+  top + left,
+  dx: 17cm,
+  dy: 6cm,
+  figure(
+    image("figures/L3i2.png", width: 40%),
+  ),
+)
+
+= Consequences of Whitney's Theorem
+== Graph blocks
 #definition[
   A maximal connected subgraph of $G$ containing no cut-vxs is called a block of $G$
 ]
@@ -275,135 +464,6 @@
   },
 )
 
-= Whitney's Theorem
-== Whitney's Theorem
-#theorem(title: "Whitney's Theorem")[
-  - $G$ - a connected graph with $v(G) >= 3$
-  $
-    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
-  $
-]
-#pause
-
-*_proof._*\
-$arrow.double.l$
-- Assume $G$ has a cut vertex, denoted by $v$.
-- $v$ seperates the graph into 2 components $C_1,C_2$.
-- take $v in C_1, u in C_2$, then $u,v$ does not lie on a cycle. *contridition*
-#align(center)[
-  #cetz.canvas({
-    import cetz.draw: *
-
-    circle((0, 0), name: "C1", fill: gray.lighten(50%))
-    circle((5, 0), name: "C2", fill: gray.lighten(50%))
-
-    cetz.decorations.wave(line("C1.center", "C2.center", name: "E"), segments: 2, amplitude: 0.1)
-
-    circle("C1", radius: 2pt, fill: red, stroke: red)
-    circle("C2", radius: 2pt, fill: red, stroke: red)
-  })
-]
-#pagebreak()
-#theorem(title: "Whitney's Theorem")[
-  - $G$ - a connected graph with $v(G) >= 3$
-  $
-    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
-  $
-]
-$=>$
-- Suppose $G$ has no cut-vxs.
-- We prove by induction on
-$
-  delta_G(u,v) := "length of the shortest path u" ~> "v in "G
-$
-- basis:
-  - let $u,v in V(G)$ have $delta_G (u,v) = 1$
-  - if $u v in E(G)$ is a brigde, the $u,v$ are cut-vxs. *contridiction*.
-  - from the observation $u v$ lies on a cycle.
-  #place(dx: 18em, dy: -0.5em)[
-    #set text(size: 15pt)
-    #observation(title: "H.W.")[
-      $
-        e in E(G) "is a brige" <=> e "does not lie on a cycle of " G
-      $
-    ]]
-#pagebreak()
-#theorem(title: "Whitney's Theorem")[
-  - $G$ - a connected graph with $v(G) >= 3$
-  $
-    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
-  $
-]
-- Suppose $G$ has no cut-vxs.
-- Suppose that the claim hold true for all
-  $"pairs of verecies " u,v "such that " delta_G(u,v) < k$
-- Consider a pair $u,v in V(G)$ satisfying $delta_G (u,v) = k$
-- Let $P$ be the shortest path $u ~> v$, and let $v'$ denote the vertex before $v$ on $P$.
-- As $delta_G (u, v') = k -1$, there is a cycle  $C$ containting $u, v'$
-#v(-16pt)
-#align(center)[
-  #diagram(
-    node((0, 0), [$u$], name: <u>),
-    node((1, 0), name: <v1>),
-    node((2, 0), name: <v2>),
-    node((3, 0), name: <v3>),
-    node((4, 0), name: <v4>),
-    node((5, 0), [$v'$], name: <vv>),
-    node((6, 0), [$v$], name: <v>),
-
-    edge(<u>, <vv>, "~>"),
-    edge(<vv>, <v>, "->"),
-
-    edge(<u>, <v2>, "->", bend: 40deg, stroke: red + 2pt),
-    edge(<v2>, <v4>, "->", bend: -40deg, stroke: red + 2pt),
-    edge(<v4>, <vv>, "->", bend: 40deg, stroke: red + 2pt),
-    edge(<vv>, <v3>, "->", bend: 40deg, stroke: red + 2pt),
-    edge(<v3>, <v1>, "->", bend: -40deg, stroke: red + 2pt),
-    edge(<v1>, <u>, "->", bend: 40deg, stroke: red + 2pt),
-
-    node($P$, enclose: (<u>, <v>, (0, -0.7)), stroke: teal, fill: teal.lighten(90%)),
-  )
-]
-- If $v in V(C)$ we are done
-#pagebreak()
-#theorem(title: "Whitney's Theorem")[
-  - $G$ - a connected graph with $v(G) >= 3$
-  $
-    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
-  $
-
-
-]
-- Otherwise, we can divide $C$ into 2 arcs
-#align(center)[
-  $u ~> v' quad v` ~> u$\
-  #diagram(
-    node((0, 0), [$u$], name: <u>),
-    node((1, 0), name: <v1>),
-    node((2, 0), name: <v2>),
-    node((3, 0), name: <v3>),
-    node((4, 0), name: <v4>),
-    node((5, 0), [$v'$], name: <vv>),
-    node((6, 0), [$v$], name: <v>),
-
-    // edge(<u>, <vv>, "~>"),
-    edge(<vv>, <v>, "->"),
-
-    edge(<u>, <v2>, "-", bend: 40deg, stroke: red + 2pt),
-    edge(<v2>, <v4>, "-", bend: -40deg, stroke: red + 2pt),
-    edge(<v4>, <vv>, "-", bend: 40deg, stroke: red + 2pt),
-    edge(<vv>, <v3>, "-", bend: 40deg, stroke: blue + 2pt),
-    edge(<v3>, <v1>, "-", bend: -40deg, stroke: blue + 2pt),
-    edge(<v1>, <u>, "-", bend: 40deg, stroke: blue + 2pt),
-
-    // node($P$, enclose: (<u>, <v>, (0, -0.7)), stroke: teal, fill: teal.lighten(90%)),
-  )
-]
-- As $G$ has no cut-vxs, $G-v'$ is still connected,
-- There is a path from $v$ to a vertex $x$ that lies on one of the arcs
-- W.L.O.G, let $x in u ~> v'$
-- Then the cycle $u ~> x ~> v -> v' ~> u$ is a cycle of size $k$, and contains both $u$ and $v$.
-
 
 == Consequences of Whitney's Theorem
 #theorem(title: "Whitney's Theorem")[
@@ -415,7 +475,7 @@ $
 - Any two blocks of $G$ meet in at most one vertex.
 - If two block do meet, their intersection vertex is a cut-vertex.
 - The blocks of $G$ partition $E(G)$ (H.W.).
-- Every cycle of $G$ lies in precisly one block of $F$(H.W.).
+- Every cycle of $G$ lies in precisly one block of $G$(H.W.).
 
 == Block tree
 - Given a graph $G$
@@ -431,7 +491,7 @@ $
   if $G$ is connected then $"BC"(G)$ is a tree
 ]
 #v(-20pt)
-#figure(image("figures/blocktrees.png", width: 52%))
+// #figure(image("figures/blocktrees.png", width: 52%))
 
 = Assesing connectivity
 == Assesing connectivity
@@ -516,72 +576,129 @@ $
   ]
 ]
 
-== Definition I
-
+== Definition I: Vertex Connectivity
 #definition[
-  - $0 <= k in NN$
-  - $G$ - graph with $v(G) > k$
-  - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+  The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
 ]
-
-#align(center)[
-  #cetz-canvas({
-    import cetz.draw: *
-
-    circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
-    circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
-    circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
-    circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
-
-    line("v1", "v2")
-    line("v2", "v3")
-    line("v3", "v4")
-    line("v4", "v1")
-
-    (pause,)
-
-    circle("v1", radius: 10pt, stroke: 3pt + red)
-    circle("v3", radius: 10pt, stroke: 3pt + red)
-  })
-
-
-]
-
-== Definition I
 #definition[
-  - $0 <= k in NN$
-  - $G$ - graph with $v(G) > k$
-  - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
 ]
-#pause
-- To be $k$-connected, $v(G) > k$ must hold
-#pause
-- What about $K_1$?
-#pause
-- We assume it is connected
-#pause
-- But our definition $K_1$ is #text(red)[not] connected!#pause
-- We'll fix this later
 
-
-
-#pagebreak()
-#definition[
-  The largest $k in ZZ_(>=0)$ for which $G$ is $k$-connected is denoted by $kappa(G)$
+#v(30pt)
+#block(width: 70%)[
+  #remark[
+    Other than the complete graph:
+    $
+      "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
+    $
+  ]
+  The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
 ]
-#pause
-- All disconnected graphs have $kappa(G) = 0$
-#pause
-- All connected graphs (but $K_1$) are *1-connected*
-#pause
-- $kappa(G) >= 1$ #pause
-- $kappa(K_1) = 0$ #emoji.face.sad #pause
-- Cycles with 3 or more vertecies are *2-connected* #pause
-- $kappa(K_r) = r-1$
 
-Again $kappa(K_1) = 0$, is annoying, can we fix it?
+#place(
+  top + left,
+  dx: 16cm,
+  dy: 5.5cm,
+  align(center)[
+    #cetz-canvas({
+      import cetz.draw: *
 
-== Definition II
+      circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
+      circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
+      circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
+      circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
+
+      line("v1", "v2")
+      line("v2", "v3")
+      line("v3", "v4")
+      line("v4", "v1")
+
+      (pause,)
+
+      circle("v1", radius: 10pt, stroke: 3pt + red)
+      circle("v3", radius: 10pt, stroke: 3pt + red)
+    })
+
+    #place(
+      top + left,
+      dx: 16cm,
+      dy: 6.2cm,
+      [
+        $
+          kappa(G) = 2
+        $
+      ],
+    )
+  ],
+)
+
+
+// == Definition I
+
+// #definition[
+//   - $0 <= k in NN$
+//   - $G$ - graph with $v(G) > k$
+//   - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+// ]
+
+// #align(center)[
+//   #cetz-canvas({
+//     import cetz.draw: *
+
+//     circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
+//     circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
+//     circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
+//     circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
+
+//     line("v1", "v2")
+//     line("v2", "v3")
+//     line("v3", "v4")
+//     line("v4", "v1")
+
+//     (pause,)
+
+//     circle("v1", radius: 10pt, stroke: 3pt + red)
+//     circle("v3", radius: 10pt, stroke: 3pt + red)
+//   })
+
+
+// ]
+
+// == Definition I
+// #definition[
+//   - $0 <= k in NN$
+//   - $G$ - graph with $v(G) > k$
+//   - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+// ]
+// #pause
+// - To be $k$-connected, $v(G) > k$ must hold
+// #pause
+// - What about $K_1$?
+// #pause
+// - We assume it is connected
+// #pause
+// - But our definition $K_1$ is #text(red)[not] connected!#pause
+// - We'll fix this later
+
+
+
+// #pagebreak()
+// #definition[
+//   The largest $k in ZZ_(>=0)$ for which $G$ is $k$-connected is denoted by $kappa(G)$
+// ]
+// #pause
+// - All disconnected graphs have $kappa(G) = 0$
+// #pause
+// - All connected graphs (but $K_1$) are *1-connected*
+// #pause
+// - $kappa(G) >= 1$ #pause
+// - $kappa(K_1) = 0$ #emoji.face.sad #pause
+// - Cycles with 3 or more vertecies are *2-connected* #pause
+// - $kappa(K_r) = r-1$
+
+// Again $kappa(K_1) = 0$, is annoying, can we fix it?
+
+== Definition II: Path connectivity
 #definition[
   - $G$ a graph
   - $A,B subset.eq V(G)$
@@ -654,45 +771,46 @@ Again $kappa(K_1) = 0$, is annoying, can we fix it?
     circle((0, -0.4), radius: 2pt, fill: black)
   })
   $A cap B != emptyset$ also can happen
+]
+#pause
+*So whats better: vertex connectivity or path connectivity ?*
 
-  Here we need $K_1$ to be connected
-]
+// #pagebreak()
+// #definition[
+//   - $G$ a graph
+//   - $A,B subset.eq V(G)$
+//   - let $rho_g (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
+// ]
 
-#pagebreak()
-#definition[
-  - $G$ a graph
-  - $A,B subset.eq V(G)$
-  - let $rho_g (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
-]
+// #definition[
+//   $G$ is _k-connected_ if $rho_g (A,B) >= k " "forall {u,v} in binom(V(G), 2)$
+// ]
+// - A graph is *1-connected* $<=>$ it is connected
+// - Here, $K_1$ is connected
+// #v(-12pt)
+// \  #pause
+// - What definition should we choose? #pause
+// - Menger tell us
+// #align(center)[
+//   #set text(size: 24pt)
+//   *They are the same*
+// ]
 
-#definition[
-  $G$ is _k-connected_ if $rho_g (A,B) >= k " "forall {u,v} in binom(V(G), 2)$
-]
-- A graph is *1-connected* $<=>$ it is connected
-- Here, $K_1$ is connected
-#v(-12pt)
-\  #pause
-- What definition should we choose? #pause
-- Menger tell us
-#align(center)[
-  #set text(size: 24pt)
-  *They are the same*
-]
-== Our definition
-#definition[
-  The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
-]
-#definition[
-  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
-]
+// == Our definition
+// #definition[
+//   The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
+// ]
+// #definition[
+//   A graph $G$ is called _k-connected_ if $kappa(G) >= k$
+// ]
 
-#remark[
-  Other than the complete graph:
-  $
-    "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
-  $
-]
-The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
+// #remark[
+//   Other than the complete graph:
+//   $
+//     "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
+//   $
+// ]
+// The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
 = Menger's theorem
 == Menger's theorem
 #definition[
