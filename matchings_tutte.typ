@@ -4,7 +4,7 @@
 
 
 
-#show: conf.with(handout: true, subtitle: [Matching in graphs])
+#show: conf.with(handout: false, subtitle: [Matching in graphs])
 
 #title-slide()
 
@@ -129,7 +129,7 @@
   top + left,
   dx: 1cm,
   dy: 3.5cm,
-cetz-canvas({
+  cetz-canvas({
     import cetz.draw: *
 
     for i in range(0, 6) {

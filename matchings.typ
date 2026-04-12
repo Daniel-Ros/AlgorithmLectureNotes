@@ -4,7 +4,7 @@
 
 
 
-#show: conf.with(handout: true, subtitle: [Matching in graphs])
+#show: conf.with(handout: false, subtitle: [Matching in graphs])
 
 #title-slide()
 
@@ -254,9 +254,9 @@ In general we know that $tau(G) > nu(G)$ can happen!
     block(width: 60%)[
       #v(100pt)
       #set text(size: 0.9em)
-        - $nu(G) :=$ the number of edges in a maximum matching of $G$.
-        #v(-5pt)
-        - $tau(G) :=$ the number of vertices in a minimum vertex cover of $G$.
+      - $nu(G) :=$ the number of edges in a maximum matching of $G$.
+      #v(-5pt)
+      - $tau(G) :=$ the number of vertices in a minimum vertex cover of $G$.
 
     ],
   )
@@ -436,11 +436,11 @@ We need to prove:
 #[
   Frobenius Theorem $arrow.long.r.double$ Konig's Theorem: \
   #h(100pt) Since $tau(G) >= nu(G)$ is known in general, it remains to show $tau(G) <= nu(G)$. \ #h(100pt)
-  if $G$ has a perfect matching $M$ so that $nu(G)=n/2$ and $|A|=n/2$. We may take $A$ as 
+  if $G$ has a perfect matching $M$ so that $nu(G)=n/2$ and $|A|=n/2$. We may take $A$ as
   \ #h(100pt) a vertex cover of $G$
   and we are done.\ #h(100pt)  #[#set text(size: 0.85em, fill: red.darken(20%), weight: "bold")
-  Or in general we can pick 1 vertex per edges of $M$ in a smart way.] \ #h(100pt) 
-  What if $G$ has no _perfect matching_? 
+    Or in general we can pick 1 vertex per edges of $M$ in a smart way.] \ #h(100pt)
+  What if $G$ has no _perfect matching_?
 
   *hint*: The idea is to "remove" unmached vertices untill  we are left with a subgraph having a perfect matching. Then, think what can be done about the removed vertices.
 
@@ -529,20 +529,28 @@ We need to prove:
 
               (pause,)
               line("l6", "r6", stroke: 2pt + red, name: "nonedge")
-              content((name: "nonedge"), [
-                #set align(center)
-                #set text(size: 0.8em)
-                #v(3pt)
-                This cannot be! \ 
-                *If such an edges exists then \ $C$ doesnt cover it.*
-                ], anchor: "north")
+              content(
+                (name: "nonedge"),
+                [
+                  #set align(center)
+                  #set text(size: 0.8em)
+                  #v(3pt)
+                  This cannot be! \
+                  *If such an edges exists then \ $C$ doesnt cover it.*
+                ],
+                anchor: "north",
+              )
 
               (pause,)
               line("l1", "r1", stroke: 2pt + black, name: "nonedge2")
-              content((name: "nonedge2"), [#set align(center)
-              #set text(size: 0.8em)
-              #v(3pt)
-              Dont care about \ those!], anchor: "north")
+              content(
+                (name: "nonedge2"),
+                [#set align(center)
+                  #set text(size: 0.8em)
+                  #v(3pt)
+                  Dont care about \ those!],
+                anchor: "north",
+              )
             }),
           )
 
@@ -826,15 +834,17 @@ $
       Let $C$ be a minimum vertex cover in $G$.
 
       $
-         tau(G) = |C| & = |A cap C| + |B cap C|
+        tau(G) = |C| & = |A cap C| + |B cap C|
       $ <eq:1>
-      - $underbracket(N_G (A \\ C) subset.eq B cap C, #[
-        #set text(size: 0.7em)
-        #h(20pt)
-        *Otherwise $exists u v in E(G)$ not covered by $C$*
-      ]). ==> |B cap C| >=  |N_G (A \\ C)|.$ 
+      - $underbracket(
+          N_G (A \\ C) subset.eq B cap C, #[
+            #set text(size: 0.7em)
+            #h(20pt)
+            *Otherwise $exists u v in E(G)$ not covered by $C$*
+          ]
+        ). ==> |B cap C| >= |N_G (A \\ C)|.$
 
-      - Fix $S = (A \\ C) underbracket(==>,"By assumption")$ $|N_G (A \\ C)| >= |A \\ C|$.
+      - Fix $S = (A \\ C) underbracket(==>, "By assumption")$ $|N_G (A \\ C)| >= |A \\ C|$.
       #v(5pt)
       $==>$ #v(-35pt)
       $

@@ -4,7 +4,7 @@
 #import "@preview/diagraph:0.3.6": *
 
 
-#show: conf.with(handout: true, subtitle: [Vertex-connectivity in graphs])
+#show: conf.with(handout: false, subtitle: [Vertex-connectivity in graphs])
 
 #title-slide()
 
