@@ -183,6 +183,14 @@
 
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
 
+// = align(center)[
+//   #let fn =
+//   #fn(body)
+// ]
+
+
+
+
 #let c_vertex = cetz.draw.circle.with(radius: 5pt, fill: black)
 
 
