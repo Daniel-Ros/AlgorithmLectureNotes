@@ -478,20 +478,35 @@ $
 - Every cycle of $G$ lies in precisly one block of $G$(H.W.).
 
 == Block tree
-- Given a graph $G$
-- Define the following auxiliary graph:
-  - $B(G) := {B : B subset.eq G "is a block of G"}$
-  - $C(G) := {v : v in V(G) "is a cut-vx of G"}$
-- Let $"BC"(G)$ denote the follwing graph
-  - The vertecies of $"BC"(G)$ are $B(G) cap C(G)$
-  - The edges of $"BC"(G)$ are ${{B,v} : B in B(G), v in C(G) "and" v in B}$
+Given a graph $G$ define the following auxiliary graph:
+#v(-10pt)
+#table(
+  columns: (1fr, 1.2fr),
+  stroke: none,
+  inset: 0pt,
+  [‣ $B(G) := {B : B subset.eq G "is a block of G"}$], [‣ $C(G) := {v : v in V(G) "is a cut-vx of G"}$],
+)
 
+
+#v(-5pt)
+Let $"BC"(G)$ denote the follwing graph
+#v(-10pt)
+#table(
+  columns: (1fr, 1.2fr),
+  stroke: none,
+  inset: 0pt,
+  [‣ The vertecies of $"BC"(G)$ are $B(G) cap C(G)$],
+  [‣ The edges of $"BC"(G)$ are #v(-10pt)
+    $
+      {{B,v} : B in B(G), v in C(G) "and" v in B}
+    $],
+)
 #v(-10pt)
 #theorem[
   if $G$ is connected then $"BC"(G)$ is a tree
 ]
 #v(-20pt)
-// #figure(image("figures/blocktrees.png", width: 52%))
+#figure(image("figures/blocktrees.png", width: 64%))
 
 = Assesing connectivity
 == Assesing connectivity
