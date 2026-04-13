@@ -312,7 +312,7 @@
 
   - $co(G-S):=$ number of odd components in $G-S$.
 
-  - If $exists S subset.eq V(G)$ s.t. $co(G-S) >= |S|$
+  - If $exists S subset.eq V(G)$ s.t. $co(G-S) > |S|$
     - $G$ has no perfect matching
 ]
 #place(
@@ -443,11 +443,11 @@
 )
 
 
-#let tutte = theorem(title: "Tutte's")[Let $G:=(A union.dot B, E)$ be a bipartite graph.
+#let tutte = theorem(title: "Tutte's")[Let $$ be a graph.
   Then,
   $
     #[$G$ has a p.m] #h(20pt) arrow.r.l.long.double #h(20pt)
-    underbracket([|co(G-S)| <= |S|, forall S subset.eq A.], #[Tutte's Condition])
+    underbracket(#[$|co(G-S)| <= |S|, forall S subset.eq V(G))$], #[Tutte's Condition])
   $
 ]
 
@@ -482,7 +482,7 @@
   - $e$ an edge not in $G$
   Then, $G' := G+e$ also satisfies the tutte's condition.
 ]
-*Proof.* Fix $S in V(G)$ and show that for any edge $co(G-S + e) <= |S|$.
+*Proof.* Fix $S subset.eq V(G)$ and show that for any edge $co(G-S + e) <= |S|$.
 
 #pagebreak()
 #[
@@ -1081,7 +1081,7 @@
 #[
   #v(50pt)
   - If #text(fill: purple)[$e$ is an edge] with both ends in different #text(fill: red)[odd components]:
-    - Then, we get #text(fill: green)[one even component] instead of the #text(fill: red)[two odd components] \ so that  $co(G-S + e) = co(G-S) - 1 <= |S| -1$.
+    - Then, we get #text(fill: green)[one even component] instead of the #text(fill: red)[two odd components] \ so that  $co(G-S + e) = co(G-S) - 2 <= |S| -2 <= |S|$.
 
 
 ]
@@ -1396,7 +1396,7 @@
 
 #proof[
   Set $S=emptyset$.
-  - $co(G-S)=co(G)=0$
+  - $co(G-S)=co(G)<= |S| = 0$
     - Every connect component of $G$ must have an even number of vertices.
 ]
 
@@ -1408,21 +1408,21 @@
   - If $exists e in.not E(G)$ s.t. $G + e$ still has no p.m.
     - Set $G:= G+e$.
 #v(-5pt)
-That is $G$ is now a graph with the following properties.
+We obtain a graph $G$ with the following properties:
 1. $G$ satisfies the Tutte's condition
 2. $G$ has no perfect matching
 3. $forall e in.not E(G): G+e$ has a perfect matching.
 
 *$G$ is called an edge maximal counter example!*
 #v(-5pt)
+#pause
 #place(
   top + left,
   dx: 58%,
-  dy: 6cm,
+  dy: 10cm,
   block(fill: rgb("#523662"), radius: 5pt, inset: 15pt)[
     #set align(center)
     #set text(fill: red.darken(0%))
-    A graph satisfying (1,2,3) doesn't exists! \
     A graph satisfying (2,3) is an #text(weight: "bold")[SNF graph!] \
 
     #text(weight: "bold")[SNF graphs do not \ satisfy Tutte's condition]
@@ -1491,13 +1491,12 @@ That is $G$ is now a graph with the following properties.
 *How do even SNF graph look like?* #text(fill: red.darken(20%), weight: "bold")[
   Proof is left for the TA session.
 ]
-- $exists S in V(G)$ s.t. $|S|=K_k$ for some $k in NN$.
+- $exists S in V(G)$ and $k in NN$ s.t. $S=K_k$.
   - $G-S$ consist of $k+2$ odd cliques.
 
 #[
   #set align(center)
-  In this example each clique is of size $3$ or $1$ but
-  this doesnt have to be the case!
+  This means that any SNF graph by construction doesnt sayfies the Tutte's condition! In particular setting $S$ to the $K_k$ we have $co(G-S) = k+2 > k = |S|$. \
 ]
 #place(
   top + center,
@@ -1543,6 +1542,17 @@ That is $G$ is now a graph with the following properties.
       }
     }
   }),
+)
+
+#place(
+  top + left,
+  dx: 0%,
+  dy: 99% + 5pt,
+  block(width: 100%)[
+    #set text(size: 0.7em)
+    #set align(center)
+    In the example above, $S = K_3$ and there is $5$ odd components in $G-S$.
+  ],
 )
 
 == Conclusion

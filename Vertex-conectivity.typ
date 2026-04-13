@@ -495,7 +495,7 @@ Let $"BC"(G)$ denote the follwing graph
   columns: (1fr, 1.2fr),
   stroke: none,
   inset: 0pt,
-  [‣ The vertecies of $"BC"(G)$ are $B(G) cap C(G)$],
+  [‣ The vertices of $"BC"(G)$ are $B(G) cap C(G)$],
   [‣ The edges of $"BC"(G)$ are #v(-10pt)
     $
       {{B,v} : B in B(G), v in C(G) "and" v in B}
@@ -595,24 +595,11 @@ Let $"BC"(G)$ denote the follwing graph
 #definition[
   The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
 ]
-#definition[
-  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
-]
 
-#v(30pt)
-#block(width: 70%)[
-  #remark[
-    Other than the complete graph:
-    $
-      "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
-    $
-  ]
-  The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
-]
 
 #place(
   top + left,
-  dx: 16cm,
+  dx: 6cm,
   dy: 5.5cm,
   align(center)[
     #cetz-canvas({
@@ -636,8 +623,8 @@ Let $"BC"(G)$ denote the follwing graph
 
     #place(
       top + left,
-      dx: 16cm,
-      dy: 6.2cm,
+      dx: 8cm,
+      dy: 0cm,
       [
         $
           kappa(G) = 2
@@ -646,6 +633,65 @@ Let $"BC"(G)$ denote the follwing graph
     )
   ],
 )
+
+
+== Definition I: Vertex Connectivity
+#definition[
+  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
+]
+
+#pause
+#block(width: 100%)[
+  #remark[
+    Other than the complete graph:
+    $
+      "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
+    $
+  ]
+  The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
+]
+#pause
+#remark[
+  If $G$ is $k$-connected then $G$ is also $k-1,k-2,k-3,...,1$-connected. \
+  But it can also be $k+1$ connected, we dont know if it is! \ All we know that any $k-1$ vertices removed from $G$ wont disconnect it.
+]
+
+// #place(
+//   top + left,
+//   dx: 16cm,
+//   dy: 5.5cm,
+//   align(center)[
+//     #cetz-canvas({
+//       import cetz.draw: *
+
+//       circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
+//       circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
+//       circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
+//       circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
+
+//       line("v1", "v2")
+//       line("v2", "v3")
+//       line("v3", "v4")
+//       line("v4", "v1")
+
+//       (pause,)
+
+//       circle("v1", radius: 10pt, stroke: 3pt + red)
+//       circle("v3", radius: 10pt, stroke: 3pt + red)
+//     })
+
+//     #place(
+//       top + left,
+//       dx: 16cm,
+//       dy: 6.2cm,
+//       [
+//         $
+//           kappa(G) = 2
+//         $
+//       ],
+//     )
+//   ],
+// )
 
 
 // == Definition I
@@ -713,17 +759,13 @@ Let $"BC"(G)$ denote the follwing graph
 
 // Again $kappa(K_1) = 0$, is annoying, can we fix it?
 
+
 == Definition II: Path connectivity
 #definition[
   - $G$ a graph
   - $A,B subset.eq V(G)$
-  - let $rho_g (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
+  - let $rho_G (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
 ]
-
-#definition[
-  $G$ is _k-connected_ if $rho_g (A,B) >= k " "forall {u,v} in binom(V(G), 2)$
-]
-
 
 #columns(3)[
   #diagram(
@@ -787,8 +829,99 @@ Let $"BC"(G)$ denote the follwing graph
   })
   $A cap B != emptyset$ also can happen
 ]
-#pause
-*So whats better: vertex connectivity or path connectivity ?*
+
+#remark[
+  Vertices in $A$ and $B$ counts toward the vertices of the paths. \
+  If $|A|=1$ or $|B|=1$ then we count the number of paths from the neibours of $A$ or $B$ respectively.
+]
+
+
+== Definition II: Path connectivity
+// #definition[
+//   - $G$ a graph
+//   - $A,B subset.eq V(G)$
+//   - let $rho_G (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
+// ]
+#[
+  #set text(size: 1.1em)
+  #set align(horizon)
+
+  #definition[
+    $G$ is _k-connected_ if $rho_G (u,v) >= k " "forall {u,v} in binom(V(G), 2)$
+  ]
+
+
+  // #columns(3)[
+  //   #diagram(
+  //     node-stroke: 0.6pt,
+  //     node(
+  //       $A$,
+  //       enclose: ((1, 1), (1, 2)), // a node spanning multiple centers
+  //       inset: 10pt,
+  //       stroke: teal,
+  //       fill: teal.lighten(90%),
+  //       name: <A>,
+  //     ),
+
+  //     node(
+  //       $B$,
+  //       enclose: ((2, 1), (2, 2)), // a node spanning multiple centers
+  //       inset: 10pt,
+  //       stroke: teal,
+  //       fill: teal.lighten(90%),
+  //       name: <B>,
+  //     ),
+
+  //     edge((1, 1), "r", "--", snap-to: (<A>, <B>)),
+  //     edge((1, 1.25), "r", "--", snap-to: (<A>, <B>)),
+  //     edge((1, 1.5), "r", "--", snap-to: (<A>, <B>)),
+  //     edge((1, 1.75), "r", "--", snap-to: (<A>, <B>)),
+  //     edge((1, 2), "r", "--", snap-to: (<A>, <B>)),
+  //   )
+  //   #colbreak()
+
+  //   #diagram(
+  //     node-stroke: 0.6pt,
+  //     node(
+  //       (0, 0),
+  //       name: <A>,
+  //     ),
+
+  //     node(
+  //       (3, 0),
+  //       name: <B>,
+  //     ),
+
+  //     for d in (-20, -10, 0, 10, 20) {
+  //       edge(<A>, <B>, "--", bend: d * 2 * 1deg)
+  //     },
+  //   )\
+  //   \
+  //   Here $|A| = |B| = 1$
+
+  //   #colbreak()
+
+  //   #cetz.canvas({
+  //     import cetz.draw: *
+
+  //     circle((-0.75, 0), radius: 1.25)
+  //     circle((0.75, 0), radius: 1.25)
+
+  //     circle((0, 0), radius: 2pt, fill: black)
+  //     circle((0, 0.4), radius: 2pt, fill: black)
+  //     circle((0, -0.4), radius: 2pt, fill: black)
+  //   })
+  //   $A cap B != emptyset$ also can happen
+  // ]
+  #pause
+  #[
+    #set align(center)
+    *So whats better: vertex connectivity or path connectivity ?*
+
+    #pause
+    #text(weight: "bold", fill: green.darken(25%))[Menger's theorem tells us that they are the same!]
+  ]]
+
 
 // #pagebreak()
 // #definition[
