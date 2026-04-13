@@ -32,6 +32,7 @@ Here are two examples for *non*-hamiltonian graph
     }
   )
 
+
 #colbreak()
 
 #diagram(
@@ -129,3 +130,95 @@ $
 - We got $|S cup T| >= n$
 - As $n in.not S cup T$, we get a contridiction.
  
+= Eros-Chvatal 
+== Lolipops
+- Let $C$ be a cycle in $G$.
+- By a bridge of $C$ we mean:
+  - an edge between to vertices of $C$, called a cord.
+  - connected components of $G-C$ that has neighbors in $C$
+
+#pagebreak()
+#definition[
+  - Let $P$ be a $x ~> y$ path in $G$
+  - Let $C$ be a cycle in $G$ 
+  - If $y in C$ then $C cup P$ is called _$(x,y)$-lollipop_
+]
+
+- Let $v in V(C)$ and orient $C$
+  - Denote by $v^+$ the successor of $v$
+  - Denote by $v^-$ the predecessor of $v$
+For $S subset.eq V(C)$ write
+$
+  S^+ := {s^+ : s in S} #h(5em) S^- := {s^-: s in S}
+$
+#pagebreak()
+
+#lemma[
+- Let $C$ be the largest cycle in $G$
+- Let $C cup P$ be an $(x,y)$-lollipop
+- The edges $x y^+$ and $x y^-$ do not exists in $G$
+]
+
+== Erdos-Chvatal 
+#theorem(title:"Erdos Chvatal Theorem")[
+- Let $G$ have $v(G) >=3$ 
+- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+
+*_proof:_*
+- Assume the claim is false
+- Let $C$ be the longest cycle in $G$
+- Why such cycle exists?
+  - If $G$ is disconnected the $0= kappa(G) >= alpha(G) = 2$, contridiction
+  - If $G$ is a connected tree then $1 = kappa(G) = alpha(G) = 2$
+- As $G$ is not hamiltonial $V(G)\V(C) != emptyset$
+- Then $G$ admits a non-trivial bridge with $>=2$ points of attachment
+- Why?
+
+  
+#pagebreak()
+#theorem(title:"Erdos Chvatal Theorem")[
+- Let $G$ have $v(G) >=3$ 
+- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+
+- Then $G$ admits a non-trivial bridge with $>=2$ points of attachment
+- Why?
+  - Observe the components of $G-C$, one of the two can happen
+  #todo[diagram]
+  
+#pagebreak()
+
+#theorem(title:"Erdos Chvatal Theorem")[
+- Let $G$ have $v(G) >=3$ 
+- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+
+- Let $B$ a bridge as before
+- Let $S$ be the points of attachment of $B$
+- Notice the every $b in B$ and $s in S$ form a $(b,s)$-lollipop
+- Orient $C$
+- Notice that $S^+$ is independent
+  - If this is not the case, we can increase $C$
+- By the lollipop lemma: $forall b in B, s in S:b s^+ in.not E(G)$
+- Hence $s^+ cup {b}$ is independent for $b in B$
+- $alpha(G) >= |S| + 1$
+ 
+ 
+#pagebreak()
+#theorem(title:"Erdos Chvatal Theorem")[
+- Let $G$ have $v(G) >=3$ 
+- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+- If $S$ does not form a vx-cut then $V(C)=S$
+
+#pagebreak()
+#theorem(title:"Erdos Chvatal Theorem")[
+- Let $G$ have $v(G) >=3$ 
+- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+- As the set $S$ is a vx-cut in $G$:
+$
+  kappa(G) <= |S| <= |S^+| < |S^+| + 1 = alpha(G)
+$
+contradiction.
