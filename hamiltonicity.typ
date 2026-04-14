@@ -134,8 +134,40 @@ $
 == Lolipops
 - Let $C$ be a cycle in $G$.
 - By a bridge of $C$ we mean:
-  - an edge between to vertices of $C$, called a cord.
-  - connected components of $G-C$ that has neighbors in $C$
+  - an edge between to vertices of $C$, called a cord, those are trivial bridges
+  #diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+        node((rel:(i * 1deg, 1),to :(0,0)),radius:2pt,name:"v" + str(i))
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+    edge(<v180>,<v300>),
+  )
+  - connected components of $G-C$ that has neighbors in $C$, those are non-trivial bridges
+
+  #diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+        node((rel:(i * 1deg, 1),to :(0,0)),radius:2pt,name:"v" + str(i))
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+     node(enclose: ((2, -0.75), (2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <A>),
+      node(enclose: ((-2, -0.75), (-2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <B>),
+      
+      edge(<B>,<v180>),
+      edge(<B>,<v240>),
+      
+      edge(<v0>,(2,-0.5)),
+      edge(<v0>,(2,0.5)),
+  )
 
 #pagebreak()
 #definition[
@@ -143,10 +175,44 @@ $
   - Let $C$ be a cycle in $G$ 
   - If $y in C$ then $C cup P$ is called _$(x,y)$-lollipop_
 ]
+ #diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+        node((rel:(i * 1deg, 0.5),to :(0,0)),radius:2pt,name:"v" + str(i))
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+    node((rel:(0deg, 0.5),to :(0,0)),align(left)[$y$],radius:2pt,name:<y>),
+    node((rel:(0deg, 2),to :(0,0)),align(left)[$x$],radius:2pt,name:<x>),
+    
+    edge(<x>,<y>,"--")
+  )
 
 - Let $v in V(C)$ and orient $C$
   - Denote by $v^+$ the successor of $v$
   - Denote by $v^-$ the predecessor of $v$
+
+#place(dx:30em,dy:-5em)[
+  #diagram(
+    node-stroke:2pt,
+    node-fill:black,
+
+    node((rel:(0deg, 1),to :(0,0)),align(left)[
+    $s$],radius:2pt,name:<s>),
+     node((rel:(300deg, 1),to :(0,0)),align(top)[$s^-$],radius:2pt,name:<sm>),
+      node((rel:(60deg, 1),to :(0,0)),align(left)[$s^+$],radius:2pt,name:<sp>),
+      
+      edge(<s>,<sm>),
+      edge(<s>,<sp>),
+      
+      edge((rel:(120deg, 1),to :(0,0)),<sp>,"--"),
+      edge((rel:(240deg, 1),to:(0,0)),<sm>,"--"),
+  )
+]
+  
 For $S subset.eq V(C)$ write
 $
   S^+ := {s^+ : s in S} #h(5em) S^- := {s^-: s in S}
@@ -158,6 +224,23 @@ $
 - Let $C cup P$ be an $(x,y)$-lollipop
 - The edges $x y^+$ and $x y^-$ do not exists in $G$
 ]
+
+ #diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+        node((rel:(i * 1deg, 1),to :(0,0)),radius:2pt,name:"v" + str(i))
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+    node((rel:(0deg, 1),to :(0,0)),align(left)[$y$],radius:2pt,name:<y>),
+    node((rel:(0deg, 3),to :(0,0)),align(left)[$x$],radius:2pt,name:<x>),
+    
+    edge(<x>,<y>,"--"),
+    edge(<x>,<v300>,"--",stroke:red)
+  )
 
 == Erdos-Chvatal 
 #theorem(title:"Erdos Chvatal Theorem")[
@@ -184,14 +267,85 @@ $
 
 - Then $G$ admits a non-trivial bridge with $>=2$ points of attachment
 - Why?
+  - Assume the bridge has $<2$ points of attchments
   - Observe the components of $G-C$, one of the two can happen
-  #todo[diagram]
+#columns(2)[
+#diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+    if i in (0,120,240){
+        node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i))
+    }else{
+    node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i),fill:red,stroke:red)
+    } 
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+     node(enclose: ((2, -0.75), (2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <A>),
+ 
+      
+      edge(<v0>,(2,-0.5)),
+      edge(<v0>,(2,0.5)),
+      
+      node((rel:(0deg, 0.75),to :(0,0)),radius:10pt,stroke:green ,fill:none),
+  )\
+  $1 = kappa(G) >= alpha(G) >= 2$, Contridiction
+#colbreak()
+#diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+    if i in (0,120,240){
+        node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i))
+    }else{
+    node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i),fill:red,stroke:red)
+    } 
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+     node(enclose: ((2, -0.75), (2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <A>),
+ 
+
+  )
+  
+  $0 = kappa(G) >= alpha(G) >= 2$, Contridiction
+]
   
 #pagebreak()
 
 #theorem(title:"Erdos Chvatal Theorem")[
 - Let $G$ have $v(G) >=3$ 
 - If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+]
+#place(dx:27em)[
+#diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:60){
+        node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i))
+
+        if ( i != 300){
+          edge()
+        }
+    },
+    edge(<v0>,<v300>),
+     node(enclose: ((2, -0.75), (2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <A>),
+ 
+      
+      edge(<v300>,(2,-0.5)),
+      edge(<v300>,(2,-0.1)),
+      
+      edge(<v60>,(2,0.5)),
+      edge(<v60>,(2,0.1)),
+      
+      node((rel:(300deg, 0.75),to :(0,0)),radius:10pt,stroke:green ,fill:none),
+     node((rel:(60deg, 0.75),to :(0,0)),radius:10pt,stroke:green ,fill:none),
+  )
 ]
 
 - Let $B$ a bridge as before
@@ -211,14 +365,40 @@ $
 - If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
 ]
 - If $S$ does not form a vx-cut then $V(C)=S$
+#align(center)[
+#diagram(
+    node-stroke:2pt,
+    node-fill:black,
+    for i in range(0 , 360,step:120){
+        node((rel:(i * 1deg, 0.75),to :(0,0)),radius:2pt,name:"v" + str(i))
 
-#pagebreak()
-#theorem(title:"Erdos Chvatal Theorem")[
-- Let $G$ have $v(G) >=3$ 
-- If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+        if ( i != 240){
+          edge()
+        }
+    },
+    edge(<v0>,<v240>,stroke:red + 4pt),
+     node(enclose: ((2, -0.75), (2, 0.75)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <A>),
+ 
+      
+      edge(<v0>,(2,-0.5),stroke:red + 4pt),
+      edge(<v0>,(2,-0.1)),
+      
+      edge(<v120>,(2,0.5)),
+      edge(<v120>,(2,0.1),stroke:red + 4pt),
+      
+      edge(<v240>,(2,-0.5)),
+      
+      edge(<v120>,<v240>,stroke:red + 4pt),
+      
+      edge((1.8,-0.5),(1.8,0.1),stroke:red + 4pt,snap-to:<A>),
+
+  )
 ]
+
 - As the set $S$ is a vx-cut in $G$:
 $
   kappa(G) <= |S| <= |S^+| < |S^+| + 1 = alpha(G)
 $
 contradiction.
+
+
