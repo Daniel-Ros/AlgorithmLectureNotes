@@ -4,7 +4,7 @@
 
 
 
-#show: conf.with(handout: false, subtitle: [Matching in graphs])
+#show: conf.with(handout: true, subtitle: [Matching in graphs])
 
 #title-slide()
 
@@ -23,7 +23,7 @@
 #question[
   what if $G$ is not bipartite?
 ]
-
+#pause
 #goal[
   Find a necessary & sufficient condition for the emergence of perfect matchings in _general_ graphs.
 ]
@@ -251,7 +251,7 @@
     // line("l" + str(1), "r" + str(i + j), stroke: black + 2pt)
   }),
 )
-
+#pause
 #place(
   top + left,
   dx: 15cm,
@@ -785,8 +785,9 @@
   #v(50pt)
   - #text(fill: purple)[$e$ is an edge] with one end inside an #text(fill: green)[even component]:
     - If its between two _even componenets_. Then, we get one big even components instead of two even components so that  $co(G-S + e) = co(G-S) <= |S|$.
+    #uncover("2-")[
   - If its between _even and odd components_. Then, we get one big odd components instead of the previous odd and even components so that  $co(G-S + e) = co(G-S) <= |S|$.
-
+    ]
 ]
 #place(
   top + left,
@@ -1407,11 +1408,11 @@
 - Assume that $exists G$ satisfying the Tutte's condition without a p.m.
   - If $exists e in.not E(G)$ s.t. $G + e$ still has no p.m.
     - Set $G:= G+e$.
-#v(-5pt)
+#v(-5pt) #pause
 We obtain a graph $G$ with the following properties:
-1. $G$ satisfies the Tutte's condition
-2. $G$ has no perfect matching
-3. $forall e in.not E(G): G+e$ has a perfect matching.
+1. $G$ satisfies the Tutte's condition #pause
+2. $G$ has no perfect matching #pause
+3. $forall e in.not E(G): G+e$ has a perfect matching. #pause
 
 *$G$ is called an edge maximal counter example!*
 #v(-5pt)
@@ -1575,11 +1576,11 @@ Let $G$ be a counter example i.e.
 - $G$ satisfies the Tutte's condition & $G$ has no perfect matching
 
 $==>$ Construct an edge maximal counter example from $G$ called $G^*$.
-
+#pause
 $==>$ $G^*$ is an *SNF graph* & $G^*$ satifies the tutte's condition.
-
+#pause
 $==>$ Any *SNF graph* doesn't satisfies tutte's so its a contradiction.
-
+#pause
 $==>$ $G^*$ cannot exists  $==>$ $G$ cannot exists.
-
+#pause
 $==>$ If $G$ satisfies the Tutte's condition then $G$ must have a perfect matching!

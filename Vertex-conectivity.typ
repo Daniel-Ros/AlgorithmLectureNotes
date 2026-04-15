@@ -1,10 +1,15 @@
 #import "settings/dstyle.typ": *
 #import algorithmic: algorithm-figure, style-algorithm
 #show: style-algorithm
-#import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
+#import "@preview/fletcher:0.5.8" as fletcher: (
+  diagram, edge, node,
+)
 
 
-#show: conf.with(handout: false, subtitle: [Vertex-connectivity in graphs])
+#show: conf.with(
+  handout: true,
+  subtitle: [Vertex-connectivity in graphs],
+)
 
 #title-slide()
 
@@ -62,7 +67,10 @@
     }
 
     // Red circle around the intersection node
-    circle(v7, radius: 0.25, stroke: (paint: red, thickness: 1.5pt))
+    circle(v7, radius: 0.25, stroke: (
+      paint: red,
+      thickness: 1.5pt,
+    ))
   })
 ]
 
@@ -86,7 +94,10 @@
     line(v6, v5, v7, v6)
     line(v7, v8, v9, v7)
 
-    circle(v7, radius: 0.25, stroke: (paint: red, thickness: 1.5pt))
+    circle(v7, radius: 0.25, stroke: (
+      paint: red,
+      thickness: 1.5pt,
+    ))
   })
   - vx-disconnectors of size 1 are called _cut-vxs_.
   #colbreak()
@@ -95,7 +106,6 @@
   #align(center)[
     #cetz-canvas({
       import cetz.draw: *
-
 
       // Function to draw a blob shape
       let blob(center, name) = {
@@ -120,7 +130,12 @@
       let bridge-start = (1, 0.2)
       let bridge-end = (3.4, 0.2)
 
-      line(bridge-start, bridge-end, stroke: (thickness: 2pt), name: "bridge-line")
+      line(
+        bridge-start,
+        bridge-end,
+        stroke: (thickness: 2pt),
+        name: "bridge-line",
+      )
 
       // Nodes at bridge ends
       circle(bridge-start, radius: 0.08, fill: black)
@@ -153,7 +168,7 @@
 #pause
 
 *_proof $arrow.double.l$._*\
-- Assume $G$ has a cut vertex, denoted by $v$.
+- Assume $G$ has a cut vertex, denoted by $v$. #pause
 - $v$ seperates the graph into 2 components $C_1,C_2$.
 - Take $w in C_1, u in C_2$ both should hold true
 1. A cycle $C := w x_1 ... x_ell u w$ exists in $G$.
@@ -182,7 +197,13 @@
 
       // cetz.decorations.wave(line("C1.center", "C2.center", name: "E"), segments: 2, amplitude: 0.1)
 
-      circle((1, 0), name: "C1", radius: 2pt, fill: red, stroke: red)
+      circle(
+        (1, 0),
+        name: "C1",
+        radius: 2pt,
+        fill: red,
+        stroke: red,
+      )
       // circle("C1", radius: 2pt, fill: red, stroke: red)
       // circle("C2", radius: 2pt, fill: red, stroke: red)
     })
@@ -230,7 +251,7 @@ $
   $"pairs of verecies " u,v "such that " delta_G(u,v) < k$
 - Consider a pair $u,v in V(G)$ satisfying $delta_G (u,v) = k$
 - Let $P$ be the shortest path $u ~> v$, and let $v'$ denote the vertex before $v$ on $P$.
-- As $delta_G (u, v') = k -1$, there is a cycle  $C$ containting $u, v'$
+- As $delta_G (u, v') = k -1$, there is a cycle $C$ containting $u, v'$
 #v(-16pt)
 #align(center)[
   #diagram(
@@ -276,7 +297,12 @@ $
       dash: "dashed", // The pattern
     )),
 
-    node($P$, enclose: (<u>, <v>, (0, -0.5)), stroke: teal, fill: teal.lighten(90%)),
+    node(
+      $P$,
+      enclose: (<u>, <v>, (0, -0.5)),
+      stroke: teal,
+      fill: teal.lighten(90%),
+    ),
   )
 ]
 - If $v in V(C)$ we are done
@@ -445,7 +471,6 @@ $
       fill: none,
     )
 
-
     fletcher.node(
       (4.7, 0.2),
       enclose: (<n12>, <n13>, <n14>),
@@ -484,7 +509,8 @@ Given a graph $G$ define the following auxiliary graph:
   columns: (1fr, 1.2fr),
   stroke: none,
   inset: 0pt,
-  [‣ $B(G) := {B : B subset.eq G "is a block of G"}$], [‣ $C(G) := {v : v in V(G) "is a cut-vx of G"}$],
+  [‣ $B(G) := {B : B subset.eq G "is a block of G"}$],
+  [‣ $C(G) := {v : v in V(G) "is a cut-vx of G"}$],
 )
 
 
@@ -522,7 +548,10 @@ Let $"BC"(G)$ denote the follwing graph
       let radius = 3
       for i in range(0, 5) {
         circle(
-          (calc.cos(angle * i) * radius, calc.sin(angle * i) * radius),
+          (
+            calc.cos(angle * i) * radius,
+            calc.sin(angle * i) * radius,
+          ),
           radius: 0.15,
           fill: black,
           stroke: 0.5pt + black,
@@ -546,7 +575,10 @@ Let $"BC"(G)$ denote the follwing graph
 
       for i in range(0, 6) {
         circle(
-          (calc.cos(angle * i) * radius, calc.sin(angle * i) * radius),
+          (
+            calc.cos(angle * i) * radius,
+            calc.sin(angle * i) * radius,
+          ),
           radius: 0.15,
           fill: black,
           stroke: 0.5pt + black,
@@ -565,7 +597,10 @@ Let $"BC"(G)$ denote the follwing graph
 
       for i in range(0, 3) {
         circle(
-          (calc.cos(angle * i * 2) * radius, calc.sin(angle * i * 2) * radius),
+          (
+            calc.cos(angle * i * 2) * radius,
+            calc.sin(angle * i * 2) * radius,
+          ),
           radius: 0.15,
           fill: black,
           stroke: 0.5pt + black,
@@ -586,75 +621,37 @@ Let $"BC"(G)$ denote the follwing graph
 
     #cetz-canvas({
       import cetz.draw: *
-      circle((0, 0), radius: 0.15, fill: black, stroke: 0.5pt + black)
+      circle(
+        (0, 0),
+        radius: 0.15,
+        fill: black,
+        stroke: 0.5pt + black,
+      )
     })
   ]
 ]
 
-== Definition I: Vertex Connectivity
-#definition[
-  The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
-]
 
+// == Definition I: Vertex Connectivity
+// #definition[
+//   A graph $G$ is called _k-connected_ if $kappa(G) >= k$
+// ]
 
-#place(
-  top + left,
-  dx: 6cm,
-  dy: 5.5cm,
-  align(center)[
-    #cetz-canvas({
-      import cetz.draw: *
-
-      circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
-      circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
-      circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
-      circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
-
-      line("v1", "v2")
-      line("v2", "v3")
-      line("v3", "v4")
-      line("v4", "v1")
-
-      (pause,)
-
-      circle("v1", radius: 10pt, stroke: 3pt + red)
-      circle("v3", radius: 10pt, stroke: 3pt + red)
-    })
-
-    #place(
-      top + left,
-      dx: 8cm,
-      dy: 0cm,
-      [
-        $
-          kappa(G) = 2
-        $
-      ],
-    )
-  ],
-)
-
-
-== Definition I: Vertex Connectivity
-#definition[
-  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
-]
-
-#pause
-#block(width: 100%)[
-  #remark[
-    Other than the complete graph:
-    $
-      "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
-    $
-  ]
-  The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
-]
-#pause
-#remark[
-  If $G$ is $k$-connected then $G$ is also $k-1,k-2,k-3,...,1$-connected. \
-  But it can also be $k+1$ connected, we dont know if it is! \ All we know that any $k-1$ vertices removed from $G$ wont disconnect it.
-]
+// #pause
+// #block(width: 100%)[
+//   #remark[
+//     Other than the complete graph:
+//     $
+//       "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
+//     $
+//   ]
+//   The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
+// ]
+// #pause
+// #remark[
+//   If $G$ is $k$-connected then $G$ is also $k-1,k-2,k-3,...,1$-connected. \
+//   But it can also be $k+1$ connected, we dont know if it is! \ All we know that any $k-1$ vertices removed from $G$ wont disconnect it.
+// ]
 
 // #place(
 //   top + left,
@@ -694,71 +691,92 @@ Let $"BC"(G)$ denote the follwing graph
 // )
 
 
-// == Definition I
 
-// #definition[
-//   - $0 <= k in NN$
-//   - $G$ - graph with $v(G) > k$
-//   - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
-// ]
+== Definition I
 
-// #align(center)[
-//   #cetz-canvas({
-//     import cetz.draw: *
+#definition[
+  - $0 <= k in NN$
+  - $G$ - graph with $v(G) > k$
+  - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+]
 
-//     circle((0.5, 2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v1")
-//     circle((0.5, -2), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v3")
-//     circle((-5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v2")
-//     circle((5, 0), radius: 0.15, fill: black, stroke: 0.5pt + black, name: "v4")
+#align(center)[
+  #cetz-canvas({
+    import cetz.draw: *
 
-//     line("v1", "v2")
-//     line("v2", "v3")
-//     line("v3", "v4")
-//     line("v4", "v1")
+    circle(
+      (0.5, 2),
+      radius: 0.15,
+      fill: black,
+      stroke: 0.5pt + black,
+      name: "v1",
+    )
+    circle(
+      (0.5, -2),
+      radius: 0.15,
+      fill: black,
+      stroke: 0.5pt + black,
+      name: "v3",
+    )
+    circle(
+      (-5, 0),
+      radius: 0.15,
+      fill: black,
+      stroke: 0.5pt + black,
+      name: "v2",
+    )
+    circle(
+      (5, 0),
+      radius: 0.15,
+      fill: black,
+      stroke: 0.5pt + black,
+      name: "v4",
+    )
 
-//     (pause,)
+    line("v1", "v2")
+    line("v2", "v3")
+    line("v3", "v4")
+    line("v4", "v1")
 
-//     circle("v1", radius: 10pt, stroke: 3pt + red)
-//     circle("v3", radius: 10pt, stroke: 3pt + red)
-//   })
+    (pause,)
 
-
-// ]
-
-// == Definition I
-// #definition[
-//   - $0 <= k in NN$
-//   - $G$ - graph with $v(G) > k$
-//   - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
-// ]
-// #pause
-// - To be $k$-connected, $v(G) > k$ must hold
-// #pause
-// - What about $K_1$?
-// #pause
-// - We assume it is connected
-// #pause
-// - But our definition $K_1$ is #text(red)[not] connected!#pause
-// - We'll fix this later
+    circle("v1", radius: 10pt, stroke: 3pt + red)
+    circle("v3", radius: 10pt, stroke: 3pt + red)
+  })
 
 
+]
 
-// #pagebreak()
-// #definition[
-//   The largest $k in ZZ_(>=0)$ for which $G$ is $k$-connected is denoted by $kappa(G)$
-// ]
-// #pause
-// - All disconnected graphs have $kappa(G) = 0$
-// #pause
-// - All connected graphs (but $K_1$) are *1-connected*
-// #pause
-// - $kappa(G) >= 1$ #pause
-// - $kappa(K_1) = 0$ #emoji.face.sad #pause
-// - Cycles with 3 or more vertecies are *2-connected* #pause
-// - $kappa(K_r) = r-1$
+== Definition I
+#definition[
+  - $0 <= k in NN$
+  - $G$ - graph with $v(G) > k$
+  - If $G-X$ is conncted $forall X subset.eq V(G), |X| <= k-1$ then G is called _k-connected_
+]
+#pause
+- To be $k$-connected, $v(G) > k$ must hold
+#pause
+- What about $K_1$?
+#pause
+- We assume it is connected
+#pause
+- But our definition $K_1$ is #text(red)[not] connected!#pause
+- We'll fix this later
 
-// Again $kappa(K_1) = 0$, is annoying, can we fix it?
+#pagebreak()
 
+#definition[
+  The largest $k in ZZ_(>=0)$ for which $G$ is $k$-connected is denoted by $kappa(G)$
+]
+
+- All disconnected graphs have $kappa(G) = 0$ #pause
+- All connected graphs (but $K_1$) are *1-connected*#pause
+- $kappa(G) >= 1$#pause
+- $kappa(K_1) = 0$ #pause
+- Cycles with 3 or more vertecies are *2-connected* #pause
+- $kappa(K_r) = r-1$#pause
+
+Again $kappa(K_1) = 0$, is annoying, can we fix it?
 
 == Definition II: Path connectivity
 #definition[
@@ -842,123 +860,39 @@ Let $"BC"(G)$ denote the follwing graph
 //   - $A,B subset.eq V(G)$
 //   - let $rho_G (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
 // ]
-#[
-  #set text(size: 1.1em)
-  #set align(horizon)
 
   #definition[
     $G$ is _k-connected_ if $rho_G (u,v) >= k " "forall {u,v} in binom(V(G), 2)$
   ]
 
+  
+  #align(horizon + center)[
+  *So whats better: vertex connectivity or path connectivity ?*
+ #pause
+ 
+  #text(
+    weight: "bold",
+    fill: green.darken(25%),
+  )[Menger's theorem tells us that they are the same!]
 
-  // #columns(3)[
-  //   #diagram(
-  //     node-stroke: 0.6pt,
-  //     node(
-  //       $A$,
-  //       enclose: ((1, 1), (1, 2)), // a node spanning multiple centers
-  //       inset: 10pt,
-  //       stroke: teal,
-  //       fill: teal.lighten(90%),
-  //       name: <A>,
-  //     ),
+  ]
 
-  //     node(
-  //       $B$,
-  //       enclose: ((2, 1), (2, 2)), // a node spanning multiple centers
-  //       inset: 10pt,
-  //       stroke: teal,
-  //       fill: teal.lighten(90%),
-  //       name: <B>,
-  //     ),
+== Our definition
+#definition[
+  The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
+]
+#definition[
+  A graph $G$ is called _k-connected_ if $kappa(G) >= k$
+]
 
-  //     edge((1, 1), "r", "--", snap-to: (<A>, <B>)),
-  //     edge((1, 1.25), "r", "--", snap-to: (<A>, <B>)),
-  //     edge((1, 1.5), "r", "--", snap-to: (<A>, <B>)),
-  //     edge((1, 1.75), "r", "--", snap-to: (<A>, <B>)),
-  //     edge((1, 2), "r", "--", snap-to: (<A>, <B>)),
-  //   )
-  //   #colbreak()
+#remark[
+  Other than the complete graph:
+  $
+    "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
+  $
+]
+The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
 
-  //   #diagram(
-  //     node-stroke: 0.6pt,
-  //     node(
-  //       (0, 0),
-  //       name: <A>,
-  //     ),
-
-  //     node(
-  //       (3, 0),
-  //       name: <B>,
-  //     ),
-
-  //     for d in (-20, -10, 0, 10, 20) {
-  //       edge(<A>, <B>, "--", bend: d * 2 * 1deg)
-  //     },
-  //   )\
-  //   \
-  //   Here $|A| = |B| = 1$
-
-  //   #colbreak()
-
-  //   #cetz.canvas({
-  //     import cetz.draw: *
-
-  //     circle((-0.75, 0), radius: 1.25)
-  //     circle((0.75, 0), radius: 1.25)
-
-  //     circle((0, 0), radius: 2pt, fill: black)
-  //     circle((0, 0.4), radius: 2pt, fill: black)
-  //     circle((0, -0.4), radius: 2pt, fill: black)
-  //   })
-  //   $A cap B != emptyset$ also can happen
-  // ]
-  #pause
-  #[
-    #set align(center)
-    *So whats better: vertex connectivity or path connectivity ?*
-
-    #pause
-    #text(weight: "bold", fill: green.darken(25%))[Menger's theorem tells us that they are the same!]
-  ]]
-
-
-// #pagebreak()
-// #definition[
-//   - $G$ a graph
-//   - $A,B subset.eq V(G)$
-//   - let $rho_g (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
-// ]
-
-// #definition[
-//   $G$ is _k-connected_ if $rho_g (A,B) >= k " "forall {u,v} in binom(V(G), 2)$
-// ]
-// - A graph is *1-connected* $<=>$ it is connected
-// - Here, $K_1$ is connected
-// #v(-12pt)
-// \  #pause
-// - What definition should we choose? #pause
-// - Menger tell us
-// #align(center)[
-//   #set text(size: 24pt)
-//   *They are the same*
-// ]
-
-// == Our definition
-// #definition[
-//   The minimum size of a vx set $X$ such that $G-X$ is disconnected or has a single vx is called the _vx-connectivity_ of $G$ and is denoted by $kappa(G)$
-// ]
-// #definition[
-//   A graph $G$ is called _k-connected_ if $kappa(G) >= k$
-// ]
-
-// #remark[
-//   Other than the complete graph:
-//   $
-//     "A graph is "k"-connected" <=> "all of its vx-cuts are of size" >= k
-//   $
-// ]
-// The complete graph has no vx-cuts of any size, this is where the 2nd part of the definition comes in
 = Menger's theorem
 == Menger's theorem
 #definition[
@@ -1113,14 +1047,18 @@ $
   #diagram(
     $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
   )
-  #diagram($edge("--") &in N_G (y) edge("-") & y edge("-") & x edge("-") & in N_G (x) edge("--")$)
+  #diagram(
+    $edge("--") &in N_G (y) edge("-") & y edge("-") & x edge("-") & in N_G (x) edge("--")$,
+  )
 
   $x y$ cannot be expanded in the path
 
   #diagram(
     $edge("--") &in N_G (y) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
   )
-  #diagram($edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (x) edge("--")$)
+  #diagram(
+    $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (x) edge("--")$,
+  )
 
 - In the second case, just take one of the verticies.
 
@@ -1138,64 +1076,205 @@ $
     import cetz.matrix: ident
 
     rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect((2, 0.5), (3, 2.5), fill: red.lighten(70%), radius: 0.2, name: "middle")
+    rect(
+      (2, 0.5),
+      (3, 2.5),
+      fill: red.lighten(70%),
+      radius: 0.2,
+      name: "middle",
+    )
     rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(line((0.5, 0.2), (2.25, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 1), (2.25, 1.5)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2), (2.25, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2.8), (2.25, 2.2)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((0.5, 0.2), (2.25, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 1), (2.25, 1.5)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2), (2.25, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2.8), (2.25, 2.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
     content("middle", [$v_e$], anchor: "south")
     circle("middle", fill: black, radius: 1pt, anchor: "north")
 
-    cetz.decorations.wave(line((2.75, 1), (4.5, 0.2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 1.5), (4.5, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2), (4.5, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2.2), (4.5, 2.8)), segments: 2, amplitude: 0.1)
-
+    cetz.decorations.wave(
+      line((2.75, 1), (4.5, 0.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 1.5), (4.5, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2), (4.5, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2.2), (4.5, 2.8)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
     translate((10, 2.5))
 
     rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect((2, 0.5), (3, 2.5), fill: red.lighten(70%), radius: 0.2, name: "middle")
+    rect(
+      (2, 0.5),
+      (3, 2.5),
+      fill: red.lighten(70%),
+      radius: 0.2,
+      name: "middle",
+    )
     rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(line((0.5, 0.2), (2.25, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 1), (2.25, 1.5)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2), (2.25, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2.8), (2.25, 2.2)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((0.5, 0.2), (2.25, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 1), (2.25, 1.5)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2), (2.25, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2.8), (2.25, 2.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
     content("middle", [$x$], anchor: "north", name: "x")
-    content((rel: "middle.north", to: (0, 1)), [$y$], anchor: "south", name: "y")
-    circle("middle", fill: black, radius: 1pt, anchor: "north", name: "x")
-    circle("y.south", fill: black, radius: 1pt, anchor: "north", name: "y")
+    content(
+      (rel: "middle.north", to: (0, 1)),
+      [$y$],
+      anchor: "south",
+      name: "y",
+    )
+    circle(
+      "middle",
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "x",
+    )
+    circle(
+      "y.south",
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "y",
+    )
     line("x", "y")
-    cetz.decorations.wave(line((2.75, 1), (4.5, 0.2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 1.5), (4.5, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2), (4.5, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2.2), (4.5, 2.8)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((2.75, 1), (4.5, 0.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 1.5), (4.5, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2), (4.5, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2.2), (4.5, 2.8)),
+      segments: 2,
+      amplitude: 0.1,
+    )
     translate((0, -5))
 
     rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect((2, 0.5), (3, 2.5), fill: red.lighten(70%), radius: 0.2, name: "middle")
+    rect(
+      (2, 0.5),
+      (3, 2.5),
+      fill: red.lighten(70%),
+      radius: 0.2,
+      name: "middle",
+    )
     rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(line((0.5, 0.2), (2.25, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 1), (2.25, 1.5)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2), (2.25, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2.8), (2.25, 2.2)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((0.5, 0.2), (2.25, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 1), (2.25, 1.5)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2), (2.25, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2.8), (2.25, 2.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
-
-    circle((rel: "middle", to: (0, 0.5)), fill: black, radius: 1pt, anchor: "north", name: "y")
-    circle((rel: "middle", to: (0, -0.5)), fill: black, radius: 1pt, anchor: "north", name: "x")
+    circle(
+      (rel: "middle", to: (0, 0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "y",
+    )
+    circle(
+      (rel: "middle", to: (0, -0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "x",
+    )
     content("y", [$y$], anchor: "south")
     content("x", [$x$], anchor: "north")
     line("x", "y")
-    cetz.decorations.wave(line((2.75, 1), (4.5, 0.2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 1.5), (4.5, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2), (4.5, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2.2), (4.5, 2.8)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((2.75, 1), (4.5, 0.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 1.5), (4.5, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2), (4.5, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2.2), (4.5, 2.8)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
     translate((-10, 2.5))
 
@@ -1214,24 +1293,73 @@ We are now in this position:
     import cetz.draw: *
 
     rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect((2, 0.5), (3, 2.5), fill: red.lighten(70%), radius: 0.2, name: "middle")
+    rect(
+      (2, 0.5),
+      (3, 2.5),
+      fill: red.lighten(70%),
+      radius: 0.2,
+      name: "middle",
+    )
     rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(line((0.5, 0.2), (2.25, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 1), (2.25, 1.5)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2), (2.25, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((0.5, 2.8), (2.25, 2.2)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((0.5, 0.2), (2.25, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 1), (2.25, 1.5)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2), (2.25, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2.8), (2.25, 2.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
 
-
-    circle((rel: "middle", to: (0, 0.5)), fill: black, radius: 1pt, anchor: "north", name: "y")
-    circle((rel: "middle", to: (0, -0.5)), fill: black, radius: 1pt, anchor: "north", name: "x")
+    circle(
+      (rel: "middle", to: (0, 0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "y",
+    )
+    circle(
+      (rel: "middle", to: (0, -0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "x",
+    )
     content("y", [$y$], anchor: "south")
     content("x", [$x$], anchor: "north")
     line("x", "y")
-    cetz.decorations.wave(line((2.75, 1), (4.5, 0.2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 1.5), (4.5, 1)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2), (4.5, 2)), segments: 2, amplitude: 0.1)
-    cetz.decorations.wave(line((2.75, 2.2), (4.5, 2.8)), segments: 2, amplitude: 0.1)
+    cetz.decorations.wave(
+      line((2.75, 1), (4.5, 0.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 1.5), (4.5, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2), (4.5, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2.2), (4.5, 2.8)),
+      segments: 2,
+      amplitude: 0.1,
+    )
   })
 ]
 - Note that by I.H.
@@ -1269,7 +1397,13 @@ $
     node-stroke: 1pt,
     node-fill: black,
     debug: 0,
-    node(enclose: ((2, -1), (2, 1)), inset: 10pt, stroke: teal, fill: teal.lighten(90%), name: <B>),
+    node(
+      enclose: ((2, -1), (2, 1)),
+      inset: 10pt,
+      stroke: teal,
+      fill: teal.lighten(90%),
+      name: <B>,
+    ),
     node((0, 0), radius: 2pt, name: <x>),
 
     edge(<x>, (2, -1), "--"),
