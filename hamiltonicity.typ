@@ -337,6 +337,8 @@ $
 - The path $x y^+$ and $x y^-$ do not exists in $G$
 ]
 
+#[
+  #set align(center)
  #diagram(
     node-stroke:2pt,
     node-fill:black,
@@ -353,7 +355,7 @@ $
     edge(<x>,<y>,"--"),
     edge(<x>,<v300>,"--",stroke:red)
   )
-
+]
 == Erdos-Chvatal 
 // #theorem(title:"Erdos Chvatal Theorem")[
 // - Let $G$ have $v(G) >=3$ 
@@ -440,10 +442,23 @@ columns(2)[
   
 #pagebreak()
 
-#theorem(title:"Erdos Chvatal Theorem")[
+// #theorem(title:"Erdos Chvatal Theorem")[
+// - Let $G$ have $v(G) >=3$ 
+// - If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
+// ]
+
+#table(
+  columns: (1fr, 1fr),
+  stroke: none,
+  [
+    Assume the claim is false.
+    #goal[show that $alpha(G) > kappa(G).$]],
+  [#theorem(title:"Erdos Chvatal Theorem")[
 - Let $G$ have $v(G) >=3$ 
 - If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
-]
+]]
+)
+
 #place(dx:27em)[
 #diagram(
     node-stroke:2pt,
@@ -505,23 +520,34 @@ columns(2)[
   )
 ]
 
-- Let $B$ a bridge as before
-- Let $S$ be the points of attachment of $B$
-- Notice that every $b in B$ and $s in S$ form a $(b,s)$-lollipop
-- Orient $C$
-- Notice that $S^+$ is independent
-  - If this is not the case, we can increase $C$
+- $B$ the bridge, $S$ the attachment points of $B$ on $C$.
+Case 1: $S subset V(C):$
+- $|S| = kappa(G)$.
+- Every $b in B$ and $s in S$ form a $(b,s)$-lollipop
+- Orient $C ==> S^+$ is independent
+  - Otherwise $C$ can be extended
 - By the lollipop lemma: $forall b in B, s in S:b s^+ in.not E(G)$
-- Hence $S^+ cup {b}$ is independent for $b in B$
-- $alpha(G) >= |S| + 1$
+\
+#v(-40pt) #h(20pt) 
+$==>$ The set $S^+ cup {b}$ is independent for every $b in B$.
+- $alpha(G) >= |S| + 1 = kappa(G) + 1.$
  
  
 #pagebreak()
-#theorem(title:"Erdos Chvatal Theorem")[
+#table(
+  columns: (1fr, 1fr),
+  stroke: none,
+  [
+    Assume the claim is false.
+    #goal[show that $alpha(G) > kappa(G).$]],
+  [#theorem(title:"Erdos Chvatal Theorem")[
 - Let $G$ have $v(G) >=3$ 
 - If $kappa(G) >= alpha(G)$ then $G$ is Hamiltonian. 
-]
-- If $S$ does not form a vx-cut then $V(C)=S$
+]]
+)
+- Case 2: $V(C)=S$.
+  - fix $x in S$ and $b in B$ then $(x,b)$-lollipop is such that $b x^+ in E(G)$.
+  - $C$ can be extended, contridiction to the maximality of $C$.
 #align(center)[
 #diagram(
     node-stroke:2pt,
@@ -552,10 +578,10 @@ columns(2)[
   )
 ]
 
-- As the set $S$ is a vx-cut in $G$:
-$
-  kappa(G) <= |S| <= |S^+| < |S^+| + 1 = alpha(G)
-$
-contradiction.
+// - As the set $S$ is a vx-cut in $G$:
+// $
+//   kappa(G) <= |S| <= |S^+| < |S^+| + 1 = alpha(G)
+// $
+// contradiction.
 
 

@@ -861,11 +861,15 @@ Again $kappa(K_1) = 0$, is annoying, can we fix it?
 //   - let $rho_G (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
 // ]
 
-  #definition[
+  #definition(title: "Path connectivity")[
     $G$ is _k-connected_ if $rho_G (u,v) >= k " "forall {u,v} in binom(V(G), 2)$
   ]
 
-  
+  #definition(title: "Vertex connectivity")[
+    $G$ is _k-connected_ if for every $X subset.eq V(G)$ with $|X| <= k-1$ the graph $G-X$ is connected or $v(G-X)=1$.
+  ]
+
+  #pause
   #align(horizon + center)[
   *So whats better: vertex connectivity or path connectivity ?*
  #pause
@@ -948,6 +952,7 @@ $
   - merge $x$ and $y$ into one vertex $v_(x y)$
   - connect $v_(x y)$ to $N_G (x) cap N_G (y)$, remove any dupplicant edges that may arise
 #columns(3)[
+  #set align(center)
   #diagram(
     node((0, 1), $x$, name: <x>),
     node((2, 1), $y$, name: <y>),
@@ -1019,28 +1024,44 @@ $
   - $rho = |A cap B| = kappa$
 
 #pagebreak()
-#theorem(title: [Menger's theorem])[
-  Let $G$ be a graph and let $A,B subset.eq V(G)$ non empty.
-  Then
-  $
-    underbrace(kappa_G (A,B) = rho_G (A,B), #[The goal is to show $<=$])
-  $
-]
-- assume $e(G) > 0$
-- let $e=x y in E(G)$ be an arbitrary edge
-- In $G slash e$, define $A_e subset.eq V(G slash e)$ as follows
+
+#table(
+  columns: (1fr, 1fr),
+  align: horizon,
+  stroke: none,
+  [
+    #goal[
+      Show that $kappa_(G)(A,B) <= rho_(G)(A,B).$
+    ]
+  ],
+  [ #block(width: 100%, stroke: 1pt, radius: 3pt, inset: 20pt, fill: yellow)[
+    #set text(size: 0.8em)
+    *I.H:* For every graph $G'$ with $e(G') < e(G)$ and every $A',B' subset.eq V(G')$ non empty, we have $kappa_(G')(A',B') <= rho_(G')(A',B')$
+  ]],
+)
+// #theorem(title: [Menger's theorem])[
+//   Let $G$ be a graph and let $A,B subset.eq V(G)$ non empty.
+//   Then
+//   $
+//     underbrace(kappa_G (A,B) = rho_G (A,B), #[The goal is to show $<=$])
+//   $
+// ]
+- Assume $e(G) > 0$, let $e=x y in E(G)$ be an arbitrary edge
+- $G slash e$ satisfies the I.H. but $A$ and $B$ are not defined consistently in $G \\ e$. #text(size: 0.8em, weight: "bold", fill: red)[(What if x or y is in A or B?)].
+
+ Define $A_e subset.eq V(G slash e)$ as follows
   - If $x,y in.not A$, then $A_e := A$
   - if $x in A$,$y in.not A$, then $A_e := (A \\ {x}) cup {V_e}$
   - if $x in.not A$,$y in A$, then $A_e := (A \\ {x}) cup {V_e}$
   - if $x,y in A$, then $A_e := (A \\ {x,y }) cup {V_e}$
 
-- Define $B_e$ in the same manner
+- Define $B_e$ in the same manner.
 
 #pagebreak()
-- Suppose that $G slash e$ has $kappa$ vx-disjoint $(A_e,B_e)$-paths
-  - Any path not containing $v_e$ exists in $G$
-  - if none of the paths here contains $v_e$, then we are done
-- suppose that there is a path in the linkage containing $v_e$.
+*Case 1:* Suppose that $G slash e$ has $kappa$ vx-disjoint $(A_e,B_e)$-paths
+  - *Goal:* Show that every such path exists in $G$.
+    - Any path not containing $v_e$ exists in $G$.
+    - suppose that there is a path in the linkage containing $v_e$.
 
   $x y$ can be expanded in the path
 
@@ -1076,27 +1097,25 @@ $
 #[
   #set text(size: 0.9em)
 #claim[
-  If $S$ is vx-disconnector of $(A_e,B_e)$ in $G slash e$ then 
+  If $S$ is vx-disconnector of $(A_e,B_e)$ in $G slash e$ then
+  a vx-disconnector of $(A,B)$ in $G$ exists where 
   $
-  S_G := cases(
-    S " if " v_e in.not S,
-    (S \\ v_e) cup {x,y} " if " v_e in S
-  )
+  S_G subset.eq (S \\ v_e) cup {x,y}.
   $ 
-  is a vx-disconnector of $(A,B)$ in $G$.
+  // is a vx-disconnector of $(A,B)$ in $G$.
 ]
-#text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
-- Suppose that $G slash e$ don't have $kappa$ vx-disjoint $(A_e,B_e)$-paths $==>$ $kappa_(G\\e) (A_e,B_e) < kappa$
-- Let $S$ be a vx-disconnector of $(A_e,B_e)$, note that $|S| < kappa$.
-- $v_e in S$ $==>$ If $v_e in.not S$, then $S_G$ is a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
+// #text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
+*Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa => kappa_(G\\e)(A_e, B_e) < kappa$
+- Let $S$ be a vx-disconnector of $(A_e,B_e)$.
+- $v_e in S$ must hold:
+  - If $v_e in.not S$, then $S$ is also a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
 - Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$.
   - Otherwise $|S_G| <= |S|+1< kappa+1-1=kappa$.
-#v(-50pt)
 ]
 #place(
   top + left,
   dx: 14cm,
-  dy: 7cm,
+  dy: 5.5cm,
   align(center)[
   #cetz-canvas({
     import cetz.draw: *
@@ -1314,10 +1333,12 @@ $
 )
 
 #pagebreak()
+#v(20pt)
 We are now in this position:
-- $S_G := (A,B)$-vx-disconnector (Maybe $S_G=A$ or $S_G=B$)
-- $|S_G| = kappa$
-- $S_G$ spans $e$
+- The edge $x y$ lies inside the minimum vx-disconnector of $(A,B)$ in $G$, *(Call it $S$)*.
+// - $S_G := (A,B)$-vx-disconnector (Maybe $S_G=A$ or $S_G=B$)
+// - $|S_G| = kappa$
+// - $S_G$ spans $e$
 #align(center)[
   #cetz-canvas({
     import cetz.draw: *
@@ -1394,11 +1415,21 @@ We are now in this position:
 ]
 
 #pause
-#claim[
-  If $S_G$ is a vx-disconnector of $(A,B)$. Then, any vx-disconnector of $(A,S_G)$
-  is also a vx-disconnector of $(A,B)$ and any vx-disconnector of $(S_G,B)$ is also a vx-disconnector of $(A,B)$.
-]
-$==>$ The size of the least vx-disconnector of $(A,S_G)$ and $(S_G,B)$ is at least $kappa$.
+// #claim[
+//   If $S_G$ is a vx-disconnector of $(A,B)$. Then, any vx-disconnector of $(A,S_G)$
+//   is also a vx-disconnector of $(A,B)$ and any vx-disconnector of $(S_G,B)$ is also a vx-disconnector of $(A,B)$.
+// ]
+*Observation:* 
+ The size of the least vx-disconnector of $(A,S)$ and $(S,B)$ is at least $kappa$.
+
+#place(
+  top + center,
+  dx: 0cm,
+  dy: 55%,
+  figure(
+    image("figures/L4i3.png", width: 70%),
+  ),
+)
 
 #pagebreak()
 
@@ -1483,16 +1514,25 @@ $==>$ The size of the least vx-disconnector of $(A,S_G)$ and $(S_G,B)$ is at lea
 )
 
 - Look at $G - e$: #text(size: 0.8em, weight: "bold", fill: red)[(removing the edge e rather than contracting it!)]
-- By induction hypothesis.
+- By the induction hypothesis.
 $
   rho_(G-e) (A, S_G) = kappa_(G-e) (A, S_G) >= kappa quad "and" quad rho_(G-e) (A, S_G) = kappa_(G-e) (S_G, B) >= kappa
 $
 
 #v(100pt)
 - There must exists $kappa$ vx-disjoint $(A,S_G)$-paths and $kappa$ vx-disjoint $(S_G,B)$-paths in $G-e$.
-- Fix $w in S_G$ and let $P_(A,w) := a arrow.r.squiggly w$ be a path from $A$ to $w in S_G$ and let $P_(w,B):=b arrow.r.squiggly w$ be a path from $B$ to $w$.
-- The path $a arrow.r.squiggly w arrow.r.squiggly b$ is a vx-disjoint $(A,B)$-path in $G$.
- - If $a arrow.r.squiggly w arrow.r.squiggly b$ is not vx-disjoint then there exists $u in G$ such that $a arrow.r.squiggly u arrow.r.squiggly w arrow.r.squiggly u arrow.r.squiggly b$, but then $a arrow.r.squiggly u arrow.r.squiggly b$ is a path between $(A,B)$ in $G \\ S_G$ so that $S_G$ is not a vx-disconnector of $(A,B)$, contradiction.
+- For any path $a arrow.r.squiggly s$ and $s arrow.r.squiggly b$,
+  where $a in A, s in S, b in B$.
+  - The path $a arrow.r.squiggly s arrow.r.squiggly b$ is vx-disjoint $(A,B)$-path in $G$.
+
+#place(
+  top + center,
+  dx: 0cm,
+  dy: 72%,
+  figure(
+    image("figures/L4i4.png", width: 40%),
+  ),
+)
 
 = Implication of Menger's theorem
 == Implication of Menger's theorem
@@ -1552,8 +1592,18 @@ $
   - $S subset.eq V(G)$ such that $2 <= |S| <= k$
   Then $G$ contains a cycle constaining $S$
   ]
-  - By induction on $k$
+  - By induction on $k$.
   - for $k=2$, the claim holds by whitney's theorem.
+
+  #[
+    #set text(size: 0.8em)
+  #theorem(title: "Whitney's Theorem")[
+  - $G$ - a connected graph with $v(G) >= 3$
+  $
+    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+  $
+  ]
+]
 ][
   #place(
   top + left,
@@ -1575,24 +1625,50 @@ $
   #block(
     width: 50%,
   )[
-  - assume $k>=3$
-  - let $x in S$ be arbitrary and set $T:= S\\{x}$
-  - $kappa(G -x) >= k-1$ So there is a cycle $C$ in $G-x$ containing $T$.
-  - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$
-    - If the size of the fan is $v(C)$ then $x$ has a path to two vertices on $C$ we can replace the edge between those two by the path through $x$ to get a cycle containing $x$.
-  - Otherwise $T$ partitions $C$ into $k-1$ arcs.
-  - At least two of the paths in the fans land in the same arc on $C$
-  - We can extend $C$ to conatin $x$
+    #block(width: 100%, stroke: 1pt, radius: 3pt, inset: 20pt, fill: yellow)[
+    #set text(size: 0.8em)
+    *I.H:* If $G$ is a $k-1$ connected graph then for every $S subset.eq V(G)$ with $|S| <= k-1$ there is a cycle containing $S$.
+  ]
+  #set text(size: 1em)
+  #v(-10pt)
+  - Assume $k>=3$
+    - Let $x in S$ be arbitrary and set $T:= S\\{x}$.
+  - |T| <= k-1.
+  -  $G$ is $k$-connected so it is also $k-1$ connected.
+    - By the I.H. there is a cycle $C$ containing $T$.
+  - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$.
+
+  *Case 1:* The size of the fan is $v(C)$.
+    - $C:= c_1...c_ell c_1$, a path $x arrow.r.squiggly c_i$ for every $i$ exists.
+    - Define $C':= x c_1...c_ell x$.
   // #sym.space.nobreak$#get-qed-symbol()$
   ]
 
   #place(
   top + left,
-  dx: 55%,
-  dy: 5cm,
+  dx: 62%,
+  dy: 5.2cm,
   figure(
-    image("figures/L4i2.png", width: 40%),
+    image("figures/L4i5.png", width: 35%),
   ),
 )
 ]
 
+#pagebreak()
+#v(20pt)
+#block(width: 60%)[
+  *Case 2:* The size of the fan is less than $v(C)$.
+  - $T$ partitions $C$ into $|T|=t$ arcs.
+  - At least one of those arcs has two paths connecting it to $x$.
+  - Let $a_1...a_ell$ be that arc  where $C:=t_1...t_i a_1 ... a_ell t_(i+1) t_t...t_1$ and $t_1,...,t_t in T$.
+   - There is $j,j'$ such that $x arrow.r.squiggly a_j$ and $x arrow.r.squiggly a_(j')$
+   - Define $C':= x a_j...a_ell t_(i+1)...t_1...t_i a_1...a_(j') x$.
+]
+  #place(
+  top + left,
+  dx: 60%,
+  dy: 1cm,
+  figure(
+    image("figures/L4i2.png", width: 40%),
+  ),
+)

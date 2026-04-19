@@ -72,7 +72,7 @@
     render-fn(
       fill: rgb("#280d79"),
       prefix: prefix,
-      full-title: [#text(fill: rgb("#edb8b8"), weight: "bold")[Claim #title:]],
+      full-title: [#text(fill: rgb("#edb8b8"), weight: "bold")[Goal #title:]],
       title: title,
       [
         #set text(fill: rgb("#feffff"))
