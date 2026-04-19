@@ -7,7 +7,7 @@
 
 
 #show: conf.with(
-  handout: true,
+  handout: false,
   subtitle: [Vertex-connectivity in graphs],
 )
 
@@ -1010,7 +1010,7 @@ $
   Let $G$ be a graph and let $A,B subset.eq V(G)$ non empty.
   Then
   $
-    kappa_G (A,B) = rho_G (A,B)
+    underbrace(kappa_G (A,B) = rho_G (A,B), #[The goal is to show $<=$])
   $
 ]
 - Set $kappa := kappa_G (A,B)$ and $rho:= rho_G (A,B)$
@@ -1023,7 +1023,7 @@ $
   Let $G$ be a graph and let $A,B subset.eq V(G)$ non empty.
   Then
   $
-    kappa_G (A,B) = rho_G (A,B)
+    underbrace(kappa_G (A,B) = rho_G (A,B), #[The goal is to show $<=$])
   $
 ]
 - assume $e(G) > 0$
@@ -1060,20 +1060,49 @@ $
     $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (x) edge("--")$,
   )
 
-- In the second case, just take one of the verticies.
+- In the second case, only one of the vertices lie on the original \ path.
+
+#place(
+  top + left,
+  dx: 17.5cm,
+  dy: 1cm,
+  figure(
+    image("figures/L4i1.png", width: 40%),
+  ),
+)
+
 
 == Menger's theorem
-- Suppose that $G slash e$ don't have $kappa$ vx-disjoint $(A_e,B_e)$-paths
-- $kappa_G_e (A,B) < kappa$
-- Any $(A_e,B_e)$-vx-disconnector in $G slash e$ containe $v_e$
-  - if not, $G$ has an (A,B)-vx-disconnector of size $< kappa$
-- Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$
-#v(-20pt)
-#align(center)[
-
+#[
+  #set text(size: 0.9em)
+#claim[
+  If $S$ is vx-disconnector of $(A_e,B_e)$ in $G slash e$ then 
+  $
+  S_G := cases(
+    S " if " v_e in.not S,
+    (S \\ v_e) cup {x,y} " if " v_e in S
+  )
+  $ 
+  is a vx-disconnector of $(A,B)$ in $G$.
+]
+#text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
+- Suppose that $G slash e$ don't have $kappa$ vx-disjoint $(A_e,B_e)$-paths $==>$ $kappa_(G\\e) (A_e,B_e) < kappa$
+- Let $S$ be a vx-disconnector of $(A_e,B_e)$, note that $|S| < kappa$.
+- $v_e in S$ $==>$ If $v_e in.not S$, then $S_G$ is a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
+- Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$.
+  - Otherwise $|S_G| <= |S|+1< kappa+1-1=kappa$.
+#v(-50pt)
+]
+#place(
+  top + left,
+  dx: 14cm,
+  dy: 7cm,
+  align(center)[
   #cetz-canvas({
     import cetz.draw: *
     import cetz.matrix: ident
+
+    scale(0.7)
 
     rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
     rect(
@@ -1282,12 +1311,13 @@ $
     line((5.5, 2), (9.5, -1), mark: (end: ">"))
   })
 ]
+)
 
 #pagebreak()
 We are now in this position:
-- $X := (A,B)$-vx-disconnector (Maybe $X=A$ or $X=B$)
-- $|X| = kappa$
-- $X$ spans $e$
+- $S_G := (A,B)$-vx-disconnector (Maybe $S_G=A$ or $S_G=B$)
+- $|S_G| = kappa$
+- $S_G$ spans $e$
 #align(center)[
   #cetz-canvas({
     import cetz.draw: *
@@ -1362,11 +1392,109 @@ We are now in this position:
     )
   })
 ]
-- Note that by I.H.
+
+#pause
+#claim[
+  If $S_G$ is a vx-disconnector of $(A,B)$. Then, any vx-disconnector of $(A,S_G)$
+  is also a vx-disconnector of $(A,B)$ and any vx-disconnector of $(S_G,B)$ is also a vx-disconnector of $(A,B)$.
+]
+$==>$ The size of the least vx-disconnector of $(A,S_G)$ and $(S_G,B)$ is at least $kappa$.
+
+#pagebreak()
+
+#place(
+  top + center,
+  dx: 0cm,
+  dy: 3.5cm,
+  align(center)[
+  #cetz-canvas({
+    import cetz.draw: *
+
+    rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
+    rect(
+      (2, 0.5),
+      (3, 2.5),
+      fill: red.lighten(70%),
+      radius: 0.2,
+      name: "middle",
+    )
+    rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
+
+    cetz.decorations.wave(
+      line((0.5, 0.2), (2.25, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 1), (2.25, 1.5)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2), (2.25, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((0.5, 2.8), (2.25, 2.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+
+    circle(
+      (rel: "middle", to: (0, 0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "y",
+    )
+    circle(
+      (rel: "middle", to: (0, -0.5)),
+      fill: black,
+      radius: 1pt,
+      anchor: "north",
+      name: "x",
+    )
+    content("y", [$y$], anchor: "south")
+    content("x", [$x$], anchor: "north")
+    // line("x", "y")
+    cetz.decorations.wave(
+      line((2.75, 1), (4.5, 0.2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 1.5), (4.5, 1)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2), (4.5, 2)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+    cetz.decorations.wave(
+      line((2.75, 2.2), (4.5, 2.8)),
+      segments: 2,
+      amplitude: 0.1,
+    )
+  })
+]
+)
+
+- Look at $G - e$: #text(size: 0.8em, weight: "bold", fill: red)[(removing the edge e rather than contracting it!)]
+- By induction hypothesis.
 $
-  kappa_(G-e) (A,X) >= kappa quad "and" quad kappa_(G-e) (X, B) >= kappa
+  rho_(G-e) (A, S_G) = kappa_(G-e) (A, S_G) >= kappa quad "and" quad rho_(G-e) (A, S_G) = kappa_(G-e) (S_G, B) >= kappa
 $
 
+#v(100pt)
+- There must exists $kappa$ vx-disjoint $(A,S_G)$-paths and $kappa$ vx-disjoint $(S_G,B)$-paths in $G-e$.
+- Fix $w in S_G$ and let $P_(A,w) := a arrow.r.squiggly w$ be a path from $A$ to $w in S_G$ and let $P_(w,B):=b arrow.r.squiggly w$ be a path from $B$ to $w$.
+- The path $a arrow.r.squiggly w arrow.r.squiggly b$ is a vx-disjoint $(A,B)$-path in $G$.
+ - If $a arrow.r.squiggly w arrow.r.squiggly b$ is not vx-disjoint then there exists $u in G$ such that $a arrow.r.squiggly u arrow.r.squiggly w arrow.r.squiggly u arrow.r.squiggly b$, but then $a arrow.r.squiggly u arrow.r.squiggly b$ is a path between $(A,B)$ in $G \\ S_G$ so that $S_G$ is not a vx-disconnector of $(A,B)$, contradiction.
+
+= Implication of Menger's theorem
 == Implication of Menger's theorem
 #corollary(title: "H.W.")[
   - Let $G$ be a graph. Then
@@ -1415,22 +1543,56 @@ $
 ]
 
 == Dirac's theorem
-#theorem(title: "Dirac's Theorem")[
+
+
+#alternatives[
+  #theorem(title: "Dirac's Theorem")[
   - $2 <= k in NN$
   - $G$ - $k$-connected graph
   - $S subset.eq V(G)$ such that $2 <= |S| <= k$
-  Then $G$ contains a cycle constains $S$
-]
-#alternatives[
+  Then $G$ contains a cycle constaining $S$
+  ]
   - By induction on $k$
-  - for $k=2$, the claim hols by whitney's theorem.
+  - for $k=2$, the claim holds by whitney's theorem.
 ][
+  #place(
+  top + left,
+  dx: 55%,
+  dy: 0cm,
+  block(
+    width: 49%,
+  )[
+  #set text(size: 0.9em)
+  #theorem(title: "Dirac's Theorem")[
+  - $2 <= k in NN$
+  - $G$ - $k$-connected graph
+  - $S subset.eq V(G)$ such that $2 <= |S| <= k$
+  Then $G$ contains a cycle constaining $S$
+  ]
+  ]
+)
+
+  #block(
+    width: 50%,
+  )[
   - assume $k>=3$
   - let $x in S$ be arbitrary and set $T:= S\\{x}$
   - $kappa(G -x) >= k-1$ So there is a cycle $C$ in $G-x$ containing $T$.
   - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$
-  - Note the $T$ partitions $C$ into $k-1$ arcs
+    - If the size of the fan is $v(C)$ then $x$ has a path to two vertices on $C$ we can replace the edge between those two by the path through $x$ to get a cycle containing $x$.
+  - Otherwise $T$ partitions $C$ into $k-1$ arcs.
   - At least two of the paths in the fans land in the same arc on $C$
   - We can extend $C$ to conatin $x$
   // #sym.space.nobreak$#get-qed-symbol()$
+  ]
+
+  #place(
+  top + left,
+  dx: 55%,
+  dy: 5cm,
+  figure(
+    image("figures/L4i2.png", width: 40%),
+  ),
+)
 ]
+
