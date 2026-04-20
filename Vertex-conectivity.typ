@@ -1,9 +1,7 @@
 #import "settings/dstyle.typ": *
 #import algorithmic: algorithm-figure, style-algorithm
 #show: style-algorithm
-#import "@preview/fletcher:0.5.8" as fletcher: (
-  diagram, edge, node,
-)
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, edge, node
 
 
 #show: conf.with(
@@ -509,8 +507,7 @@ Given a graph $G$ define the following auxiliary graph:
   columns: (1fr, 1.2fr),
   stroke: none,
   inset: 0pt,
-  [‣ $B(G) := {B : B subset.eq G "is a block of G"}$],
-  [‣ $C(G) := {v : v in V(G) "is a cut-vx of G"}$],
+  [‣ $B(G) := {B : B subset.eq G "is a block of G"}$], [‣ $C(G) := {v : v in V(G) "is a cut-vx of G"}$],
 )
 
 
@@ -861,25 +858,26 @@ Again $kappa(K_1) = 0$, is annoying, can we fix it?
 //   - let $rho_G (A,B) :=$ the number of vx-disjoint $(A,B)$-paths
 // ]
 
-  #definition(title: "Path connectivity")[
-    $G$ is _k-connected_ if $rho_G (u,v) >= k " "forall {u,v} in binom(V(G), 2)$
-  ]
+#definition(title: "Path connectivity")[
+  $G$ is _k-connected_ if $rho_G (u,v) >= k " "forall {u,v} in binom(V(G), 2)$
+]
 
-  #definition(title: "Vertex connectivity")[
-    $G$ is _k-connected_ if for every $X subset.eq V(G)$ with $|X| <= k-1$ the graph $G-X$ is connected or $v(G-X)=1$.
-  ]
+#definition(title: "Vertex connectivity")[
+  Graph $G$ with $v(G) > k > 1$ is _k-connected_ if for every $X subset.eq V(G)$ with $|X| <= k-1$ the graph $G-X$ is connected.
+  If $v(G)=1$ then $G$ is _1-connected_.
+]
 
-  #pause
-  #align(horizon + center)[
+#pause
+#align(horizon + center)[
   *So whats better: vertex connectivity or path connectivity ?*
- #pause
- 
+  #pause
+
   #text(
     weight: "bold",
     fill: green.darken(25%),
   )[Menger's theorem tells us that they are the same!]
 
-  ]
+]
 
 == Our definition
 #definition[
@@ -1049,7 +1047,7 @@ $
 - Assume $e(G) > 0$, let $e=x y in E(G)$ be an arbitrary edge
 - $G slash e$ satisfies the I.H. but $A$ and $B$ are not defined consistently in $G \\ e$. #text(size: 0.8em, weight: "bold", fill: red)[(What if x or y is in A or B?)].
 
- Define $A_e subset.eq V(G slash e)$ as follows
+  Define $A_e subset.eq V(G slash e)$ as follows
   - If $x,y in.not A$, then $A_e := A$
   - if $x in A$,$y in.not A$, then $A_e := (A \\ {x}) cup {V_e}$
   - if $x in.not A$,$y in A$, then $A_e := (A \\ {x}) cup {V_e}$
@@ -1059,27 +1057,27 @@ $
 
 #pagebreak()
 *Case 1:* Suppose that $G slash e$ has $kappa$ vx-disjoint $(A_e,B_e)$-paths
-  - *Goal:* Show that every such path exists in $G$.
-    - Any path not containing $v_e$ exists in $G$.
-    - suppose that there is a path in the linkage containing $v_e$.
+- *Goal:* Show that every such path exists in $G$.
+  - Any path not containing $v_e$ exists in $G$.
+  - suppose that there is a path in the linkage containing $v_e$.
 
-  $x y$ can be expanded in the path
+$x y$ can be expanded in the path
 
-  #diagram(
-    $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
-  )
-  #diagram(
-    $edge("--") &in N_G (y) edge("-") & y edge("-") & x edge("-") & in N_G (x) edge("--")$,
-  )
+#diagram(
+  $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
+)
+#diagram(
+  $edge("--") &in N_G (y) edge("-") & y edge("-") & x edge("-") & in N_G (x) edge("--")$,
+)
 
-  $x y$ cannot be expanded in the path
+$x y$ cannot be expanded in the path
 
-  #diagram(
-    $edge("--") &in N_G (y) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
-  )
-  #diagram(
-    $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (x) edge("--")$,
-  )
+#diagram(
+  $edge("--") &in N_G (y) edge("-") & x edge("-") & y edge("-") & in N_G (y) edge("--")$,
+)
+#diagram(
+  $edge("--") &in N_G (x) edge("-") & x edge("-") & y edge("-") & in N_G (x) edge("--")$,
+)
 
 - In the second case, only one of the vertices lie on the original \ path.
 
@@ -1096,240 +1094,240 @@ $
 == Menger's theorem
 #[
   #set text(size: 0.9em)
-#claim[
-  If $S$ is vx-disconnector of $(A_e,B_e)$ in $G slash e$ then
-  a vx-disconnector of $(A,B)$ in $G$ exists where 
-  $
-  S_G subset.eq (S \\ v_e) cup {x,y}.
-  $ 
-  // is a vx-disconnector of $(A,B)$ in $G$.
-]
-// #text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
-*Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa => kappa_(G\\e)(A_e, B_e) < kappa$
-- Let $S$ be a vx-disconnector of $(A_e,B_e)$.
-- $v_e in S$ must hold:
-  - If $v_e in.not S$, then $S$ is also a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
-- Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$.
-  - Otherwise $|S_G| <= |S|+1< kappa+1-1=kappa$.
+  #claim[
+    If $S$ is vx-disconnector of $(A_e,B_e)$ in $G slash e$ then
+    a vx-disconnector of $(A,B)$ in $G$ exists where
+    $
+      S_G subset.eq (S \\ v_e) cup {x,y}.
+    $
+    // is a vx-disconnector of $(A,B)$ in $G$.
+  ]
+  // #text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
+  *Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa => kappa_(G\\e)(A_e, B_e) < kappa$
+  - Let $S$ be a vx-disconnector of $(A_e,B_e)$.
+  - $v_e in S$ must hold:
+    - If $v_e in.not S$, then $S$ is also a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
+  - Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$.
+    - Otherwise $|S_G| <= |S|+1< kappa+1-1=kappa$.
 ]
 #place(
   top + left,
   dx: 14cm,
   dy: 5.5cm,
   align(center)[
-  #cetz-canvas({
-    import cetz.draw: *
-    import cetz.matrix: ident
+    #cetz-canvas({
+      import cetz.draw: *
+      import cetz.matrix: ident
 
-    scale(0.7)
+      scale(0.7)
 
-    rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect(
-      (2, 0.5),
-      (3, 2.5),
-      fill: red.lighten(70%),
-      radius: 0.2,
-      name: "middle",
-    )
-    rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect(
+        (2, 0.5),
+        (3, 2.5),
+        fill: red.lighten(70%),
+        radius: 0.2,
+        name: "middle",
+      )
+      rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(
-      line((0.5, 0.2), (2.25, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 1), (2.25, 1.5)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2), (2.25, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2.8), (2.25, 2.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      cetz.decorations.wave(
+        line((0.5, 0.2), (2.25, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 1), (2.25, 1.5)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2), (2.25, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2.8), (2.25, 2.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    content("middle", [$v_e$], anchor: "south")
-    circle("middle", fill: black, radius: 1pt, anchor: "north")
+      content("middle", [$v_e$], anchor: "south")
+      circle("middle", fill: black, radius: 1pt, anchor: "north")
 
-    cetz.decorations.wave(
-      line((2.75, 1), (4.5, 0.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 1.5), (4.5, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2), (4.5, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2.2), (4.5, 2.8)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      cetz.decorations.wave(
+        line((2.75, 1), (4.5, 0.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 1.5), (4.5, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2), (4.5, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2.2), (4.5, 2.8)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    translate((10, 2.5))
+      translate((10, 2.5))
 
-    rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect(
-      (2, 0.5),
-      (3, 2.5),
-      fill: red.lighten(70%),
-      radius: 0.2,
-      name: "middle",
-    )
-    rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect(
+        (2, 0.5),
+        (3, 2.5),
+        fill: red.lighten(70%),
+        radius: 0.2,
+        name: "middle",
+      )
+      rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(
-      line((0.5, 0.2), (2.25, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 1), (2.25, 1.5)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2), (2.25, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2.8), (2.25, 2.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      cetz.decorations.wave(
+        line((0.5, 0.2), (2.25, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 1), (2.25, 1.5)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2), (2.25, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2.8), (2.25, 2.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    content("middle", [$x$], anchor: "north", name: "x")
-    content(
-      (rel: "middle.north", to: (0, 1)),
-      [$y$],
-      anchor: "south",
-      name: "y",
-    )
-    circle(
-      "middle",
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "x",
-    )
-    circle(
-      "y.south",
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "y",
-    )
-    line("x", "y")
-    cetz.decorations.wave(
-      line((2.75, 1), (4.5, 0.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 1.5), (4.5, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2), (4.5, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2.2), (4.5, 2.8)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    translate((0, -5))
+      content("middle", [$x$], anchor: "north", name: "x")
+      content(
+        (rel: "middle.north", to: (0, 1)),
+        [$y$],
+        anchor: "south",
+        name: "y",
+      )
+      circle(
+        "middle",
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "x",
+      )
+      circle(
+        "y.south",
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "y",
+      )
+      line("x", "y")
+      cetz.decorations.wave(
+        line((2.75, 1), (4.5, 0.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 1.5), (4.5, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2), (4.5, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2.2), (4.5, 2.8)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      translate((0, -5))
 
-    rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect(
-      (2, 0.5),
-      (3, 2.5),
-      fill: red.lighten(70%),
-      radius: 0.2,
-      name: "middle",
-    )
-    rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect(
+        (2, 0.5),
+        (3, 2.5),
+        fill: red.lighten(70%),
+        radius: 0.2,
+        name: "middle",
+      )
+      rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(
-      line((0.5, 0.2), (2.25, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 1), (2.25, 1.5)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2), (2.25, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2.8), (2.25, 2.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      cetz.decorations.wave(
+        line((0.5, 0.2), (2.25, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 1), (2.25, 1.5)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2), (2.25, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2.8), (2.25, 2.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    circle(
-      (rel: "middle", to: (0, 0.5)),
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "y",
-    )
-    circle(
-      (rel: "middle", to: (0, -0.5)),
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "x",
-    )
-    content("y", [$y$], anchor: "south")
-    content("x", [$x$], anchor: "north")
-    line("x", "y")
-    cetz.decorations.wave(
-      line((2.75, 1), (4.5, 0.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 1.5), (4.5, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2), (4.5, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2.2), (4.5, 2.8)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      circle(
+        (rel: "middle", to: (0, 0.5)),
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "y",
+      )
+      circle(
+        (rel: "middle", to: (0, -0.5)),
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "x",
+      )
+      content("y", [$y$], anchor: "south")
+      content("x", [$x$], anchor: "north")
+      line("x", "y")
+      cetz.decorations.wave(
+        line((2.75, 1), (4.5, 0.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 1.5), (4.5, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2), (4.5, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2.2), (4.5, 2.8)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    translate((-10, 2.5))
+      translate((-10, 2.5))
 
-    line((5.5, 2), (9.5, 4.5), mark: (end: ">"))
-    line((5.5, 2), (9.5, -1), mark: (end: ">"))
-  })
-]
+      line((5.5, 2), (9.5, 4.5), mark: (end: ">"))
+      line((5.5, 2), (9.5, -1), mark: (end: ">"))
+    })
+  ],
 )
 
 #pagebreak()
@@ -1419,8 +1417,8 @@ We are now in this position:
 //   If $S_G$ is a vx-disconnector of $(A,B)$. Then, any vx-disconnector of $(A,S_G)$
 //   is also a vx-disconnector of $(A,B)$ and any vx-disconnector of $(S_G,B)$ is also a vx-disconnector of $(A,B)$.
 // ]
-*Observation:* 
- The size of the least vx-disconnector of $(A,S)$ and $(S,B)$ is at least $kappa$.
+*Observation:*
+The size of the least vx-disconnector of $(A,S)$ and $(S,B)$ is at least $kappa$.
 
 #place(
   top + center,
@@ -1438,79 +1436,79 @@ We are now in this position:
   dx: 0cm,
   dy: 3.5cm,
   align(center)[
-  #cetz-canvas({
-    import cetz.draw: *
+    #cetz-canvas({
+      import cetz.draw: *
 
-    rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
-    rect(
-      (2, 0.5),
-      (3, 2.5),
-      fill: red.lighten(70%),
-      radius: 0.2,
-      name: "middle",
-    )
-    rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect((0, 0), (1, 3), fill: gray.lighten(70%), radius: 0.2)
+      rect(
+        (2, 0.5),
+        (3, 2.5),
+        fill: red.lighten(70%),
+        radius: 0.2,
+        name: "middle",
+      )
+      rect((4, 0), (5, 3), fill: gray.lighten(70%), radius: 0.2)
 
-    cetz.decorations.wave(
-      line((0.5, 0.2), (2.25, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 1), (2.25, 1.5)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2), (2.25, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((0.5, 2.8), (2.25, 2.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
+      cetz.decorations.wave(
+        line((0.5, 0.2), (2.25, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 1), (2.25, 1.5)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2), (2.25, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((0.5, 2.8), (2.25, 2.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
 
-    circle(
-      (rel: "middle", to: (0, 0.5)),
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "y",
-    )
-    circle(
-      (rel: "middle", to: (0, -0.5)),
-      fill: black,
-      radius: 1pt,
-      anchor: "north",
-      name: "x",
-    )
-    content("y", [$y$], anchor: "south")
-    content("x", [$x$], anchor: "north")
-    // line("x", "y")
-    cetz.decorations.wave(
-      line((2.75, 1), (4.5, 0.2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 1.5), (4.5, 1)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2), (4.5, 2)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-    cetz.decorations.wave(
-      line((2.75, 2.2), (4.5, 2.8)),
-      segments: 2,
-      amplitude: 0.1,
-    )
-  })
-]
+      circle(
+        (rel: "middle", to: (0, 0.5)),
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "y",
+      )
+      circle(
+        (rel: "middle", to: (0, -0.5)),
+        fill: black,
+        radius: 1pt,
+        anchor: "north",
+        name: "x",
+      )
+      content("y", [$y$], anchor: "south")
+      content("x", [$x$], anchor: "north")
+      // line("x", "y")
+      cetz.decorations.wave(
+        line((2.75, 1), (4.5, 0.2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 1.5), (4.5, 1)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2), (4.5, 2)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+      cetz.decorations.wave(
+        line((2.75, 2.2), (4.5, 2.8)),
+        segments: 2,
+        amplitude: 0.1,
+      )
+    })
+  ],
 )
 
 - Look at $G - e$: #text(size: 0.8em, weight: "bold", fill: red)[(removing the edge e rather than contracting it!)]
@@ -1587,71 +1585,71 @@ $
 
 #alternatives[
   #theorem(title: "Dirac's Theorem")[
-  - $2 <= k in NN$
-  - $G$ - $k$-connected graph
-  - $S subset.eq V(G)$ such that $2 <= |S| <= k$
-  Then $G$ contains a cycle constaining $S$
+    - $2 <= k in NN$
+    - $G$ - $k$-connected graph
+    - $S subset.eq V(G)$ such that $2 <= |S| <= k$
+    Then $G$ contains a cycle constaining $S$
   ]
   - By induction on $k$.
   - for $k=2$, the claim holds by whitney's theorem.
 
   #[
     #set text(size: 0.8em)
-  #theorem(title: "Whitney's Theorem")[
-  - $G$ - a connected graph with $v(G) >= 3$
-  $
-    G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
-  $
+    #theorem(title: "Whitney's Theorem")[
+      - $G$ - a connected graph with $v(G) >= 3$
+      $
+        G "has no cut-vxs" <=> "any 2 verticies of " G " lies on a common cycle".
+      $
+    ]
   ]
-]
 ][
   #place(
-  top + left,
-  dx: 55%,
-  dy: 0cm,
-  block(
-    width: 49%,
-  )[
-  #set text(size: 0.9em)
-  #theorem(title: "Dirac's Theorem")[
-  - $2 <= k in NN$
-  - $G$ - $k$-connected graph
-  - $S subset.eq V(G)$ such that $2 <= |S| <= k$
-  Then $G$ contains a cycle constaining $S$
-  ]
-  ]
-)
+    top + left,
+    dx: 55%,
+    dy: 0cm,
+    block(
+      width: 49%,
+    )[
+      #set text(size: 0.9em)
+      #theorem(title: "Dirac's Theorem")[
+        - $2 <= k in NN$
+        - $G$ - $k$-connected graph
+        - $S subset.eq V(G)$ such that $2 <= |S| <= k$
+        Then $G$ contains a cycle constaining $S$
+      ]
+    ],
+  )
 
   #block(
     width: 50%,
   )[
     #block(width: 100%, stroke: 1pt, radius: 3pt, inset: 20pt, fill: yellow)[
-    #set text(size: 0.8em)
-    *I.H:* If $G$ is a $k-1$ connected graph then for every $S subset.eq V(G)$ with $|S| <= k-1$ there is a cycle containing $S$.
-  ]
-  #set text(size: 1em)
-  #v(-10pt)
-  - Assume $k>=3$
-    - Let $x in S$ be arbitrary and set $T:= S\\{x}$.
-  - |T| <= k-1.
-  -  $G$ is $k$-connected so it is also $k-1$ connected.
-    - By the I.H. there is a cycle $C$ containing $T$.
-  - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$.
+      #set text(size: 0.8em)
+      *I.H:* If $G$ is a $k-1$ connected graph then for every $S subset.eq V(G)$ with $|S| <= k-1$ there is a cycle containing $S$.
+    ]
+    #set text(size: 1em)
+    #v(-10pt)
+    - Assume $k>=3$
+      - Let $x in S$ be arbitrary and set $T:= S\\{x}$.
+    - |T| <= k-1.
+    - $G$ is $k$-connected so it is also $k-1$ connected.
+      - By the I.H. there is a cycle $C$ containing $T$.
+    - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$.
 
-  *Case 1:* The size of the fan is $v(C)$.
+    *Case 1:* The size of the fan is $v(C)$.
     - $C:= c_1...c_ell c_1$, a path $x arrow.r.squiggly c_i$ for every $i$ exists.
     - Define $C':= x c_1...c_ell x$.
-  // #sym.space.nobreak$#get-qed-symbol()$
+    // #sym.space.nobreak$#get-qed-symbol()$
   ]
 
   #place(
-  top + left,
-  dx: 62%,
-  dy: 5.2cm,
-  figure(
-    image("figures/L4i5.png", width: 35%),
-  ),
-)
+    top + left,
+    dx: 62%,
+    dy: 5.2cm,
+    figure(
+      image("figures/L4i5.png", width: 35%),
+    ),
+  )
 ]
 
 #pagebreak()
@@ -1661,10 +1659,10 @@ $
   - $T$ partitions $C$ into $|T|=t$ arcs.
   - At least one of those arcs has two paths connecting it to $x$.
   - Let $a_1...a_ell$ be that arc  where $C:=t_1...t_i a_1 ... a_ell t_(i+1) t_t...t_1$ and $t_1,...,t_t in T$.
-   - There is $j,j'$ such that $x arrow.r.squiggly a_j$ and $x arrow.r.squiggly a_(j')$
-   - Define $C':= x a_j...a_ell t_(i+1)...t_1...t_i a_1...a_(j') x$.
+    - There is $j,j'$ such that $x arrow.r.squiggly a_j$ and $x arrow.r.squiggly a_(j')$
+    - Define $C':= x a_j...a_ell t_(i+1)...t_1...t_i a_1...a_(j') x$.
 ]
-  #place(
+#place(
   top + left,
   dx: 60%,
   dy: 1cm,
