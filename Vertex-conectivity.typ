@@ -1103,12 +1103,13 @@ $x y$ cannot be expanded in the path
     // is a vx-disconnector of $(A,B)$ in $G$.
   ]
   // #text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
-  *Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa => kappa_(G\\e)(A_e, B_e) < kappa$
+  *Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa $
+  - By the I.H $kappa_(G\\e)(A_e, B_e) < kappa$.
   - Let $S$ be a vx-disconnector of $(A_e,B_e)$.
   - $v_e in S$ must hold:
     - If $v_e in.not S$, then $S$ is also a vx-disconnector of $(A,B)$ in $G$ and has size $|S| < kappa$.
   - Any $(A_e,B_e)$-vx-disconnector in $G slash e$ is of size $kappa - 1$.
-    - Otherwise $|S_G| <= |S|+1< kappa+1-1=kappa$.
+    - Otherwise $|S_G| <= |S|+1< kappa-1+1=kappa$.
 ]
 #place(
   top + left,
@@ -1333,7 +1334,7 @@ $x y$ cannot be expanded in the path
 #pagebreak()
 #v(20pt)
 We are now in this position:
-- The edge $x y$ lies inside the minimum vx-disconnector of $(A,B)$ in $G$, *(Call it $S$)*.
+- The edge $x y$ lies inside the minimum vx-disconnector of $(A,B)$ in $G$.
 // - $S_G := (A,B)$-vx-disconnector (Maybe $S_G=A$ or $S_G=B$)
 // - $|S_G| = kappa$
 // - $S_G$ spans $e$
@@ -1552,12 +1553,6 @@ $
 #pagebreak()
 - Given $x in V(G)$ and $B subset.eq V(G)$ s.t. $x in.not B$, we write _$(x,B)$-fan_ to denote:
 
-#lemma(title: "Fan Lemma H.W")[
-  - $G$ - $k$-connected graph
-  - $x in V(G)$ and $B subset.eq V(G) \\ {x }$
-  Then $G$ has an $(x,B)$-fan if size $min{k,|B|}$
-]
-
 #align(center)[
   #diagram(
     node-stroke: 1pt,
@@ -1579,6 +1574,14 @@ $
     edge(<x>, (2, 1), "--"),
   )
 ]
+
+#lemma(title: "Fan Lemma H.W")[
+  - $G$ - $k$-connected graph
+  - $x in V(G)$ and $B subset.eq V(G) \\ {x }$
+  Then $G$ has an $(x,B)$-fan if size $min{k,|B|}$
+]
+
+
 
 == Dirac's theorem
 
@@ -1632,14 +1635,12 @@ $
     - Assume $k>=3$
       - Let $x in S$ be arbitrary and set $T:= S\\{x}$.
     - |T| <= k-1.
-    - $G$ is $k$-connected so it is also $k-1$ connected.
+    - $G$ is $k$-connected so $G-x$ is at least $k-1$ connected.
       - By the I.H. there is a cycle $C$ containing $T$.
     - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$.
-
-    *Case 1:* The size of the fan is $v(C)$.
-    - $C:= c_1...c_ell c_1$, a path $x arrow.r.squiggly c_i$ for every $i$ exists.
-    - Define $C':= x c_1...c_ell x$.
-    // #sym.space.nobreak$#get-qed-symbol()$
+    - $T$ partitions $C$ into $k-1$ arcs.
+    - At least two of the paths in the fan land in the same arc on $C$.
+    
   ]
 
   #place(
@@ -1652,21 +1653,3 @@ $
   )
 ]
 
-#pagebreak()
-#v(20pt)
-#block(width: 60%)[
-  *Case 2:* The size of the fan is less than $v(C)$.
-  - $T$ partitions $C$ into $|T|=t$ arcs.
-  - At least one of those arcs has two paths connecting it to $x$.
-  - Let $a_1...a_ell$ be that arc  where $C:=t_1...t_i a_1 ... a_ell t_(i+1) t_t...t_1$ and $t_1,...,t_t in T$.
-    - There is $j,j'$ such that $x arrow.r.squiggly a_j$ and $x arrow.r.squiggly a_(j')$
-    - Define $C':= x a_j...a_ell t_(i+1)...t_1...t_i a_1...a_(j') x$.
-]
-#place(
-  top + left,
-  dx: 60%,
-  dy: 1cm,
-  figure(
-    image("figures/L4i2.png", width: 40%),
-  ),
-)
