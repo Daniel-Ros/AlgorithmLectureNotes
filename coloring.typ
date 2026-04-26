@@ -700,7 +700,8 @@ _*proof:*_
 == The Recolouring Idea: Case k+
 #set align(horizon + center)
 #set text(size: 1.4em)
+ We can do the process above again and again. \
 It remains to prove that this process stops, which is left for the *TA* session.
 
-#tr[the intuition is that we always have $2$ free colours per vertex so at some point those colours will start repeating.]
+#tr[The intuition is that we always have $2$ free colours per vertex so at some point those colours will start repeating.]
 
