@@ -178,6 +178,10 @@
   text(fill: color, weight: "bold")[#body]
 }
 
+#let tr(body) = {
+  text(fill: red, weight: "bold", size: 0.8em)[#body]
+}
+
 #let cup = math.union
 #let cap = math.inter
 
