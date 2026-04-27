@@ -38,7 +38,7 @@
   - Input:
     - A graph $G$
     - An ordering $v_1, v_2, dots, v_n$ of $V(G)$\
-    
+
   - Output:
     - A legal vertex-colouring of $G$
 
@@ -109,7 +109,7 @@
           fill: fill-col,
           name: "c6-" + str(i),
         )
-        
+
         if i != 300 {
           edge()
         }
@@ -143,10 +143,10 @@ $
   chi(G) = Delta(G) + 1
 $
 #v(-10pt)
-  - Examples:
-    - Odd cycles: $Delta = 2$ and $chi = 3$
-    - Complete graphs: $Delta(K_r) = r - 1$ and $chi(K_r) = r$
-  - What about the rest? Can we do better?
+- Examples:
+  - Odd cycles: $Delta = 2$ and $chi = 3$
+  - Complete graphs: $Delta(K_r) = r - 1$ and $chi(K_r) = r$
+- What about the rest? Can we do better?
 = Brooks' Theorem
 == Statement
 #theorem(title: [Brooks' Theorem])[
@@ -234,7 +234,7 @@ $
   [
     #set text(size: 2em)
     $==>$
-  ]
+  ],
 )
 
 #place(
@@ -249,7 +249,7 @@ $
 - It remains to join the parts. How?
 #pause
 #block(width: 60%)[
-- If $c(v)=i$ in $C_1$, and $c(v)=j$ in $C_2$. Swap in $C_2$ the colours of all vertices colour in $j$ to $i$ and all colours $i$ to $j$.
+  - If $c(v)=i$ in $C_1$, and $c(v)=j$ in $C_2$. Swap in $C_2$ the colours of all vertices colour in $j$ to $i$ and all colours $i$ to $j$.
 ]
 #place(
   top + left,
@@ -295,10 +295,10 @@ $
 
 #v(5pt)
 #block(width: 45%, fill: gray.lighten(50%), inset: 15pt, radius: 15pt)[
-- *Goal:* find $x,y,z in V(G)$ such that:
-  - $x y, x z in E(G)$
-  - $y z in.not E(G)$
-  - $G - {y,z}$ is connected
+  - *Goal:* find $x,y,z in V(G)$ such that:
+    - $x y, x z in E(G)$
+    - $y z in.not E(G)$
+    - $G - {y,z}$ is connected
 ]
 
 #pause
@@ -309,11 +309,11 @@ $
   block(width: 50%)[
     #set text(size: 0.9em)
     - If such vertices exist:
-  - Build a spanning tree of $G-{y,z}$ rooted at $x$.
-  - Use an order with $x$ last and $y,z$ first.
-  - Since $y$ and $z$ are nonadjacent, they may receive the same colour.
-  - Greedy colouring then gives a legal $Delta(G)$-colouring.
-  ]
+    - Build a spanning tree of $G-{y,z}$ rooted at $x$.
+    - Use an order with $x$ last and $y,z$ first.
+    - Since $y$ and $z$ are nonadjacent, they may receive the same colour.
+    - Greedy colouring then gives a legal $Delta(G)$-colouring.
+  ],
 )
 
 
@@ -348,7 +348,8 @@ $
       edge(<kr-w>, <kr-t>),
       edge(<kr-t>, <kr-x>),
 
-      edge(<kr-y>, <kr-z>,[$y z in.not E(G)$], stroke: (paint: red, dash: (3pt, 2pt), thickness: 1.4pt)))
+      edge(<kr-y>, <kr-z>, [$y z in.not E(G)$], stroke: (paint: red, dash: (3pt, 2pt), thickness: 1.4pt)),
+    )
     #v(-0.65em)
     #text(size: 0.85em)[$x y, x z in E(G)$ and $G-{y,z}$ stays connected.]
   ],
@@ -414,8 +415,8 @@ $
     node((1.9, 1.7), [\ $z$], name: <vert-z>, radius: 5pt, fill: rgb("#2f5d77"), stroke: rgb("#2f5d77")),
 
 
-    edge(<blk-mid>,<blk-left>),
-    edge(<blk-mid>,<blk-right>),
+    edge(<blk-mid>, <blk-left>),
+    edge(<blk-mid>, <blk-right>),
 
     // Vertex v below
     node((0, -1.0), [\ $v$], name: <vert-v>, radius: 6pt, fill: rgb("#2f5d77"), stroke: rgb("#2f5d77")),
@@ -433,15 +434,15 @@ $
     dy: 50% + 75pt,
     [
       $G-v$
-    ]
+    ],
   )
 
   #v(0.25em)
   #text(size: 0.85em)[Block decomposition of $G-v$: blocks are separated; $y,z$
-  are non cut-vx in leaf blocks; $y,z$ are connected to $v$.]
+    are non cut-vx in leaf blocks; $y,z$ are connected to $v$.]
 ]
 
-== Case 2.2.2: Regular Case with $kappa(G)>2$. 
+== Case 2.2.2: Regular Case with $kappa(G)>2$.
 - *Subcase 2:* By assumption $kappa(G-v) >= kappa(G) - 1 >= 2$ for every $v in V(G)$.
   - Since $G$ is not complete, pick nonadjacent $y,z$ among neighbours of some $x$.
   - $kappa(G-y) >= 2$
@@ -488,7 +489,7 @@ $
 
 #pagebreak()
 #definition[
-  The chromatic index of $G$, denoted by $chi'(G)$. Which is the least $k$ such 
+  The chromatic index of $G$, denoted by $chi'(G)$. Which is the least $k$ such
   that $G$ has a proper edge-colouring with $k$ colours.
 ]
 
@@ -536,46 +537,116 @@ $
   ),
 )
 
-#pagebreak()
+== Colorings in Line Graphs
+#v(-100pt)
+#set align(horizon)
 #observation[
-- $chi(L(G)) = chi'(G) $
-- $Delta(G) <= chi'(G)$
-- $Delta(L(G)) <= 2(Delta(G) - 1)$
+  $chi'(G) = chi(L(G))$
 ]
-
-- Brooks tells us:
-$
-  chi'(G) = chi(L(G)) <= 2(Delta(G)-1)
-$
 
 #place(
   top + center,
   dx: -5%,
-  dy: 60%,
+  dy: 50%,
   figure(
     image("figures/LCi5.png", width: 75%),
   ),
 )
+
+== Maximum degree of the line graph
+// #set align(horizon)
+#observation[
+  $Delta(L(G)) <= 2(Delta(G) - 1)$
+]
+
+- Fix $e = u v in E(G)$.
+- $v_e in V(L(G))$ is adjacent to all vertices corresponding to edges incident to $u$ or $v$.
+- So $deg_(L(G))(v_e) = underbracket((deg_G(u) - 1) + (deg_G(v) - 1), #[We do not count $e$ as an incident edge\ to itself.]) <= 2(Delta(G) - 1)$.
+#v(-3pt)
+- We conclude that $Delta(L(G)) <= 2(Delta(G) - 1)$.
+
+#place(
+  top + center,
+  dx: 0%,
+  dy: 60%,
+  figure(
+    image("figures/LCi10.png", width: 70%),
+  ),
+)
+
+== Edge Chromatic Index Bounds
+
+#observation[
+  If $L(G)$ is a clique, then $G$ is a star and $chi'(G) = Delta(G)$.
+]
+
+#observation[
+  If $L(G)$ is an odd cycle, then $G$ is also an odd cycle with $chi'(G) = Delta(G) + 1$.
+]
+#place(
+  top + center,
+  dx: 0%,
+  dy: 40%,
+  figure(
+    image("figures/LCi11.png", width: 60%),
+  ),
+)
+
+#pagebreak()
+#observation[
+  $Delta(G) <= chi'(G) <=2(Delta(G) - 1)$
+]
+#v(-10pt)
+- $Delta(G) <= chi'(G)$ for all $G$.
+- If $L(G)$ is clique or an odd cycle, then $chi'(G) <= Delta(G) + 1$.
+Otherwise:
+- $chi'(G) = chi(L(G))$
+- $Delta(L(G)) <= 2(Delta(G) - 1)$
+
+- So that by Brooks:
+#v(-30pt)
+$
+  chi'(G) = underbrace(chi(L(G)) <= Delta(L(G)), #[$chi(G') <= Delta(G')$ \ $G'$ is not a clique or odd cycle]) <= 2(Delta(G)-1)
+$
+- We then get:
+#v(-30pt)
+$
+  Delta(G) <= chi'(G) <= 2 Delta(G) - 2
+$
+
+#pause
+#[ #set align(center)
+  #set text(size: 1.2em)
+  *Can we do better?*
+]
+// #place(
+//   top + center,
+//   dx: -5%,
+//   dy: 60%,
+//   figure(
+//     image("figures/LCi5.png", width: 75%),
+//   ),
+// )
 
 
 = Konig's Theorem
 == Bipartite Edge Colouring
 #[
   #set text(size: 0.9em)
-#theorem(title: [Konig's Theorem])[
-  If $G$ is bipartite, then
-  $
-    chi'(G) = Delta(G)
-  $
-]
-#v(-10pt)
-- Rember that $chi'(G) >= Delta(G)$ always holds, so we only need to show $chi'(G) <= Delta(G)$ for bipartite graphs.
-_*proof:*_
-- Degree-regular bipartite graphs admit a perfect matching (See in tha practice session).
-- Removing edges of a perfect matching from a $k$-regular bipartite graph gives a $(k-1)$-regular bipartite graph.
-- By induction on $k$, every $k$-regular bipartite graph is $k$-edge-colourable.
-- Any bipartite graph can be embedded into a $Delta(G)$-regular bipartite supergraph.
-- Restrict the colouring from the supergraph back to $G$.
+  #theorem(title: [Konig's Theorem])[
+    If $G$ is bipartite, then
+    $
+      chi'(G) = Delta(G)
+    $
+  ]
+  #v(-10pt)
+  - Rember that $chi'(G) >= Delta(G)$ always holds, so we only need to show $chi'(G) <= Delta(G)$ for bipartite graphs.
+  _*proof:*_
+  - Degree-regular bipartite graphs admit a perfect matching (See in tha practice session).
+  - Removing edges of a perfect matching from a $k$-regular bipartite graph gives a $(k-1)$-regular bipartite graph.
+  - By induction on $k$, every $k$-regular bipartite graph is $k$-edge-colourable.
+  - Any bipartite graph can be embedded into a $Delta(G)$-regular bipartite supergraph.
+  - Restrict the colouring from the supergraph back to $G$.
 ]
 #place(
   top + center,
@@ -600,7 +671,7 @@ _*proof:*_
     Delta(G) <= chi'(G) <= Delta(G)+1
   $
 - So every graph is either:
-  - Class 1 ($chi'(G)=Delta(G)$) 
+  - Class 1 ($chi'(G)=Delta(G)$)
   - Class 2 ($chi'(G)=Delta(G)+1$).
   - It is NP-hard to determine the class of a given graph.
 
@@ -617,7 +688,7 @@ _*proof:*_
 - Pick $e = u v in E(G)$ and set $G' := G - e$.
 - By induction hypothesis, $G'$ has a proper edge-colouring with at most $Delta(G)+1$ colours.
 - Try to colour $e$ when re-inserting it.
- 
+
 #[
   #set align(center)
   #diagram(
@@ -669,7 +740,7 @@ _*proof:*_
 - If there is no common missing colour at both $u$ and $v$.
 - Let $c_1$ be the colour that $u$ dont see, and $c_0$ the colour that $v$ dont see.
 - Let $v w_1$ be the edge coloured in $c_1$.
-  - If $w_1$ also doesn't see $c_0$ colour $v w_1$ in $c_0$, now $v$ doens't see $c_1$ 
+  - If $w_1$ also doesn't see $c_0$ colour $v w_1$ in $c_0$, now $v$ doens't see $c_1$
     so we can colour $u v$ in $c_1$.
 #place(
   top + center,
@@ -700,7 +771,7 @@ _*proof:*_
 == The Recolouring Idea: Case k+
 #set align(horizon + center)
 #set text(size: 1.4em)
- We can do the process above again and again. \
+We can do the process above again and again. \
 It remains to prove that this process stops, which is left for the *TA* session.
 
 #tr[The intuition is that we always have $2$ free colours per vertex so at some point those colours will start repeating.]

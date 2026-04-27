@@ -63,6 +63,13 @@
   render: render-fn.with(fill: rgb("#bfdce2")),
 )
 
+#let (definition-counter, definition-box, observations, show-definition) = make-frame(
+  "definition",
+  "Observations",
+  counter: theorem-counter,
+  render: render-fn.with(fill: rgb("#bfdce2")),
+)
+
 
 #let (definition-counter, definition-box, goal, show-definition) = make-frame(
   "definition",

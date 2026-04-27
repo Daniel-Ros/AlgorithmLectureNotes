@@ -1103,7 +1103,7 @@ $x y$ cannot be expanded in the path
     // is a vx-disconnector of $(A,B)$ in $G$.
   ]
   // #text(size: 0.8em, weight: "bold", fill: red)[Note that if $v_e in S$ then $(S \\ v_e) cup x$ or $(S \\ v_e) cup y$ might result in a vx-disconnector but it will have size $=|S|$. ]
-  *Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa $
+  *Case 2:* $rho_(G \\ e)(A_e, B_e) < kappa$
   - By the I.H $kappa_(G\\e)(A_e, B_e) < kappa$.
   - Let $S$ be a vx-disconnector of $(A_e,B_e)$.
   - $v_e in S$ must hold:
@@ -1640,7 +1640,7 @@ $
     - let $F$ be an $(x,C)$-fan in $G$ of size $min{k, v(C)}$.
     - $T$ partitions $C$ into $k-1$ arcs.
     - At least two of the paths in the fan land in the same arc on $C$.
-    
+
   ]
 
   #place(
