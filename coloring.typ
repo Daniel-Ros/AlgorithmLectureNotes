@@ -134,7 +134,7 @@ $
   $chi(G) <= Delta(G) + 1$
 ]
 
-*_Proof:_* Every vertex sees at most $Delta(G)$ distinct colours, so that by the pidgeon hole principle at least one colour is still _free_.
+*_Proof:_* Every vertex sees at most $Delta(G)$ distinct colours, so at least one colour is still _free_, and it will be chosen by the greedy algorithm.
 
 
 - When the bound is tight?
@@ -173,7 +173,7 @@ $
 - Let $T$ be a spanning tree of $G$ rooted at $v$.
 - Order vertices so descendants appear before ancestors and $v$ is last.
 - In this ordering, each vertex except possibly $v$ has at most $Delta(G)-1$ earlier neighbours.
-- Each vertex has at least 1 available colour, $v$ has one because it has at most $Delta(v)-1$ neibours.
+- Each vertex has at least 1 available colour, $v$ has one because it has at most $Delta(v)-1$ neighbours.
 - We are left with a greedy colouring with at most $Delta(G)$ colours.
 #v(-5pt)
 #[
@@ -301,7 +301,7 @@ $
     - $G - {y,z}$ is connected
 ]
 
-#pause
+
 #place(
   top + left,
   dx: 50%,
