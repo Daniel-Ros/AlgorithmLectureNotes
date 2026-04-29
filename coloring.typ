@@ -395,7 +395,7 @@ $
 ]
 
 == Case 2.2.1: Regular Case with $kappa(G)=2$.
-- *Subcase 1:*  $Kappa(G)=2 ==>$ there exists $v$ such that $G-v$ is connected but not 2-connected.
+- *Subcase 1:*  $kappa(G)=2 ==>$ there exists $v$ such that $G-v$ is connected but not 2-connected.
   - Analyze the block tree of $G-v$.
   - Pick $y,z$ in different leaf blocks, and set $x:=v$. #h(1fr) #tr[(pick $y,z$ that are not cut-vertices)]
   - Then $G-{y,z}$ stays connected.
