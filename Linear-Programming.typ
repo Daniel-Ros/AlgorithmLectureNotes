@@ -7,6 +7,7 @@
   subtitle: [Linear Programming],
 )
 
+#let ba = $bold(a)$
 #let bx = $bold(x)$
 #let bb = $bold(b)$
 #let b0 = $bold(0)$
@@ -24,7 +25,7 @@
   - *Example:*
     - In a power grid, we have $n$ power plants and $m$ cities. We want to decide how much electricity each plant should produce to meet the demand at minimum cost.
     - Let $x_i$ be the amount of electricity produced by plant $i$.
-    - Let$b_j$ be the demand at city $j$.
+    - Let $b_j$ be the demand at city $j$.
     - Denote by $a_(i,j)$ the amount of electricity from plant $i$ that is  sent to city $j$.
    - For each demand node $j$, the plants contribute enough power to meet the demand:
   $
@@ -534,10 +535,58 @@ $
 )
 
 
+== Feasibility and Boundedness
+#[
+  #set align(horizon)
+  #set text(size: 0.87em)
+  An LP can fail to have an optimal solution in two ways:
+  #v(-10pt)
+  #table(
+    columns: (1fr, 1fr),
+    stroke: none,
+    align: top,
+    [
+      *Infeasible* --- flipping two constraints of our example:
+      #block(stroke: (paint: red.darken(10%), thickness: 1pt), radius: 10pt, inset: 10pt)[
+        $max x_1 + x_2$
+        #v(-3pt)
+        $
+          x_2 - x_1  >= 1 \
+          x_1 + 6x_2 <= 15 \
+          4x_1 - x_2 >= 10 \
+          x_1, x_2 >= 0
+        $
+        #tr[(constraints 1 & 3 flipped)]
+      ]
+      The constraints have *no common intersection* --- the LP is _infeasible_.
+    ],
+    [
+      #pause
+      *Unbounded* --- removing two constraints:
+      #block(stroke: (paint: blue.darken(10%), thickness: 1pt), radius: 10pt, inset: 10pt)[
+        $max x_1 + x_2$
+        #v(-3pt)
+        $
+          -x_1 + x_2 <= 1 \
+          x_1, x_2 >= 0
+        $
+      ]
+      Feasible solutions exist but the objective grows *without bound* --- the LP is _unbounded_.
+    ],
+  )
+
+  #pause
+  #v(10pt)
+  #theorem[
+    #set align(center)
+    Any *feasible* and *bounded* LP has an *optimal* solution.
+  ]
+]
+
 == Standard forms of LP's
 #set align(horizon)
 #definition[
-  A Linear program in a one of the following 2-forms:
+  A Linear program in one of the following 2-forms:
   #table(
     columns: (0.3fr, 1fr, 1fr),
     stroke: none,
@@ -547,6 +596,545 @@ $
 ]
 #remark[
   Optimal solution for *LP's* in *equational form* are the easiest to exaplain and we will focus on those.
+]
+
+== Converting to Equational Form
+#[
+  #set align(horizon)
+  #set text(size: 0.88em)
+  Any LP can be converted to equational form. Consider a *mixed* LP (not in any standard form):
+  #table(
+    columns: (1fr, 1fr),
+    stroke: none,
+    align: top,
+    [
+      #block(stroke: black, radius: 10pt, inset: 10pt, width: 95%)[
+        $max 3x_1 - 2x_2$
+        #v(-3pt)
+        $
+          2x_1 - x_2 & <= 4 \
+          x_1 + 3x_2 & >= 5 \
+          x_1         & >= 0
+        $
+        ($x_2$ is *free* --- no sign constraint)
+      ]
+
+      #pause
+      #v(5pt)
+      *Step 1* ($<=$): introduce _slack variable_ $x_3 >= 0$ and set:
+      $
+      2x_1 - x_2 & <= 4 => 2x_1 - x_2 + x_3 = 4,
+      $
+
+      #pause
+      *Step 2* ($>=$): multiply by $-1$, then add slack $x_4 >= 0$:
+      $
+      #h(20pt) x_1 + 3x_2 & >= 5 =>
+      -x_1 - 3x_2 + x_4 = -5
+      $
+
+      #pause
+      *Step 3* (free var): swap $x_2 = y_1 - y_2$, with $y_1, y_2 >= 0$.
+    ],
+    [
+      #pause
+      Final equational LP over $(x_1, y_1, y_2, x_3, x_4 >= 0)$:
+      #block(stroke: black, radius: 10pt, inset: 10pt, width: 95%)[
+        $max 3x_1 - 2y_1 + 2y_2$
+        #v(-3pt)
+        $
+          2x_1 - y_1 + y_2 + x_3 & = 4 \
+          -x_1 - 3y_1 + 3y_2 + x_4 & = -5 \
+          x_1, y_1, y_2, x_3, x_4 & >= 0
+        $
+      ]
+
+      #tr[
+        #set align(center)
+        By solving the final LP we can derive the optimal values for the original LP]
+
+      #pause
+      #v(5pt)
+      #remark[
+        Non-negativity constraints ($x >= 0$) are called *non-negativity constraints*.
+        The forms with $=$ and $bx >= b0$ are the simplest to analyze.
+      ]
+    ],
+  )
+]
+
+= LP's in Equational Form
+
+== Basic Solutions
+#[
+  #v(-50pt)
+  #set align(horizon)
+  #set text(size: 0.88em)
+  We study LPs of the form $max{ bc^T bx : A bx = bb, bx >= b0 }$ where $A in M_(m times n)(RR)$ with $"rank"(A) = m$ (so $m <= n$).
+
+  #pause
+
+  #definition[
+    $bx in RR^n$ satisfying $A bx = bb$ is called *basic* if $exists B subset.eq [n]$ with $|B| = m$ s.t.:
+    - $A_B$ is *non-singular* (columns of $A$ indexed by $B$ are linearly independent), and
+    - $x_j = 0 quad forall j in.not B$.
+
+    A basic $bx$ satisfying also $bx >= b0$ is a *basic feasible solution* (BFS).
+  ]
+
+  #pause
+
+  #remark[
+    Basic solutions may *fail* non-negativity --- hence the distinction.
+  ]
+
+  #place(
+  horizon + center,
+  dx: 0%,
+  dy: 42%,
+  figure(
+    image("figures/LPi8.png", width: 80%),
+  ),
+)
+
+  #pagebreak()
+#[
+    #set align(horizon)
+  #set text(size: 0.88em)
+  #observation[
+    Let $bx in RR^n$ be feasible. Set $K := { j in [n] : x_j > 0 }$. Then
+    $
+      bx "is basic" <==> "columns of" A_K "are linearly independent."
+    $
+  ]
+]
+
+
+  *Proof of observation:*
+
+  $(==>)$: $bx$ is basic, so $exists B$ with $|B| = m$, $A_B$ non-singular, and $x_j = 0$ for $j in.not B$. Since $bx >= b0$ we have $K subset.eq B$, so columns of $A_K$ are a subset of the independent columns of $A_B$  -- hence independent.
+
+  #pause
+
+  $(<==)$: Extend the columns of $A_K$ to a maximal independent set $B$ in $A$. Since $"rk"(A) = m$, we get $|B| = m$, so $A_B$ is non-singular. As $K subset.eq B$, we have $x_j = 0$ for all $j in.not B$. $square$
+]
+
+#pagebreak()
+#[
+  #set align(horizon)
+  *Algorithm* -- to decide if a feasible $bx$ is basic:
+
+  #block(stroke: black, radius: 10pt, inset: 10pt)[
+    *Input:* feasible $bx in RR^n$, i.e. $bx >= b0$ and $A bx = bb$.
+    1. Set $K = { j in [n] : x_j > 0 }$.
+    2. If columns of $A_K$ are independent, return *basic*; else return *not basic*.
+  ]
+]
+
+== Properties of Basic Feasible Solutions
+#[
+  #set align(horizon)
+  #set text(size: 0.88em)
+
+  #lemma[
+    Any $B subset.eq [n]$ with $|B| = m$ has *at most one* basic feasible solution fitting it.
+  ]
+
+  *Proof:* Let $N = [n] without B$, and fix a solution $bx in RR^n$ satisfying $A bx = bb$. \
+  -  If $bx$ fits $B$  $==>$ then $bx_N = b0$.
+  - so $A_B bx_B + A_N bx_N = bb$ $==>$ $A_B bx_B = bb$.
+  - Since $A_B$ is non-singular, $bx_B = A_B^(-1) bb$ is uniquely determined. $square$
+]
+
+  #pagebreak()
+#[
+  #set align(horizon)
+  #proposition[
+    #set align(center)
+    #v(-30pt)
+    There are at most $binom(n, m)$ basic feasible solutions.
+  ]
+
+  #pause
+  #v(-5pt)
+  This alone is not useful unless optimal solutions are *basic*:
+
+  #theorem[
+    Let LP $max{ bc^T bx : bx >= b0, A bx = bb }$ be feasible and bounded. \ For every feasible $bx_0$, there exists a BFS $overline(bx)$ s.t. $bc^T overline(bx) >= bc^T bx_0$.
+  ]
+
+  #pause
+  #v(-5pt)
+  Applying this to an optimal $bx_0$ (which exists since the LP is feasible and bounded):
+
+  $
+    exists "an optimal basic feasible solution."
+  $
+
+  We now have an *exponential algorithm*: enumerate all $binom(n, m)$ bases, find each of the *Basic Feasible Solutions*, and pick the best.
+]
+
+= Geometric View
+
+== The Feasible Polyhedron
+#[
+  #set align(horizon)
+  #set text(size: 0.875em)
+
+  The linear constraints of a feasible, bounded LP form a *convex polyhedron*:
+
+  #table(
+    columns: (1fr, 1fr),
+    stroke: none,
+    align: top,
+    [
+      *Convex*: any line segment between two feasible points stays inside the region.
+
+      #v(5pt)
+      #block(stroke: gray, radius: 8pt, inset: 8pt)[
+        Every half-space ${ bx : ba^T bx <= b }$ is convex. The feasible region --- as their intersection --- is convex too.
+      ]
+    ],
+    [
+      *Not-convex*: a line segment between two feasible points may *exit* the region.
+
+      #v(5pt)
+      #block(stroke: gray, radius: 8pt, inset: 8pt)[
+        The feasible region of an *IP* is generally not convex (integer lattice points only).
+      ]
+    ],
+  )
+
+  #pause
+  #v(5pt)
+  - *Basic feasible solutions* lie on the *vertices* and *edges* of the polyhedron.
+  - The proposition above guarantees an optimal solution at a *vertex*.
+
+  #pause
+  #v(5pt)
+
+  Two classical algorithms traverse the vertices in smarter ways:
+  #table(
+    columns: (0.15fr, 1fr, 1fr),
+    stroke: none,
+    [],
+    [
+      #block(stroke: black, radius: 10pt, inset: 12pt, width: 90%)[
+        #set align(center)
+        *Simplex Algorithm* \
+        #set align(left)
+        #set text(size: 0.9em)
+        Moves along edges of the polyhedron, improving the objective at each step. Exponential worst-case, but very fast in practice.
+      ]
+    ],
+    [
+      #block(stroke: black, radius: 10pt, inset: 12pt, width: 90%)[
+        #set align(center)
+        *Ellipsoid Algorithm* \
+        #set align(left)
+        #set text(size: 0.9em)
+        Approximates the feasible region with shrinking ellipsoids. First provably polynomial-time LP algorithm.
+      ]
+    ],
+  )
+]
+
+= Duality
+
+== LPs Come in Pairs
+#[
+  #set align(horizon)
+  #set text(size: 0.9em)
+
+  Every LP (the *primal*) has a companion LP called its *dual*.
+
+  #pause
+
+  We have already seen duality:
+
+  #table(
+    columns: (0.15fr, 1fr),
+    stroke: none,
+    [],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt)[
+        *König's Theorem:* $quad tau(G) = nu(G)$ in bipartite graphs
+
+        $
+        max "matching" = min "vertex cover"
+        $
+      ]
+    ],
+  )
+  #table(
+    columns: (0.15fr, 1fr),
+    stroke: none,
+    [],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt)[
+        *Menger's Theorem:* max \# of internally disjoint $A$-$B$ paths $=$ min $A$-$B$-cut size
+      ]
+    ],
+  )
+
+  #pause
+
+  *Why is duality useful?*
+
+  - It provides *certificates of optimality* for feasible primal solutions.
+  - It enables LP-based algorithms *without* invoking expensive methods like Simplex or Ellipsoid.
+    - Dijkstra's algorithm was designed exactly this way.
+]
+
+#pagebreak()
+#[
+  #set align(horizon)
+  #set text(size: 0.87em)
+
+  #v(-15pt)
+  *Example:* Consider the LP
+  #v(-5pt)
+  #block(width: 45%, stroke: black, radius: 10pt, inset: 12pt)[
+    $max 5x_1 + 5x_2$ \
+    $s.b.t.$
+    #v(-25pt)
+    $
+      3x_1 + x_2  & <= 7 \
+      2x_1 + 4x_2 & <= 8 \
+      x_1, x_2    & >= 0
+    $
+  ]
+
+  Geometrically, $(1, 2)$ is optimal with objective value $5 dot 1 + 5 dot 2 = 15$.
+
+  #pause
+  #v(5pt)
+
+  *Q:* How do we *prove* $(1, 2)$ is optimal without drawing a picture?
+
+  #pause
+
+  *A:* Sum the two constraints (both multiplied by $1$):
+  $
+    (3x_1 + x_2 <= 7) + (2x_1 + 4x_2 <= 8) quad => quad 5x_1 + 5x_2 <= 15.
+  $
+  Every feasible solution satisfies $5x_1 + 5x_2 <= 15$, and $(1,2)$ achieves $15$ -- so it is *optimal*. $square$
+]
+
+#pagebreak()
+#[
+  #set align(horizon)
+  #set text(size: 0.8em)
+  Now change the objective to $max 7x_1 + 4x_2$ (same constraints):
+  #block(width: 45%, stroke: black, radius: 10pt, inset: 12pt)[
+    $max 7x_1 + 4x_2$ \
+    $s.b.t.$
+    #v(-25pt)
+    $
+      3x_1 + x_2  & <= 7 \
+      2x_1 + 4x_2 & <= 8 \
+      x_1, x_2    & >= 0
+    $
+  ]
+
+  #pause
+
+  Summing with equal weights $(1,1)$ gives $5x_1 + 5x_2 <= 15$ -- *wrong coefficients*. We need to scale more carefully.
+
+  #pause
+
+  *Q:* Why is $(1,2)$ no longer optimal? Why is $(2,1)$ optimal?
+
+  #pause
+
+  *A:* Look for weights $y_1, y_2 >= 0$ such that the weighted sum of constraints *matches* the objective:
+  $
+    y_1 (3x_1 + x_2 <= 7) + y_2 (2x_1 + 4x_2 <= 8) \
+    => quad underbrace((3y_1 + 2y_2), = 7) x_1 + underbrace((y_1 + 4y_2), = 4) x_2 <= 7y_1 + 8y_2
+  $
+
+  #pause
+
+  Solving $3y_1 + 2y_2 = 7$ and $y_1 + 4y_2 = 4$ gives $y_1 = 2$, $y_2 = 1/2$.
+
+  #pause
+
+  Upper bound: $7y_1 + 8y_2 = 7 dot 2 + 8 dot 1/2 = 14 + 4 = 18$.
+
+  $(2,1)$ is feasible ($3 dot 2 + 1 = 7$, $2 dot 2 + 4 dot 1 = 8$) and achieves $7 dot 2 + 4 dot 1 = 18$ -- so it is *optimal*. $square$
+]
+
+
+
+== Constructing the Dual
+#[
+  #set align(horizon)
+  #set text(size: 0.85em)
+
+  Given the LP $max{ bc^T bx : A bx <= bb }$ ($m$ constraints, $n$ variables):
+
+  #pause
+
+  1. Assign a *dual variable* $y_i >= 0$ to each constraint $ba_i^T bx <= b_i$.
+
+  #pause
+
+  2. Multiply constraint $i$ by $y_i$ and *sum*:
+  $
+    sum_i y_i (ba_i^T bx) <= sum_i y_i b_i quad => quad (A^T by)^T bx <= by^T bb.
+  $
+
+  #pause
+
+  3. To obtain an upper bound on $bc^T bx$, require $A^T by = bc$; then $bc^T bx <= by^T bb$.
+
+  #pause
+
+  #observation[
+    $A in M_(m times n)(RR)$, $bc in RR^n$, $bb in RR^m$. If $A^T by = bc$ and $by >= b0$, then $bc^T bx <= by^T bb$ whenever $A bx <= bb$.
+
+    *Proof:* $by^T bb >= by^T (A bx) = (A^T by)^T bx = bc^T bx.$ $quad square$
+  ]
+
+  #pause
+
+  #theorem[
+    *Weak Duality Theorem*
+    $
+      max{ bc^T bx : A bx <= bb } <= min{ by^T bb : A^T by = bc, by >= b0 }
+    $
+    whenever both LPs are feasible and bounded.
+  ]
+]
+
+#pagebreak()
+#[
+  #set align(horizon)
+  #set text(size: 0.88em)
+
+  *The Primal $->$ Dual recipe:* each primal *constraint* $->$ dual *variable*; each primal *variable* $->$ dual *constraint*.
+
+  #table(
+    columns: (0.05fr, 1fr, 0.08fr, 1fr),
+    stroke: none,
+    align: top,
+    [],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt, width: 95%)[
+        #set align(center)
+        *Primal constraint* $->$ *dual variable*
+        #v(3pt)
+        #table(
+          columns: (1fr, 0.15fr, 1fr),
+          stroke: none,
+          align: left,
+          [$angle.l ba_i, bx angle.r <= b_i$], [$=>$], [$y_i >= 0$],
+          [$angle.l ba_i, bx angle.r = b_i$], [$=>$], [$y_i in RR$],
+          [$angle.l ba_i, bx angle.r >= b_i$], [$=>$], [$y_i <= 0$],
+        )
+      ]
+    ],
+    [],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt, width: 95%)[
+        #set align(center)
+        *Primal variable* $->$ *dual constraint*
+        #v(3pt)
+        #table(
+          columns: (1fr, 0.15fr, 1fr),
+          stroke: none,
+          align: left,
+          [$x_i >= 0$], [$=>$], [$(A^T by)_i >= c_i$],
+          [$x_i <= 0$], [$=>$], [$(A^T by)_i <= c_i$],
+          [$x_i in RR$], [$=>$], [$(A^T by)_i = c_i$],
+        )
+      ]
+    ],
+  )
+
+  == Examples
+  Applying the recipe to our LP:
+  #table(
+    columns: (0.08fr, 1fr, 0.08fr, 1fr),
+    stroke: none,
+    align: (right, right, center, left),
+    [$(P)$],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt)[
+        $max 5x_1 + 5x_2$ \
+        $3x_1 + x_2 <= 7$ \
+        $2x_1 + 4x_2 <= 8$ \
+        $x_1, x_2 >= 0$
+      ]
+    ],
+    [#set align(horizon); $<->$],
+    [
+      #block(stroke: black, radius: 8pt, inset: 10pt)[
+        $(D) quad min 7y_1 + 8y_2$ \
+        $3y_1 + 2y_2 >= 5$ \
+        $y_1 + 4y_2 >= 5$ \
+        $y_1, y_2 >= 0$
+      ]
+    ],
+  )
+
+  #pause
+  #v(3pt)
+  #remark[The dual of the dual is the primal.]
+]
+
+== Strong Duality
+#[
+  #set align(horizon)
+  #set text(size: 0.88em)
+
+  Weak duality gives an upper bound. The true connection is *much stronger*:
+
+  #pause
+
+  #theorem[
+    *Strong Duality Theorem*
+
+    Let $(P)$ and $(D)$ be a primal LP and its dual. *Precisely one* of the following holds:
+    1. Both $(P)$ and $(D)$ are *infeasible*.
+    2. $(P)$ is *unbounded* and $(D)$ is *infeasible*.
+    3. $(P)$ is *infeasible* and $(D)$ is *unbounded*.
+    4. Both $(P)$ and $(D)$ are *feasible* (hence bounded) and their *optimal values coincide*: $"OPT"(P) = "OPT"(D)$.
+  ]
+
+  #pause
+
+  Case 4 is the main message: when both are feasible, the *duality gap is zero*.
+
+  #pause
+  #v(5pt)
+
+  *Important remarks:*
+  - Duality does *not* apply to Integer Programming. It applies *only* to LP.
+
+  #pause
+
+  - The LP relaxations of Max Matching and Min VC are *always* dual to one another.
+    - This has *no* bearing on their IP versions.
+    - In particular, it does *not* imply that Min VC $in$ P.
+
+]
+
+#pagebreak()
+#[
+  #set align(horizon)
+  #theorem[
+    *Strong Duality Theorem*
+
+    Let $(P)$ and $(D)$ be a primal LP and its dual. *Precisely one* of the following holds:
+    1. Both $(P)$ and $(D)$ are *infeasible*.
+    2. $(P)$ is *unbounded* and $(D)$ is *infeasible*.
+    3. $(P)$ is *infeasible* and $(D)$ is *unbounded*.
+    4. Both $(P)$ and $(D)$ are *feasible* (hence bounded) and their *optimal values coincide*: $"OPT"(P) = "OPT"(D)$.
+  ]
+  #remark[
+    Showing the min-VC LP is the dual of the max-matching LP follows directly from the recipe above.
+  ]
 ]
 
 // == Example: a small LP
