@@ -17,7 +17,7 @@
     counter: theorem-counter, // inherit the old counter, `none` by default
     inherited-levels: 1, // useful when you need a new counter
     inherited-from: heading, // heading or just another counter
-    render: render-fn.with(fill: navy.lighten(80%)),
+    render: render-fn.with(fill: navy.lighten(70%)),
   )
   show: show-claim
 
@@ -114,10 +114,10 @@
   counter: theorem-counter,
   render: (..args) => {
     set text(fill: rgb("#681811"))
-    show strong: it => [#text(weight: "bold", fill: rgb("#c00d28"))[#it.body]]
+    show strong: it => [#text(weight: "bold", fill: rgb("#a7051d"))[#it.body]]
     show emph: it => [#text(weight: "bold", style: "italic", fill: rgb("#c00d28"))[#it.body]]
 
-    render-fn(fill: rgb("#e4c8a2"), ..args)
+    render-fn(fill: rgb("#e5d7c4"), ..args)
   },
 )
 
@@ -163,13 +163,13 @@
   counter: none,
   render: (prefix: none, title: "", full-title: "", body) => {
     render-fn(
-      fill: rgb("#280d79"),
+      fill: rgb("#b3b0bf"),
       prefix: prefix,
-      full-title: [#text(fill: rgb("#edb8b8"), weight: "bold")[Claim #title:]],
+      full-title: [#text(fill: rgb("#934444"), weight: "bold")[Claim #title:]],
       title: title,
       // Apply the show rule ONLY to the body content here:
       [
-        #set text(fill: rgb("#feffff"))
+        #set text(fill: rgb("#000000"))
         #body
       ],
     )
