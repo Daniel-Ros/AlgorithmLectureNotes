@@ -243,9 +243,9 @@ It suffices to prove:
   By induction on $e(T)$. Let $r$ be the root, $r_1, dots, r_k$ its children, $T_1, dots, T_k$ the subtrees rooted at them. For $T_1$: let $S_1, dots, S_ell$ be the subtrees rooted at the *children* of $r_1$.
 
   By the IH, $T$ contains a matching of size:
-  $ >= underbrace(1, r"-"r_1) + sum_(j=1)^ell |I(S_j)|/2 + sum_(i=2)^k |I(T_i)|/2 $
+  $ >= underbrace(1, r"-"r_1) + sum_(j=1)^ell (|I(S_j)|)/2 + sum_(i=2)^k (|I(T_i)|)/2 $
 
-  Since $sum_j |I(S_j)| + sum_(i >= 2) |I(T_i)| = |I(T)| - 2$ ($r$ and $r_1$ are internal but appear in neither sum), the matching has size $>= 1 + (|I(T)| - 2)/2 = |I(T)|/2$. $square$
+  Since $sum_j |I(S_j)| + sum_(i >= 2) |I(T_i)| = |I(T)| - 2$ ($r$ and $r_1$ are internal but appear in neither sum), the matching has size $>= 1 + (|I(T)| - 2)/2 = (|I(T)|)/2$. $square$
 ]
 
 #place(
@@ -268,7 +268,7 @@ $ min sum_(v in V) w_v x_v, quad x_u + x_v >= 1; space forall {u,v} in E, quad x
 
 #pause
 
-*LP Relaxation:* Replace $x_v in {0,1}$ with $x_v in [0,1]$:
+*LP Relaxation:* #pause Replace $x_v in {0,1}$ with $x_v in [0,1]$:
 $ min sum_(v in V) w_v x_v, quad x_u + x_v >= 1; space forall {u,v} in E, quad 0 <= x_v <= 1. $
 
 #pause
@@ -301,7 +301,7 @@ $ min sum_(v in V) w_v x_v, quad x_u + x_v >= 1; space forall {u,v} in E, quad 0
 
 #v(-5pt)
 #proof[
-  $ w(C) = sum_(v : x^*_v >= 1/2) w_v <= sum_v w_v dot (2 x^*_v) = 2 dot underbrace("OPT"^*, #[cost of optimal \ LP solution]) <= 2 dot "OPT". quad square $
+  $ w(C) = sum_(v : x^*_v >= 1/2) w_v #underbrace(,$<=$) sum_v w_v dot (2 x^*_v) = 2 dot underbrace("OPT"^*, #[cost of optimal \ LP solution]) <= 2 dot "OPT". quad square $
 ]
 
 = A Randomized Algorithm
