@@ -301,7 +301,7 @@ $ min sum_(v in V) w_v x_v, quad x_u + x_v >= 1; space forall {u,v} in E, quad 0
 
 #v(-5pt)
 #proof[
-  $ w(C) = sum_(v : x^*_v >= 1/2) w_v #underbrace(,$<=$) sum_v w_v dot (2 x^*_v) = 2 dot underbrace("OPT"^*, #[cost of optimal \ LP solution]) <= 2 dot "OPT". quad square $
+  $ w(C) = sum_(v : x^*_v >= 1/2) w_v <= sum_v w_v dot (2 x^*_v) = 2 dot underbrace("OPT"^*, #[cost of optimal \ LP solution]) <= 2 dot "OPT". quad square $
 ]
 
 = A Randomized Algorithm

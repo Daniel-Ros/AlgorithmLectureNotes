@@ -265,3 +265,4 @@
 
 
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
+#let sbullet = box(baseline: -0.15em)[#text(size: 0.55em)[$bullet$]]
