@@ -34,6 +34,13 @@
 
 #h(2em) $sbullet$ A graph is a *2-uniform* hypergraph.
 
+#place(
+    dx: 5%,
+    dy: 7%,
+    figure(image("figures/ASC2.png", width: 40%),)
+  )
+
+
 == The Problem
 
 #problem[
@@ -48,39 +55,45 @@
 
 #pause
 
-- Recall: for graphs, the minimum *edge-cover* problem is in $P$.
+- Recall: for graphs, the minimum *edge-cover* problem is in $P$. #h(1fr) #tr[#set text(size: 0.9em) 
+(Find maximum matching and extend greedily)]
 - The minimum SC problem is *NP-complete* #h(1fr) (we return to this below)
 
 == Some Examples
 
-- *Example 1:* $n$ elements in a single row. One hyperedge covers all $=>$ *optimal solution has size 1*.
-
-#pause
-
-- *Example 2:* A $3 times 6$ grid of elements.
-
-  The highlighted (yellow) column-covering hyperedges form a cover of size $6$.
-
-  The *optimal solution uses these columns*.
+#place(
+    dx: 25%,
+    dy: 0%,
+    figure(image("figures/ASC3.png", width: 50%),)
+  )
 
 == Min SC is NPC
 
-$"VC" := {(G, k) : tau(G) <= k}$ #h(2em) $"SC" := {(H, k) : H "has a hyper-edge cover of size" <= k}$
+$underbrace("VC" := {(G, k) : tau(G) <= k}, "min vertex cover problem")$ #h(2em) $"SC" := {(H, k) : H "has a hyper-edge cover of size" <= k}$
 
-*Claim:* $"VC" <=_P "SC"$.
+*Claim:* $"VC" reduction "SC"$.
 
 #pause
 
-For each $u in V(G)$, define: $S_u := {e in cal(E)(G) : u in e}$.
+For each $u in V(G)$, define: $S_u := {e in E(G) : u in e}$.
 
 Given $(G, n)$, define a hypergraph $H$ by:
-$ V(H) := cal(E)(G), quad cal(E)(H) := {S_u : u in V(G)} $
+$ V(H) := E(G), quad cal(E)(H) := {S_u : u in V(G)} $
+
+
+#place(
+    dx: 25%,
+    dy: 15%,
+    figure(image("figures/ASC4.png", width: 55%),)
+  )
 
 #pause
 
 #question[
   *H.W.* Complete the argument.
 ]
+
+
 
 = Greedy Algorithm for Minimum Set-Cover
 
@@ -95,7 +108,7 @@ $ V(H) := cal(E)(G), quad cal(E)(H) := {S_u : u in V(G)} $
     import algorithmic: *
     Assign([$A$], [$emptyset$])
     While([$union.big A != V$], {
-      Assign([$e$], [$arg max{|e without union.big A| : e in cal(E)}$])
+      Assign([$e$], [$arg max{|e without union.big A| : e in cal(E)}$ #h(1fr) #tr[(hyper-edge covering the most new vxs)]])
       Assign([$A$], [$A union {e}$])
     })
     Return([$A$])
@@ -110,7 +123,7 @@ $ V(H) := cal(E)(G), quad cal(E)(H) := {S_u : u in V(G)} $
 
 == Analysis Setup
 
-Set $m := max{|e| : e in cal(E)}$ — the size of the *largest* hyperedge. Trivially $m <= |V(H)| = n$.
+Set $m := max{|e| : e in cal(E)}$ — the size of the *largest* hyperedge. #h(1fr) #tr[Trivially $m <= |V(H)| = n$.]
 
 #pause
 
@@ -125,28 +138,43 @@ Set $m := max{|e| : e in cal(E)}$ — the size of the *largest* hyperedge. Trivi
 ]
 
 *Define:* $A_i$ = greedy solution at the *beginning* of the $i$-th iteration.
-- Greedy transitions $A_i -> A_{i+1}$ during iteration $i$
-- \# new vxs covered $= |union.big A_{i+1}| - |union.big A_i|$ #h(0.5em) (all from $V(H) without union.big A_i$)
+- Greedy transitions $A_i -> A_(i+1)$ during iteration $i$.
+- \# new vxs covered $= |union.big A_(i+1)| - |union.big A_i|$. #h(1fr) #tr[(all from $V(H) without union.big A_i$)]
 
 == Key Observation
 
-Let $"OPT"$ = size of an optimal cover. An optimal solution $P := {e_1, dots, e_"OPT"}$ contains $e_j$ s.t.:
-$ |e_j inter (V(H) without union.big A_i)| >= (|V(H) without union.big A_i|) / "OPT" $
+#v(10pt)
+Let $"OPT"$ = size of an optimal cover. 
 
-#pause
+#claim[
+  An optimal solution $P := {e_1, dots, e_"OPT"}$ contains $e_j$ s.t.:
+  $ |e_j inter (V(H) without union.big A_i)| >= (|V(H) without union.big A_i|) / "OPT" $
+]
+*Proof (By contradiction):*
+- Assume no such $e_j$ exists
+#v(-10pt) 
+$ ==> forall e in cal(E): |e_j inter (V(H) without union.big A_i)| < (|V(H) without union.big A_i|) / "OPT" $
+#v(-20pt)
+Then,
+$
+  underbrace( #[$|V(H)| = |cup.big P|$], P "cover all of H") < "OPT" dot (|V(H) without union.big A_i|) / "OPT" = 
+  underbrace(|V(H) without union.big A_i| <= |V(H)|, (V(H) without union.big A_i) subset.eq V(H)).
+$
+
+== Key Observation
 
 Since $A_i$ is constructed *greedily*:
 
 #observation[
-  $forall i in NN: quad |union.big A_{i+1}| - |union.big A_i| >= (|V(H) without union.big A_i|) / "OPT"$
+  $forall i in NN: quad |union.big A_(i+1)| - |union.big A_i| >= (|V(H) without union.big A_i|) / "OPT"$
 ]
 
 #pause
 
-*Q:* Once $A_{i+1}$ is defined, how many vxs are left to cover?
+*Q:* Once $A_(i+1)$ is defined, how many vxs are left to cover?
 
 $
-|V(H) without union.big A_{i+1}| &= |V(H)| - |union.big A_{i+1}| \
+|V(H) without union.big A_(i+1)| &= |V(H)| - |union.big A_(i+1)| \
 &<= |V(H)| - |union.big A_i| - (|V(H) without union.big A_i|) / "OPT" \
 &= (1 - 1/"OPT") |V(H) without union.big A_i|
 $
@@ -154,29 +182,40 @@ $
 #pause
 
 #observation[
-  $|V(H) without union.big A_{i+1}| <= (1 - 1/"OPT") |V(H) without union.big A_i|$
+  $|V(H) without union.big A_(i+1)| <= (1 - 1/"OPT") |V(H) without union.big A_i|$
 
   After each iteration, the \# of left-over vxs reduces by a factor of $(1 - 1\/"OPT")$.
 ]
 
 == Recursive Pattern
 
-Set $U_i := V(H) without union.big A_i$ (left-over vxs at iter $i$), $U_0 = V(H)$:
-$ |U_{i+1}| <= (1 - 1/"OPT") |U_i| $
-
+- Set $U_i := V(H) without union.big A_i$ #h(1fr) #tr[(left-over vxs at iter $i$)] 
+- Intially $U_0 = V(H)$:
+#v(-10pt)
+$ |U_(i+1)| <= (1 - 1/"OPT") |U_i| $
+#v(-10pt)
 By induction: $forall k >= 0$:
-$ |U_k| <= (1 - 1/"OPT")^k dot n <= exp(-k / "OPT") dot n $
+#v(-10pt)
+$ |U_k| <= (1 - 1/"OPT")^k dot |U_0| <= exp(-k / "OPT") dot n $
 
 #pause
 
-The sequence $U_0, U_1, dots$ reaches zero when $exp(-i/"OPT") dot n < 1$, i.e.\ $i > "OPT" dot ln n$.
+The sequence $U_0, U_1, dots$ reaches zero when $exp(-i/"OPT") dot n < 1$. \
 
+i.e. #h(1fr) $i > "OPT" dot ln n$. #h(1fr) 
+#v(-5pt)
 *After $"OPT" dot ln n$ iterations, all of $V(H)$ is covered.*
+#v(-5pt)
 
+#place(
+    dx: 77%,
+    dy: -48%,
+    figure(image("figures/ASC5.png", width: 25%),)
+  )
 #pause
 
 Recalling that size of greedy sol $=$ \# iterations:
-
+#v(-5pt)
 #theorem[
   $"size of greedy sol" <= (ln n) dot "OPT"$ #h(0.5em) — an $O(ln n)$-approximation.
 ]
@@ -186,25 +225,39 @@ Recalling that size of greedy sol $=$ \# iterations:
 *Subtlety:* The theorem asserts $O(ln m)$ but we got $O(ln n)$. Since $n$ and $m$ can differ greatly, we refine.
 
 #pause
-
-Choose $i^*$ as the last iteration where $"OPT" <= |U_{i^*}|$.
-- After $i^*$ iters: $|U_{i^*+1}| < "OPT"$ — at most $"OPT" - 1$ more iterations needed
-- So: $"size of greedy sol" <= (i^* + 1) + ("OPT" - 1) = i^* + "OPT"$
-
-#pause
-
-*Estimating $i^*$:* Since $"OPT" <= |U_{i^*}| <= exp(-i^*\/"OPT") dot n$:
-$ exp(i^* \/ "OPT") <= n/"OPT" quad ==> quad i^* <= "OPT" dot ln(n/"OPT") $
-
-$==>$ $"size of greedy sol" <= "OPT" dot ln(n/"OPT") + "OPT" = (1 + ln(n/"OPT")) dot "OPT"$
+#v(-10pt)
+Choose $i^*$ as the last iteration where $"OPT" <= |U_(i^*)|$.
+- After $i^*$ iters: $|U_(i^*+1)| < "OPT"$.  #h(1fr) #tr[(Cover the rest using at most $"OPT" - 1$ hyper-edges)]
+- So: $"size of greedy sol" <= (i^* + 1) + ("OPT" - 1) = i^* + "OPT".$
 
 #pause
 
+#v(-8pt)
+*Estimating $i^*$:*
+#v(-15pt)
+  $ #tr[OPT $<=$] |U_(i^*)| <= (1-1/"OPT")^(i^*) dot |U_(0)|#tr[$<= exp(-i^*\/"OPT") dot n$]. $
+
+#v(-10pt)
+$ exp(i^* \/ "OPT") <= n/"OPT" quad ==> quad i^* <= "OPT" dot ln(n/"OPT"). $
+
+$==>$ $"size of greedy sol" <= "OPT" dot ln(n/"OPT") + "OPT" = (1 + ln(n/"OPT")) dot "OPT"$.
+
+
+#place(
+    dx: 80%,
+    dy: -48%,
+    figure(image("figures/ASC6.png", width: 25%),)
+  )
+#pause
+
+#[
+  #set text(size: 0.7952em)
 #observation[
   $m = max{|e| : e in cal(E)} >= n/"OPT"$ since every optimal solution must contain a hyperedge of size $>= n\/"OPT"$.
 ]
+]
 
-$ therefore quad "size of greedy sol" <= (1 + ln m) dot "OPT" = O(ln m) dot "OPT". quad square $
+$ quad "size of greedy sol" <= (1 + ln m) dot "OPT" = O(ln m) dot "OPT". quad square $
 
 = Minimum Cost Set-Cover
 
@@ -227,34 +280,44 @@ The cardinality greedy *fails* for the cost/weight version. Can we still learn f
 Consider the $i$-th iteration (with $V(H) without union.big A_i != emptyset$).
 
 The cardinality greedy picks $e in cal(E)(H) without A_i$ maximising:
+#v(-10pt)
 $ (|e without union.big A_i|) / (|V(H) without union.big A_i|) = ("# new vxs covered by" e) / ("# left-over vxs") $
 
 #pause
 
-*For weighted:* minimise avg cost per uncovered vx — *not well-defined* since $e without union.big A_i$ need not be a hyperedge and $c(e without union.big A_i)$ may not be defined.
+*For weighted:* we would want an edge $e in cal(E)(H) without A_i$ maximising:
+#v(-10pt)
+$ ("\"cost\" of new vxs covered by" e) / ("\"cost\" of vxs left-over") $ 
+#v(-55pt) #h(1fr) #tr[(not well-defined)]
+#v(20pt)
+
 
 #pause
 
 *Back to cardinality:* For $e in cal(E)(H) without A_i$, consider $1 \/ |e without union.big A_i|$.
 - The *smaller* this ratio, the *more* new elements $e$ covers.
 
-*For weighted:* $c(e) \/ |e without union.big A_i|$ — distribute cost $c(e)$ among newly covered vxs. This is *amortisation!*
-
-== Effectiveness
-
-#definition[
-  *Effectiveness*
-
-  Let $U subset.eq V(H)$ and $e in cal(E)(H)$. Define:
-  $ "eff"_U (e) := cases(
-    infinity & "if" e subset.eq U,
-    display(c(e) / |e without U|) quad & "otherwise"
-  ) $
-  to be the *effectiveness* of $e$ with respect to $U$.
-]
+*For weighted:* $c(e) \/ |e without union.big A_i|$ — distribute cost $c(e)$ among newly covered vxs. #h(1fr) #tr[(This is amortisation!)]
+Pick $e in cal(E)(H) without A_i$ minimising
+$ (c(e)) / (|e without union.big A_i|) = ("cost of" e) / ("# vxs covered by" e) $
 
 == Weighted Greedy Algorithm
 
+#set text(size: 1em)
+
+#definition[
+  *Effectiveness*
+  #v(-10pt)
+  Let $U subset.eq V(H)$ and $e in cal(E)(H)$. Define:
+    #v(-50pt)
+  #h(2fr) $"eff"_U (e) := cases(
+    infinity & "if" e subset.eq U,
+    display((c(e)) / (|e without U|)) quad & "otherwise"
+  ) $ #h(1fr)
+    #v(-20pt)
+  to be the *effectiveness* of $e$ with respect to $U$.
+]
+  #v(-10pt)
 #algorithm-figure(
   [Greedy-Cost-SC],
   vstroke: .5pt + luma(200),
@@ -277,34 +340,53 @@ $ (|e without union.big A_i|) / (|V(H) without union.big A_i|) = ("# new vxs cov
 
 == Example: Greedy vs Optimal
 
-$H$: hyperedges $e_1, dots, e_n$ (each covering one distinct element) and $e_{n+1}$ (covering all), with:
-$ c(e_i) = 1/(n+1-i) quad (i=1,dots,n), quad c(e_{n+1}) = 1 + epsilon, quad epsilon > 0 $
+#place(
+    dx: -5%,
+    dy: 0%,
+    figure(image("figures/ASC7.png", width: 60%),)
+  )
 
-*Optimal:* take $e_{n+1}$ only, cost $= 1 + epsilon$.
+
 
 #pause
 
-*Greedy (step 1, $A = emptyset$):*
-$"eff"_emptyset(e_i) = c(e_i)\/1, quad "eff"_emptyset(e_{n+1}) = (1+epsilon)\/n$ $arrow.r e_1$ chosen (eff $= 1\/n$, the smallest).
+#place(
+  dx: 57%,
+  dy: 0%,
+  [
+    #block(width: 45%)[
+      #set text(size: 0.8em)
+      *Greedy (step 1, $A = emptyset$):*
+      - $"eff"_emptyset(e_i) = c(e_i)\/1$. 
+      - $"eff"_emptyset(e_(n+1)) = (1+epsilon)\/n$. \
+        $==> e_1$ chosen. #h(1fr)  #tr[(eff $= 1\/n$, the smallest)]
 
-*Greedy (step 2, $A = {e_1}$):*
-$"eff"_({e_1})(e_2) = 1\/(n-1), quad "eff"_({e_1})(e_{n+1}) = (1+epsilon)\/(n-1)$ $arrow.r e_2$ chosen. $dots$
+      *Greedy (step 2, $A = {e_1}$):*
+      - $"eff"_({e_1})(e_i) = c(e_i)\/1$ 
+      - $ "eff"_({e_1})(e_(n+1)) = (1+epsilon)\/(n-1)$\
+       $==> e_2$ chosen. #h(1fr)  #tr[(eff $= 1/(n-1)$, the smallest)]
+       
+       $dots$
 
-*Greedy selects $e_1, e_2, dots, e_n$* with total cost:
-$ sum_(i=1)^n c(e_i) = sum_(i=1)^n 1/(n+1-i) = H_n approx ln n quad ("OPT" = 1 + epsilon) $
+      *Greedy selects $e_1, e_2, dots, e_n$* with total cost:
+      $ sum_(i=1)^n c(e_i) = sum_(i=1)^n 1/(n+1-i) = sum_(j=1)^n 1/j approx ln n quad ("OPT" = 1 + epsilon) $
+    ]
+  ]
+)
 
 = Analysis of Weighted Greedy
 
 == Basic Intuition
 
-#theorem[*Lemma*
+#claim[
   Let $P$ be an optimal cover with cost $"OPT"$. Then $exists e in P$ such that $c(e)\/|e| <= "OPT"\/n$.
 ]
 
 #proof[
   Suppose $c(e)\/|e| > "OPT"\/n$ for all $e in P$. Then:
-  $ "OPT" = sum_(e in P) c(e) > sum_(e in P) |e| dot "OPT"/n = "OPT"/n dot sum_(e in P) |e| >= "OPT"/n dot n = "OPT". quad. $
-  The last step uses $sum_(e in P) |e| >= |union.big_(e in P) e| = n$ since $P$ covers all $n$ vxs. $square$
+  $ "OPT" = sum_(e in P) c(e) > sum_(e in P) |e| dot "OPT"/n = underbrace("OPT"/n dot sum_(e in P) |e| >= "OPT"/n dot n, #[
+    $ sum_(e in P) |e| >= |union.big_(e in P) e| = n$ \  $P$ covers all $n$ vxs.
+  ]) = "OPT". quad. $
 ]
 
 #pause
@@ -317,27 +399,37 @@ $ sum_(i=1)^n c(e_i) = sum_(i=1)^n 1/(n+1-i) = H_n approx ln n quad ("OPT" = 1 +
 
 == Amortised Perspective on the Greedy
 
+#set text(size: 0.95em)
+
 This argument persists at *later stages*. Let $P$ = optimal cover, $A_i$ = current greedy cover. Define:
-$ T := {e in P : e without union.big A_i != emptyset} $
 
-All hyperedges in $P$ that would cover *new* vxs if added.
+#h(6fr) $T := {e in P : e without union.big A_i != emptyset} $ #h(1fr) #tr(s: 0.8)[(All hyper-edges in $P$ that cover "new" vertices)]
 
+
+#v(-4pt)
 - Only members of $T$ are relevant to the greedy: $"eff"_(union.big A_i)(e) < infinity$ iff $e in T$
-- $V(H) without union.big A_i subset.eq union.big T$ #h(1em) #tr[(exercise: proof by contradiction)]
+- $(V(H) without union.big A_i) subset.eq union.big T$ #h(1fr) #tr(s: 0.8)[(exercise: proof by contradiction, i.e. remaining vertices are covered by $T$.)]
 
 #pause
-
-#theorem[*Key Lemma*
-  $exists e in T$ s.t. $"eff"_(union.big A_i)(e) = c(e) \/ |e without union.big A_i| <= "OPT" \/ |V(H) without union.big A_i|$.
-]
-
+#v(-8pt)
+#lemma(title: "Key Claim")[
+  #set text(size: 0.9em)
+  $exists e in T$ s.t. 
+  #v(-15pt)
+  $ "eff"_(union.big A_i)(e) = c(e) / (|e without union.big A_i|) <= "OPT" / (|V(H) without union.big A_i|). $
+  #v(-5pt)
+]<lemma:key>
+#v(-10pt)
 *Proof.* Suppose not. Then:
+#v(-10pt)
 $
-"OPT" >= sum_(e in T) c(e) &> "OPT"/|V(H) without union.big A_i| dot sum_(e in T) |e without union.big A_i| \
-&>= "OPT"/|V(H) without union.big A_i| dot |V(H) without union.big A_i| = "OPT". quad square
+"OPT" >= sum_(e in T) c(e) &> "OPT"/ (|V(H) without union.big A_i|) dot sum_(e in T) |e without union.big A_i| \
+&underbrace(>= "OPT"/(|V(H) without union.big A_i|) dot |V(H) without union.big A_i|, #[
+  $sum_(e in T) |e without union.big A_i| >= |union.big (T without union.big A_i)| = |V(H) without union.big A_i|$
+]) = "OPT". quad square
 $
 
-The last inequality: $sum_(e in T) |e without union.big A_i| >= |union.big T without union.big A_i| = |V(H) without union.big A_i|$.
+// The last inequality: $sum_(e in T) |e without union.big A_i| >= |union.big T without union.big A_i| = |V(H) without union.big A_i|$.
 
 == Amortised Cost Tracking
 
@@ -364,14 +456,14 @@ Augment the greedy to assign a *price* to each vertex when first covered:
 
 == Cost $=$ Sum of $alpha$-values
 
-#theorem[*Lemma*
+#lemma(title: "Cost")[
   $"cost of greedy sol" = sum_(v in V) alpha(v)$.
-]
+]<lemma:cost>
 
-*Proof.* Let $A = {e_1, dots, e_k}$ be the greedy sol; $A_j = {e_1, dots, e_{j-1}}$ the partial sol at step $j$.
+*Proof.* Let $A = {e_1, dots, e_k}$ be the greedy sol; $A_j = {e_1, dots, e_(j)}$ the partial sol at step $j$.
 
 $
-sum_(e in A) c(e) = sum_(j=1)^k c(e_j) = sum_(j=1)^k sum_(v in e_j without union.big A_j) underbrace(c(e_j) / |e_j without union.big A_j|, = alpha(v)) = sum_(v in V) alpha(v). quad square
+sum_(e in A) c(e) = sum_(j=1)^k c(e_j) = sum_(j=1)^k sum_(v in e_j without union.big A_j) underbrace(c(e_j) / (|e_j without union.big A_j|), = alpha(v)) = sum_(v in V) alpha(v). quad square
 $
 
 == Approximation Ratio
@@ -380,16 +472,16 @@ $
   The weighted greedy algorithm is an $O(ln n)$-approximation.
 ]
 
-*Proof.* Order $V = {v_1, v_2, dots, v_n}$ by the order greedy covers them.
+*Proof.* Order $V = {v_1, v_2, dots, v_n}$ by the order the greedy covers them.
 
-When $v_i$ is covered at iteration $j$, there are $>= n - i + 1$ uncovered vxs. By the *Key Lemma*:
-$ alpha(v_i) = "eff"_(union.big A_j)(e_j) <= "OPT" / |V(H) without union.big A_j| <= "OPT" / (n - i + 1) $
+When $v_i$ is covered at iteration $j$, there are $>= n - i + 1$ uncovered vxs. By *@lemma:key*:
+$ alpha(v_i) = "eff"_(union.big A_j)(e_j) <= "OPT" / (|V(H) without union.big A_j|) <= "OPT" / (n - i + 1). $
 
 #pause
 
-Therefore, using the *Cost Lemma*:
+Therefore, using *@lemma:cost*
 $
-"cost of greedy sol" = sum_(v in V) alpha(v) = sum_(i=1)^n alpha(v_i) <= "OPT" sum_(i=1)^n 1/(n-i+1) = "OPT" dot H_n
+"cost of greedy sol" = sum_(v in V) alpha(v) = sum_(i=1)^n alpha(v_i) <= "OPT" dot sum_(i=1)^n 1/(n-i+1) = "OPT" dot H_n.
 $
 
 where $H_n = sum_(i=1)^n 1\/i approx ln n$ is the $n$-th *Harmonic number*. $quad square$

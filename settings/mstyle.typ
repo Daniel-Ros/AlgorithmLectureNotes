@@ -13,10 +13,8 @@
 #let conf(body, handout: bool, subtitle: str) = {
   let (claim-counter, claim-box, claim, show-claim) = make-frame(
     "claim",
-    "Claim", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
-    counter: theorem-counter, // inherit the old counter, `none` by default
-    inherited-levels: 1, // useful when you need a new counter
-    inherited-from: heading, // heading or just another counter
+    "Claim",
+    counter: none,
     render: render-fn.with(fill: navy.lighten(70%)),
   )
   show: show-claim
@@ -24,10 +22,8 @@
 
   let (question-counter, question-box, question, show-question) = make-frame(
     "question",
-    "Question", // supplement, string or dictionary like `(en: "Theorem")`, or `theorion-i18n-map.at("theorem")` for built-in i18n support
-    counter: theorem-counter, // inherit the old counter, `none` by default
-    inherited-levels: 2, // useful when you need a new counter
-    inherited-from: heading, // heading or just another counter
+    "Question",
+    counter: none,
     render: render-fn.with(fill: green.lighten(90%)),
   )
   show: show-question
@@ -43,7 +39,6 @@
     aspect-ratio: "16-9",
     // align: horizon,
     config-common(handout: handout),
-    config-common(frozen-counters: (theorem-counter,)), // freeze theorem counter for animation
     config-page(margin: (top: 1.6cm, bottom: 2cm, x: 1.5cm)),
     config-info(
       title: [Algorithms 2],
@@ -111,7 +106,7 @@
 #let (definition-counter, definition-box, problem, show-definition) = make-frame(
   "definition",
   theorion-i18n-map.at("problem"),
-  counter: theorem-counter,
+  counter: none,
   render: (..args) => {
     set text(fill: rgb("#681811"))
     show strong: it => [#text(weight: "bold", fill: rgb("#a7051d"))[#it.body]]
@@ -124,7 +119,7 @@
 #let (definition-counter, definition-box, question, show-definition) = make-frame(
   "question",
   "Question",
-  counter: theorem-counter,
+  counter: none,
   render: (..args) => {
     set text(fill: rgb("#0c020d"))
     show strong: it => [#text(weight: "bold", fill: rgb("#c00d28"))[#it.body]]
@@ -138,7 +133,7 @@
 #let (definition-counter, definition-box, observation, show-definition) = make-frame(
   "question",
   "Observation",
-  counter: theorem-counter,
+  counter: none,
   render: (..args) => {
     set text(fill: rgb("#0c020d"))
     show strong: it => [#text(weight: "bold", fill: rgb("#0d187f"))[#it.body]]
@@ -151,7 +146,7 @@
 #let (definition-counter, definition-box, definition, show-definition) = make-frame(
   "definition",
   theorion-i18n-map.at("definition"),
-  counter: theorem-counter,
+  counter: none,
   render: render-fn.with(fill: rgb("#bfdce2")),
 )
 
@@ -176,10 +171,29 @@
   },
 )
 
+#let (definition-counter, definition-box, ulemma, show-definition) = make-frame(
+  "definition",
+  "Goal",
+  counter: none,
+  render: (prefix: none, title: "", full-title: "", body) => {
+    render-fn(
+      fill: rgb("#b3b0bf"),
+      prefix: prefix,
+      full-title: [#text(fill: rgb("#934444"), weight: "bold")[Lemma #title:]],
+      title: title,
+      // Apply the show rule ONLY to the body content here:
+      [
+        #set text(fill: rgb("#000000"))
+        #body
+      ],
+    )
+  },
+)
+
 #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
   "theorem",
   theorion-i18n-map.at("theorem"),
-  inherited-levels: 2,
+  counter: none,
   render: (..args) => {
     set text(fill: rgb("#ffffff"))
     show strong: it => [#text(weight: "bold", fill: rgb("#e6dbdb"))[#it.body]]
@@ -256,8 +270,8 @@
   text(fill: color, weight: "bold")[#body]
 }
 
-#let tr(body) = {
-  text(fill: red, weight: "bold", size: 0.8em)[#body]
+#let tr(body, s: 1.0) = {
+  text(fill: red, weight: "bold", size: 0.8em * s)[#body]
 }
 
 #let cup = math.union
@@ -266,3 +280,4 @@
 
 #let cetz-canvas = touying-reducer.with(reduce: cetz.canvas, cover: cetz.draw.hide.with(bounds: true))
 #let sbullet = box(baseline: -0.15em)[#text(size: 0.55em)[$bullet$]]
+#let reduction = $scripts(<=)_p$
