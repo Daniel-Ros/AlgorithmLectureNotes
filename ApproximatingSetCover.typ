@@ -394,12 +394,14 @@ $ (c(e)) / (|e without union.big A_i|) = ("cost of" e) / ("# vxs covered by" e) 
 *Amortised perspective:*
 
 #observation[
-  $exists e in P$ covering covering its vxs at amortised cost $<= "OPT"\/n$ *per vertex*.
+  $exists e in P$ covering its vxs at amortised cost $<= "OPT"\/n$ *per vertex*.
 ]
 
 == Amortised Perspective on the Greedy
-
 #set text(size: 0.95em)
+#observation[
+  $exists e in P$ covering its vxs at amortised cost $<= "OPT"\/n$ *per vertex*.
+]
 
 This argument persists at *later stages*. Let $P$ = optimal cover, $A_i$ = current greedy cover. Define:
 
@@ -409,9 +411,14 @@ This argument persists at *later stages*. Let $P$ = optimal cover, $A_i$ = curre
 #v(-4pt)
 - Only members of $T$ are relevant to the greedy: $"eff"_(union.big A_i)(e) < infinity$ iff $e in T$
 - $(V(H) without union.big A_i) subset.eq union.big T$ #h(1fr) #tr(s: 0.8)[(exercise: proof by contradiction, i.e. remaining vertices are covered by $T$.)]
-
-#pause
-#v(-8pt)
+#lemma(title: "Key Claim")[
+  #set text(size: 0.9em)
+  $exists e in T$ s.t. 
+  #v(-15pt)
+  $ "eff"_(union.big A_i)(e) = c(e) / (|e without union.big A_i|) <= "OPT" / (|V(H) without union.big A_i|). $
+  #v(-5pt)
+]
+#pagebreak()
 #lemma(title: "Key Claim")[
   #set text(size: 0.9em)
   $exists e in T$ s.t. 
