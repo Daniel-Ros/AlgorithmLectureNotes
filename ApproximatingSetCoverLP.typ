@@ -130,7 +130,7 @@
   $
     "cost"(A)
     = sum_(j=1)^m c(e_(i_j))
-    = sum_(j=1)^m |e_(i_j) without union.big A_(j-1)| dot c(e) / (|e without U|)
+    = sum_(j=1)^m |e_(i_j) without union.big A_(j-1)| dot c(e) / (|e without union.big A_(j-1)|)
     = sum_(j=1)^m sum_(v in e_(i_j) without union.big A_(j-1)) "eff"_(union.big A_(j-1))(e_(i_j))
     = sum_(v in V) ac(v)
   $
@@ -367,12 +367,12 @@
     $
       X_e := cases(0 &quad  e in.not A, c(e) &quad  e in A)
     $
-    - Then $E[X_e] = c(e) * P[e in A] = c(e) x_e^*$.
+    - Then $EE[X_e] = c(e) * P[e in A] = c(e) x_e^*$.
     - Since $c(A) = sum_(e in E(H)) X_e$,
     $
-    E[c(A)] = sum_(e in E(H)) E[X_e] = sum_(e in E(H)) x_e^* c(e) = "OPT"_f
+    EE[c(A)] = sum_(e in E(H)) EE[X_e] = sum_(e in E(H)) x_e^* c(e) = "OPT"_f
     $.
-    - Therefore $E[c(U_k)] <= k * "OPT"_f$, and by Markov's inequality,
+    - Therefore $EE[c(U_k)] <= k * "OPT"_f$, and by Markov's inequality,
     $ P[c(U_k) >= 4 * k * "OPT"] <= (k * "OPT"_f) / (4 * k * "OPT") <= 1/4 $
     #v(-2em)
   ]
