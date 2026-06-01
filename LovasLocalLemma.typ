@@ -18,24 +18,24 @@
 
   #definition[
     *The scenario:* \
-    Let $E_1, ..., E_n$ be bad events (over the same sample space). \
+    Let $cal(E)_1, ..., cal(E)_n$ be bad events (over the same sample space). \
     We wish to prove:
-    $P[cap.big_(i=1)^n overline(E_i)] > 0$ -- no bad event occurs.
+    $PP[cap.big_(i=1)^n overline(cal(E)_i)] > 0$ -- no bad event occurs.
   ]
 
   #v(4pt)
-  - If $E_1, ..., E_n$ are pairwise independent, then we can argue as follows:
-    - Recall: events $A$ and $B$ are independent if $P[A cap B] = P[A] P[B]$.
+  - If $cal(E)_1, ..., cal(E)_n$ are pairwise independent, then we can argue as follows:
+    - Recall: events $A$ and $B$ are independent if $PP[A cap B] = PP[A] PP[B]$.
     - If $A, B$ are independent, then so are $overline(A), overline(B)$:
       #block(
         stroke: black,
         radius: 6pt,
         inset: 8pt,
       )[
-        $P[overline(A) cap overline(B)] = 1 - P[A cup B]$ \
-        $= 1 - P[A] - P[B] + P[A cap B]$ \
-        $= (1 - P[A])(1 - P[B])$ \
-        $= P[overline(A)] P[overline(B)]$
+        $PP[overline(A) cap overline(B)] = 1 - PP[A cup B]$ \
+        $= 1 - PP[A] - PP[B] + PP[A cap B]$ \
+        $= (1 - PP[A])(1 - PP[B])$ \
+        $= PP[overline(A)] PP[overline(B)]$
       ]
 ]
 
@@ -47,26 +47,51 @@
   #set text(size: 0.9em)
 
   - Back to our problem:
-  - $E_1, ..., E_n$ pairwise independent
+  - $cal(E)_1, ..., cal(E)_n$ pairwise independent
     $=>$
-    $overline(E_1), ..., overline(E_n)$ pairwise independent.
-  - If $P[E_i] < 1$ for all $i in [n]$, then:
+    $overline(cal(E)_1), ..., overline(cal(E)_n)$ pairwise independent.
+  - If $PP[cal(E)_i] < 1$ for all $i in [n]$, then:
     $
-      P[cap.big_(i=1)^n overline(E_i)]
-      = product_(i=1)^n P[overline(E_i)]
-      = product_(i=1)^n (1 - P[E_i])
+      PP[cap.big_(i=1)^n overline(cal(E)_i)]
+      = product_(i=1)^n PP[overline(cal(E)_i)]
+      = product_(i=1)^n (1 - PP[cal(E)_i])
       > 0
     $
     (assuming this equality holds).
   - But pairwise independence does *not* imply
     $
-      P[cap.big_(i=1)^n overline(E_i)]
-      = product_(i=1)^n P[overline(E_i)].
+      PP[cap.big_(i=1)^n overline(cal(E)_i)]
+      = product_(i=1)^n PP[overline(cal(E)_i)].
     $
   - Mutual independence does.
-  - What if $E_1, ..., E_n$ do depend on one another in some way?
+  - What if $cal(E)_1, ..., cal(E)_n$ do depend on one another in some way?
   - The Lovasz local lemma provides a partial solution.
 ]
+
+#place(
+  dx: 70%,
+  dy: -70%,
+  block(width: 35%, fill: gray.lighten(50%), inset: 10pt, radius: 5pt)[
+    #set text(size: 0.60em)
+    An experiment is made, by trowing $2$ fair coins
+    independently of each other.
+    - $C_1$ the event that the first coins is heads.
+    - $C_2$ the event that the second coint is heads.
+    - $C_3$ the event that the outcome of the coins is not the same.
+
+    Clearly $C_1$ and $C_2$ are independent.
+    Also $C_3$ is independent of both $C_1$ and $C_2$
+    $
+      PP(C_1 and C_3) &= PP(C_3 | C_1) dot PP(C_1) \
+      &= 1/2 dot 1/2 \
+      &= PP(C_1) dot PP(C_3)
+    $
+    But 
+    $
+      PP(C_1 and C_2 and C_3) = 0 !=1/8=PP(C_1)dot PP(C_1)dot PP(C_1)
+    $
+  ]
+)
 
 #pagebreak()
 
@@ -75,16 +100,16 @@
   #set text(size: 0.86em)
 
   #definition[
-    Events $E_1, ..., E_n$ are said to be *mutually independent* if
+    Events $cal(E)_1, ..., cal(E)_n$ are said to be *mutually independent* if
     $
-      P[cap.big_(i in I) E_i] = product_(i in I) P[E_i]
+      PP[cap.big_(i in I) cal(E)_i] = product_(i in I) PP[cal(E)_i]
     $
     whenever $emptyset != I subset.eq [n]$.
   ]
 
   // #v(4pt)
   // *Put another way:* for every $i in [n]$ and every $emptyset != I subset.eq [n] without {i}$,
-  // $P[E_i | cap.big_(j in I) E_j] = P[E_i].
+  // $PP[cal(E)_i | cap.big_(j in I) cal(E)_j] = PP[cal(E)_i].
   // $
 
 // == An equivalent definition
@@ -93,15 +118,15 @@
   #set text(size: 0.86em)
 
   #definition(title:"Alternative definition")[
-    Event $A$ is mutually independent of events $E_1, ..., E_n$ if
+    Event $A$ is mutually independent of events $cal(E)_1, ..., cal(E)_n$ if
     $
-      P[A | cap.big_(i=1)^n B_i] = P[A]
+      PP[A | cap.big_(i=1)^n B_i] = PP[A]
     $
-    where $B_i in {E_i, overline(E_i)}$ for all $i in [n]$.
+    where $B_i in {cal(E)_i, overline(cal(E)_i)}$ for all $i in [n]$.
   ]
 
   #v(4pt)
-  - No matter whether each $E_i$ occurs or not, this does not affect $P[A]$.
+  - No matter whether each $cal(E)_i$ occurs or not, this does not affect $PP[A]$.
   - For a proof of equivalence, see the booklet.
 ]
 
@@ -118,12 +143,12 @@
   *Example.* Let $Omega := {1,2,3,4}$ with the discrete uniform measure.
   $A := {1,2}$, $B := {1,3}$, $C := {2,3}$.
 
-  - $P[A] = P[B] = P[C] = 1/2$.
+  - $PP[A] = PP[B] = PP[C] = 1/2$.
   - $A, B$ are independent:
-    $P[A cap B] = P[{1}] = 1/4 = P[A] P[B]$.
+    $PP[A cap B] = PP[{1}] = 1/4 = PP[A] dot PP[B]$.
   - The same applies to $B, C$ and $A, C$.
   - Yet
-    $P[A cap B cap C] = P[emptyset] = 0 != P[A] P[B] P[C]$.
+    $PP[A cap B cap C] = PP[emptyset] = 0 != PP[A] dot PP[B] dot PP[C]$.
   - So $A, B, C$ are pairwise independent but *not* mutually independent.
 ]
 
@@ -139,15 +164,15 @@
 //   $B := {"1st die rolled 3"}$,
 //   $C := {"2nd die rolled 4"}$.
 
-//   - $P[A] = P[B] = P[C] = 1/6$.
+//   - $PP[A] = PP[B] = PP[C] = 1/6$.
 //   - Events $B$ and $C$ are independent (independent trials).
 //   - To see $A$ and $B$ are independent, note:
-//     $P[A | B] = P["sum" = 7 | "1st die" = 3] = P["2nd die" = 4] = 1/6 = P[A]$.
+//     $PP[A | B] = PP["sum" = 7 | "1st die" = 3] = PP["2nd die" = 4] = 1/6 = PP[A]$.
 //   - Similarly, $A$ and $C$ are independent.
 //   - But $B cap C => A$, so
-//     $P[A cap B cap C] = P[B cap C] = (1/6)^2$,
+//     $PP[A cap B cap C] = PP[B cap C] = (1/6)^2$,
 //     while
-//     $P[A] P[B] P[C] = (1/6)^3$.
+//     $PP[A] PP[B] PP[C] = (1/6)^3$.
 // ]
 
 #pagebreak()
@@ -159,14 +184,14 @@
 
   - Mutual independence is a *stronger* form of independence than pairwise independence.
   - We have seen that
-    $E_1, ..., E_n$ pairwise independent
+    $cal(E)_1, ..., cal(E)_n$ pairwise independent
     $=>$
-    $overline(E_1), ..., overline(E_n)$ pairwise independent.
+    $overline(cal(E)_1), ..., overline(cal(E)_n)$ pairwise independent.
   - This property is also supported in mutual independence:
 
   #theorem[
-    If $E_1, ..., E_n$ are mutually independent, then so are
-    $overline(E_1), ..., overline(E_n)$.
+    If $cal(E)_1, ..., cal(E)_n$ are mutually independent, then so are
+    $overline(cal(E)_1), ..., overline(cal(E)_n)$.
   ]
 
   #v(2pt)
@@ -209,11 +234,11 @@
   #v(6pt)
   *The dependency graph*
   #definition[
-    Events $E_1, ..., E_n$. A dependency graph
-    $D := D(E_1, ..., E_n)$ is any graph whose vertex set is
-    $E_1, ..., E_n$ and supporting the property:
-    for every $i in [n]$, event $E_i$ is mutually independent of the events
-    ${E_j : j != i and {i, j} in.not E(D)}$.
+    Events $cal(E)_1, ..., cal(E)_n$. A dependency graph
+    $D := D(cal(E)_1, ..., cal(E)_n)$ is any graph whose vertex set is
+    $cal(E)_1, ..., cal(E)_n$ and supporting the property:
+    for every $i in [n]$, event $cal(E)_i$ is mutually independent of the events
+    ${cal(E)_j : j != i and {i, j} in.not E(D)}$.
   ]
 
   #remark[
@@ -222,8 +247,8 @@
   ]
 
   #remark[
-    *Danger:* We did *not* just say that we build a graph on $E_1, ..., E_n$
-    by placing an edge $(E_i, E_j)$ if $E_i, E_j$ are dependent.
+    *Danger:* We did *not* just say that we build a graph on $cal(E)_1, ..., cal(E)_n$
+    by placing an edge $(cal(E)_i, cal(E)_j)$ if $cal(E)_i, cal(E)_j$ are dependent.
   ]
 ]
 
@@ -236,13 +261,13 @@
 
   #theorem[
     *(The symmetric local lemma)* \
-    Let $E_1, ..., E_n$ be events such that the following holds:
+    Let $cal(E)_1, ..., cal(E)_n$ be events such that the following holds:
 
-    1. *(Symmetry)* $P[E_i] <= p$ for all $i in [n]$.
-    2. *(Limited dependency)* $Delta(D(E_1, ..., E_n)) <= d$.
+    1. *(Symmetry)* $PP[cal(E)_i] <= p$ for all $i in [n]$.
+    2. *(Limited dependency)* $Delta(D(cal(E)_1, ..., cal(E)_n)) <= d$.
     3. *(Bound $p$ and $d$)* $e dot p dot (d + 1) <= 1$ (up to a constant).
 
     Then
-    $P[cap.big_(i=1)^n overline(E_i)] > 0$.
+    $PP[cap.big_(i=1)^n overline(cal(E)_i)] > 0$.
   ]
 ]

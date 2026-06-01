@@ -18,7 +18,7 @@
 
 #title-slide()
 
-= LP Analysis of the Greedy Approximation Algorithm for Set-Cover
+= LP Analysis for Greedy Set-Cover
 
 == Minimum Cost Set-Cover
 #[
@@ -253,7 +253,7 @@
     - Then $z_e <= f x_e^*$ for all $e$. #tr[(if $e in A$, then $x_e^* >= 1/f$)]
     - Hence
     $
-      c(A) <= sum_(e in E(H)) z_e c(e) <= f sum_(e in E(H)) x_e^* c(e) = f * "OPT"_f <= f * "OPT".
+      c(A) <= sum_(e in E(H)) z_e c(e) <= f sum_(e in E(H)) x_e^* c(e) = f dot "OPT"_f <= f dot "OPT".
     $
     #v(-2em)
   ]
@@ -310,19 +310,19 @@
   #pagebreak()
   #lemma[
     Let $A$ be the collection returned by the algorithm and fix $v in V(H)$. Then
-    $P[v in union.big A] >= 1 - 1/e$.
+    $PP[v in union.big A] >= 1 - 1/e$.
   ]
   #proof[
     - Let $C_v := { e in E(H) : v in e }$.
     - Then
-    $ P[v in.not union.big A] & = P["no" e in C_v "is chosen"] \
+    $ PP[v in.not union.big A] & = PP["no" e in C_v "is chosen"] \
                             & = product_(e in C_v) (1 - x_e^*) \
                             & <= product_(e in C_v) exp(-x_e^*)
                               = exp(-sum_(e in C_v) x_e^*) <= e^(-1) $.
   ]
 
   #v(4pt)
-  *Conclusion:* $P[A "is not a valid cover"] <= sum_(v in V(H)) P[v in.not union.big A] <= n/e$.
+  *Conclusion:* $PP[A "is not a valid cover"] <= sum_(v in V(H)) PP[v in.not union.big A] <= n/e$.
   #h(1fr) #tr[Looks bad!]
 ]
 
@@ -336,16 +336,16 @@
   - For $k in NN$, run the algorithm $k$ independent times to obtain
     $A_1, A_2, dots, A_k$.
   - Set $U_k := union.big_(i=1)^k A_i$ (union of all solutions).
-  - For $v in V(H)$, $P[v in.not U_k] <= e^(-k)$.
+  - For $v in V(H)$, $PP[v in.not U_k] <= (e^(-1))^k = e^(-k)$.
 
   #v(6pt)
   #lemma[
     There exists a constant $D > 0$ such that if $k >= D ln n$, then
-    $P[U_k "is not a set-cover"] <= 1/4$.
+    $PP[U_k "is not a set-cover"] <= 1/4$.
   ]
   #proof[
-    - For a fixed $v in V(H)$,$P[v in.not U_k] <= e^(-k) <= e^(-D ln n) <= 1/(4n)$ for large enough $D$.
-    - A union bound over all vertices gives $P[U_k "not a set-cover"] <= 1/4$.
+    - For a fixed $v in V(H)$,$PP[v in.not U_k] <= e^(-k) <= e^(-D ln n) <= 1/(4n)$ for some $D$.
+    - A union bound over all vertices gives $PP[U_k "not a set-cover"] <= 1/4$.
   ]
 ]
 
@@ -359,7 +359,7 @@
   #v(6pt)
   #lemma[
     Let $"OPT"$ be the optimal cost and $k in NN$. Then
-    $P[c(U_k) >= 4 * k * "OPT"] <= 1/4$.
+    $PP[c(U_k) >= 4 dot k dot "OPT"] <= 1/4$.
   ]
   #proof[
     - For $e in E(H)$, set
@@ -367,22 +367,22 @@
     $
       X_e := cases(0 &quad  e in.not A, c(e) &quad  e in A)
     $
-    - Then $EE[X_e] = c(e) * P[e in A] = c(e) x_e^*$.
+    - Then $EE[X_e] = c(e) dot PP[e in A] = c(e) x_e^*$.
     - Since $c(A) = sum_(e in E(H)) X_e$,
     $
     EE[c(A)] = sum_(e in E(H)) EE[X_e] = sum_(e in E(H)) x_e^* c(e) = "OPT"_f
     $.
-    - Therefore $EE[c(U_k)] <= k * "OPT"_f$, and by Markov's inequality,
-    $ P[c(U_k) >= 4 * k * "OPT"] <= (k * "OPT"_f) / (4 * k * "OPT") <= 1/4 $
+    - Therefore $EE[c(U_k)] <= k dot "OPT"_f$, and by Markov's inequality,
+    $ PP[c(U_k) >= 4 dot k dot "OPT"] <= (k dot "OPT"_f) / (4 dot k dot "OPT") <= 1/4 $
     #v(-2em)
   ]
 #pagebreak()
   #conclusion[
-    Repeating the algorithm $Omega(ln n)$ times gives a valid cover with cost at most
-    $O(ln n * "OPT")$ with probability at least $1/2$.
+    Repeating the algorithm $k:=Omega(ln n)$ times and taking $U_k$ gives with probability at least $1/2$ a valid cover with 
+    expected cost of at most $O(ln n * "OPT")$.
   ]
 
   - For $k = Omega(ln n)$,
-  $ P[U_k "is a cover" and c(U_k) <= 4 * k * "OPT"]
-  >= 1 - P[U_k "not a cover"] - P[c(U_k) >= 4 * k * "OPT"] >= 1/2 $.
+  $ PP[U_k "is a cover" and c(U_k) <= 4 dot k dot "OPT"]
+  >= 1 - PP[U_k "not a cover"] - PP[c(U_k) >= 4 dot k dot "OPT"] >= 1/2 $.
 ]
