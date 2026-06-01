@@ -378,8 +378,7 @@
   ]
 #pagebreak()
   #conclusion[
-    Repeating the algorithm $k:=Omega(ln n)$ times and taking $U_k$ gives with probability at least $1/2$ a valid cover with 
-    expected cost of at most $O(ln n * "OPT")$.
+    Repeating the algorithm $k:=Omega(ln n)$ times and taking $U_k$ gives with probability at least $1/2$ a valid cover with cost of at most $O(ln n * "OPT")$.
   ]
 
   - For $k = Omega(ln n)$,

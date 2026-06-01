@@ -14,7 +14,7 @@
 == Setup
 
 By a *$k$-CNF formula* we mean:
-$ underbrace((x_1 or x_2 or x_3 dots), >= k) and underbrace((overline(x)_6 or x_2 or overline(x)_15 dots), >= k) and dots $
+$ underbrace((x_1 or x_2 or x_3 dots), = k) and underbrace((overline(x)_6 or x_2 or overline(x)_15 dots), = k) and dots $
 
 Each clause has exactly $k$ literals.
 
@@ -69,7 +69,7 @@ $ PP[cal(E)_i] <= 1 / 2^k quad forall i in [m] $
 since each clause has $k$ literals.
 
 *Checking the LLL condition:*
-$ e dot p dot (d+1) <= e dot 1/2^k dot 2^(k-2) = e/4 <= 1 $
+$ 4 dot p dot d <= 4 dot 1/2^k dot 2^(k-2) = 4/4 <= 1 $
 
 By the Lovász local lemma: $PP[inter.big_(i=1)^m overline(cal(E)_i)] > 0$. $square$
 ]
