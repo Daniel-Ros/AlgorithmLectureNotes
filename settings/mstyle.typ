@@ -247,13 +247,6 @@
   },
 )
 
-#let (lemma-counter, lemma-box, lemma, show-lemma) = make-frame(
-  "lemma",
-  theorion-i18n-map.at("lemma"),
-  counter: theorem-counter,
-  render: render-fn.with(fill: blue.lighten(75%)),
-)
-
 // #let (theorem-counter, theorem-box, theorem, show-theorem) = make-frame(
 //   "theorem",
 //   theorion-i18n-map.at("theorem"),
