@@ -14,7 +14,9 @@
 == Setup
 
 By a *$k$-CNF formula* we mean:
-$ underbrace((x_1 or x_2 or x_3 dots), = k) and underbrace((overline(x)_6 or x_2 or overline(x)_15 dots), = k) and dots $
+$
+  underbrace((x_1 or x_2 or x_3 dots), = k) and underbrace((overline(x)_6 or x_2 or overline(x)_15 dots), = k) and dots
+$
 
 Each clause has exactly $k$ literals.
 
@@ -49,29 +51,29 @@ We seek to prove $PP[inter.big_(i in [m]) overline(cal(E)_i)] > 0$ by appealing 
 
 == Proof: Dependency Graph
 #[
-#set text(0.78em)
-*Define* a graph $D$ s.t.:
-- $V(D) := {cal(E)_i : i in [m]}$
-- $E(D) :=$ place edge $(cal(E)_i, cal(E)_j)$ if clauses $i$ and $j$ *share common variables*
+  #set text(0.78em)
+  *Define* a graph $D$ s.t.:
+  - $V(D) := {cal(E)_i : i in [m]}$
+  - $E(D) :=$ place edge $(cal(E)_i, cal(E)_j)$ if clauses $i$ and $j$ *share common variables*
 
-#pause
+  #pause
 
-Event $cal(E)_i$ is mutually independent of all $cal(E)_j$ where clauses $i$ and $j$ have *no common variables* $=>$ $D$ is a dependency graph.
+  Event $cal(E)_i$ is mutually independent of all $cal(E)_j$ where clauses $i$ and $j$ have *no common variables* $=>$ $D$ is a dependency graph.
 
-#pause
+  #pause
 
-*Bounding $Delta(D)$:*
-- Each variable appears in at most $2^(k)\/(4k)$ clauses; a clause has $<= k$ distinct variables. 
-$ Delta(D) = arg max_(C) sum_(x in C) [\# "number of clauses that" x "lies in"] <= k dot 2^(k) / (4k) = 2^(k - 2) $
+  *Bounding $Delta(D)$:*
+  - Each variable appears in at most $2^(k)\/(4k)$ clauses; a clause has $<= k$ distinct variables.
+  $ Delta(D) = arg max_(C) sum_(x in C) [\# "number of clauses that" x "lies in"] <= k dot 2^(k) / (4k) = 2^(k - 2) $
 
-*Bounding $p$:*
-$ PP[cal(E)_i] <= 1 / 2^k quad forall i in [m] $
-since each clause has $k$ literals.
+  *Bounding $p$:*
+  $ PP[cal(E)_i] <= 1 / 2^k quad forall i in [m] $
+  since each clause has $k$ literals.
 
-*Checking the LLL condition:*
-$ 4 dot p dot d <= 4 dot 1/2^k dot 2^(k-2) = 4/4 <= 1 $
+  *Checking the LLL condition:*
+  $ 4 dot p dot d <= 4 dot 1/2^k dot 2^(k-2) = 4/4 <= 1 $
 
-By the Lovász local lemma: $PP[inter.big_(i=1)^m overline(cal(E)_i)] > 0$. $square$
+  By the Lovász local lemma: $PP[inter.big_(i=1)^m overline(cal(E)_i)] > 0$. $square$
 ]
 = A Randomised Algorithm
 
@@ -153,7 +155,7 @@ Assign values to *some* of $x_1, ..., x_lambda$:
       Line([#h(2em) Assign $x_i$ a value from ${0,1}$ u.a.r., independently])
       Line([*else* do not assign $x_i$ any value; proceed to next variable])
     })
-  }
+  },
 )
 
 #pause
@@ -170,22 +172,22 @@ Assign values to *some* of $x_1, ..., x_lambda$:
 
 #[
   #set text(size: 0.863em)
-*Key structural facts:*
+  *Key structural facts:*
 
-#v(-10pt)
-- A surviving clause *always* has $<= k\/2$ fixed variables.
+  #v(-10pt)
+  - A surviving clause *always* has $<= k\/2$ fixed variables.
 
-#v(-8pt)
+  #v(-8pt)
   *Proof:* Suppose $C$ has $> k\/2$ fixed vars. Then at some earlier point $C$ had *exactly* $k\/2$ fixed vars while still unsatisfied — so $C$ was *dangerous* at that moment. But once dangerous, no further variables of $C$ are ever assigned. Contradiction. $square$
 
-#pause
+  #pause
 
-#v(-5pt)
-#observation[
-  If $C$ is a surviving clause then it has at least $k\/2$ *deferred* variables.
-]
+  #v(-5pt)
+  #observation[
+    If $C$ is a surviving clause then it has at least $k\/2$ *deferred* variables.
+  ]
 
-*Proof:* By definition every unassigned variable is deferred. Since $f <= k\/2$ (proved above), $C$ has $k - f >= k\/2$ deferred variables. $square$
+  *Proof:* By definition every unassigned variable is deferred. Since $f <= k\/2$ (proved above), $C$ has $k - f >= k\/2$ deferred variables. $square$
 ]
 = Extendability into a Satisfying Assignment
 
@@ -206,38 +208,38 @@ $ cal(E)_C := C "not satisfied by the random assignment" $
 
 #[
   #set text(size: 0.865em)
-*Define* graph $D$:
-- $V(D) = {cal(E)_C : C "a surviving clause"}$
-- $cal(E)_C$ and $cal(E)_(C')$ adjacent if $C$ and $C'$ share a common *deferred* variable
-- $D$ is a dependency graph (same argument as before)
+  *Define* graph $D$:
+  - $V(D) = {cal(E)_C : C "a surviving clause"}$
+  - $cal(E)_C$ and $cal(E)_(C')$ adjacent if $C$ and $C'$ share a common *deferred* variable
+  - $D$ is a dependency graph (same argument as before)
 
-#place(
-  dx: 63%,
-  dy: -20%,
-  block(width: 42%)[
-    #set text(size: 0.64em)
-    #LLL
-  ]
-)
+  #place(
+    dx: 63%,
+    dy: -20%,
+    block(width: 42%)[
+      #set text(size: 0.64em)
+      #LLL
+    ],
+  )
 
-#pause
+  #pause
 
 
-*Bounding $PP[cal(E)_C]$:* Since $C$ has $>= k\/2$ deferred vars:
-$ PP[cal(E)_C] <= 2^(-k\/2) $
+  *Bounding $PP[cal(E)_C]$:* Since $C$ has $>= k\/2$ deferred vars:
+  $ PP[cal(E)_C] <= 2^(-k\/2) $
 
-*Bounding $Delta(D)$:*
-- Each deferred var in $C$ lies in $<= 2^(alpha k)$ other surviving clauses
-- $C$ has $<= k$ deferred variables
-$ Delta(D) <= k dot 2^(alpha k) $
+  *Bounding $Delta(D)$:*
+  - Each deferred var in $C$ lies in $<= 2^(alpha k)$ other surviving clauses
+  - $C$ has $<= k$ deferred variables
+  $ Delta(D) <= k dot 2^(alpha k) $
 
-#pause
+  #pause
 
-*LLL condition:*
-$ 4 dot Delta(D) dot p <= e dot k dot 2^(alpha k) dot 2^(-k\/2) = k dot 2^(alpha k + 2 - k\/2) <= 1 $
-for $k$ sufficiently large and $alpha$ sufficiently small.
+  *LLL condition:*
+  $ 4 dot Delta(D) dot p <= e dot k dot 2^(alpha k) dot 2^(-k\/2) = k dot 2^(alpha k + 2 - k\/2) <= 1 $
+  for $k$ sufficiently large and $alpha$ sufficiently small.
 
-Local lemma asserts: $PP[inter.big_(C "surv.") overline(cal(E)_C)] > 0$. $square$
+  Local lemma asserts: $PP[inter.big_(C "surv.") overline(cal(E)_C)] > 0$. $square$
 
 
 
@@ -283,25 +285,25 @@ $ Delta(D) <= Delta(D') <= k dot 2^(alpha k) =: Delta $
 == 4-Trees
 #[
   #set text(size: 0.93em)
-#definition[
-  *$4$-tree of $R$:* Let $R$ be a connected subgraph of $D'$. A *$4$-tree* of $R$ is a rooted tree $S$ (need not be a subgraph of $R$) satisfying:
-  1. $V(S) subset.eq V(R)$
-  2. Any two nodes of $S$ are at distance $>= 4$ in $D'$
-  3. Two nodes are adjacent in $S$ if their $D'$-distance is *precisely* $4$
-  4. Every vertex of $R$ is either in $S$ or at distance $<= 3$ from $S$ in $R$
-]
+  #definition[
+    *$4$-tree of $R$:* Let $R$ be a connected subgraph of $D'$. A *$4$-tree* of $R$ is a rooted tree $S$ (need not be a subgraph of $R$) satisfying:
+    1. $V(S) subset.eq V(R)$
+    2. Any two nodes of $S$ are at distance $>= 4$ in $D'$
+    3. Two nodes are adjacent in $S$ if their $D'$-distance is *precisely* $4$
+    4. Every vertex of $R$ is either in $S$ or at distance $<= 3$ from $S$ in $R$
+  ]
 
-#pause
+  #pause
 
-#claim[*Claim A*
-  Let $S$ be a $4$-tree of some connected subgraph $R$ of $D'$. Then:
-  $ PP[V(S) subset.eq V(D)] <= ((Delta+1) dot 2^(-k\/2))^(v(S)) $
-]
+  #claim[*Claim A*
+    Let $S$ be a $4$-tree of some connected subgraph $R$ of $D'$. Then:
+    $ PP[V(S) subset.eq V(D)] <= ((Delta+1) dot 2^(-k\/2))^(v(S)) $
+  ]
 
-#claim[*Claim B*
-  Let $R$ be a connected subgraph of $D'$, $S$ a $u$-tree of $R$ of *maximum size*. Then:
-  $ v(S) >= v(R) \/ Delta^3 $
-]
+  #claim[*Claim B*
+    Let $R$ be a connected subgraph of $D'$, $S$ a $u$-tree of $R$ of *maximum size*. Then:
+    $ v(S) >= v(R) \/ Delta^3 $
+  ]
 ]
 == Using Claims A and B
 
@@ -320,8 +322,10 @@ $=>$ No connected subgraph of $D'$ of size $>= C ln m$ survives in $D$ (a.a.s.) 
 == Proof of Claim A
 
 *Proof.* For any clause $C$:
-$ PP[C "survives"] &<= PP[C "is dangerous"] + PP[>= 1 "neighbour in" D' "is dangerous"] \
-&<= 2^(-k\/2) + Delta dot 2^(-k\/2) = (Delta+1) dot 2^(-k\/2) $
+$
+  PP[C "survives"] & <= PP[C "is dangerous"] + PP[>= 1 "neighbour in" D' "is dangerous"] \
+                   & <= 2^(-k\/2) + Delta dot 2^(-k\/2) = (Delta+1) dot 2^(-k\/2)
+$
 
 #pause
 
@@ -339,9 +343,11 @@ $ PP[V(S) subset.eq V(D)] <= ((Delta+1) dot 2^(-k\/2))^(v(S)). quad square $
 *Proof.* Suppose for contradiction that $v(S) < v(R)\/Delta^3$.
 
 By definition, every member of $V(R)$ is at distance $<= 3$ from $V(S)$ in $R$. Fix $v in V(D')$:
-$ \# "vxs in" D' "at dist." <= 3 "from" v &<= Delta + Delta(Delta-1) + Delta(Delta-1)(Delta-2) \
-&= Delta + Delta^2-Delta + Delta^3 - 3Delta^2 + 2Delta \
-&<= Delta^3 - 1 $
+$
+  \# "vxs in" D' "at dist." <= 3 "from" v & <= Delta + Delta(Delta-1) + Delta(Delta-1)(Delta-2) \
+                                          & = Delta + Delta^2-Delta + Delta^3 - 3Delta^2 + 2Delta \
+                                          & <= Delta^3 - 1
+$
 
 Therefore:
 $ v(R) <= |V(S)| dot (Delta^3 - 1) < v(R)/Delta^3 dot (Delta^3 - 1) < v(R). quad "contradiction". quad square $
@@ -349,24 +355,24 @@ $ v(R) <= |V(S)| dot (Delta^3 - 1) < v(R)/Delta^3 dot (Delta^3 - 1) < v(R). quad
 == Component Size: Proof
 #[
   #set text(size: 0.9em)
-Set $r := C ln m$ for comfort. We need to bound $PP[cal(E)]$ where $cal(E) :=$ "a $u$-tree of size $>= r\/Delta^3$ survived in $D$".
+  Set $r := C ln m$ for comfort. We need to bound $PP[cal(E)]$ where $cal(E) :=$ "a $u$-tree of size $>= r\/Delta^3$ survived in $D$".
 
-*\# of $u$-trees in $D'$ of size $r\/Delta^3$:*
-$ <= m dot Delta^(4r\/Delta^2) $
-- $<= m$ ways to choose the root
-- \# ways to build a $u$-tree $<=$ \# Euler tours on $r\/Delta^3$ nodes starting/ending at root
-- Each edge of the $u$-tree represents a path of length $u$; at each node-visit, $<= Delta^u$ continuation options
+  *\# of $u$-trees in $D'$ of size $r\/Delta^3$:*
+  $ <= m dot Delta^(4r\/Delta^2) $
+  - $<= m$ ways to choose the root
+  - \# ways to build a $u$-tree $<=$ \# Euler tours on $r\/Delta^3$ nodes starting/ending at root
+  - Each edge of the $u$-tree represents a path of length $u$; at each node-visit, $<= Delta^u$ continuation options
 
-#pause
+  #pause
 
-By Claim A and the union bound:
-$
-PP[cal(E)] &<= m dot Delta^(4r\/Delta^2) dot ((Delta+1) dot 2^(-k\/2))^(r\/Delta^3) \
-&= exp(ln m + 4r/Delta^2 ln Delta + r/Delta^3 ln(Delta+1) - k r\/(2Delta^3)) \
-&<= exp(ln m + (4r ln(2k))\/Delta^2 + (r ln(4k))\/Delta^3 - k r\/(2Delta^3)) \
-&= o(1)
-$
-by choosing $alpha$ small enough and $C$ large enough. $square$
+  By Claim A and the union bound:
+  $
+    PP[cal(E)] & <= m dot Delta^(4r\/Delta^2) dot ((Delta+1) dot 2^(-k\/2))^(r\/Delta^3) \
+               & = exp(ln m + 4r/Delta^2 ln Delta + r/Delta^3 ln(Delta+1) - k r\/(2Delta^3)) \
+               & <= exp(ln m + (4r ln(2k))\/Delta^2 + (r ln(4k))\/Delta^3 - k r\/(2Delta^3)) \
+               & = o(1)
+  $
+  by choosing $alpha$ small enough and $C$ large enough. $square$
 ]
 = Grand Finale
 
